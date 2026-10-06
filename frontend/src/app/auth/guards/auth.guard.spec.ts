@@ -2,8 +2,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthGuard } from './auth.guard';
+import { AuthService } from '../services/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AUTH_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
@@ -18,7 +18,7 @@ describe('AuthGuard', () => {
       imports: [RouterTestingModule],
       providers: [
         AuthGuard,
-        { provide: AUTH_SERVICE_TOKEN, useValue: authServiceSpy },
+        { provide: AuthService, useValue: authServiceSpy },
         { provide: Router, useValue: routerSpy }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]

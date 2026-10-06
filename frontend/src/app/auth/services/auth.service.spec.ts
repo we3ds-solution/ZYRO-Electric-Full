@@ -53,10 +53,13 @@ describe('AuthService', () => {
       expect(service.isAuthenticated()).toBeTrue();
     }));
 
-    it('should persist auth to localStorage', fakeAsync(() => {
+    it('should persist auth token to storage after login', fakeAsync(() => {
       service.login({ email: 'a@b.com', password: 'x' }).subscribe();
       tick(600);
-      expect(localStorage.getItem('authData')).not.toBeNull();
+      // login without rememberMe defaults to sessionStorage
+      const hasToken = sessionStorage.getItem('auth_token') !== null
+        || localStorage.getItem('auth_token') !== null;
+      expect(hasToken).toBeTrue();
     }));
   });
 

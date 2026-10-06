@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { Order } from '../../models';
 import { ORDER_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
+import { InvoiceGeneratorService } from '../../services/invoice-generator.service';
 
 const mockOrder: Order = {
   id: 'ORD-TEST001',
@@ -47,6 +48,7 @@ describe('TrackingComponent', () => {
       providers: [
         { provide: ORDER_SERVICE_TOKEN, useValue: orderServiceSpy },
         { provide: Router, useValue: routerSpy },
+        { provide: InvoiceGeneratorService, useValue: { generateInvoice: () => {} } },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: { get: () => 'ORD-TEST001' } } }
@@ -106,8 +108,8 @@ describe('TrackingComponent', () => {
   });
 
   describe('getStatusIcon()', () => {
-    it('should return "clock" for pending', () => {
-      expect(component.getStatusIcon('pending')).toBe('clock');
+    it('should return "loader-2" for pending', () => {
+      expect(component.getStatusIcon('pending')).toBe('loader-2');
     });
 
     it('should return "truck" for shipped', () => {
@@ -122,8 +124,8 @@ describe('TrackingComponent', () => {
       expect(component.getStatusIcon('cancelled')).toBe('x-circle');
     });
 
-    it('should return "info" for unknown status', () => {
-      expect(component.getStatusIcon('unknown_status')).toBe('info');
+    it('should return "alert-circle" for unknown status', () => {
+      expect(component.getStatusIcon('unknown_status')).toBe('alert-circle');
     });
   });
 

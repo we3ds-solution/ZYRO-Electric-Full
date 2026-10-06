@@ -21,7 +21,8 @@ describe('AllProductsComponent', () => {
       providers: [
         { provide: PRODUCT_SERVICE_TOKEN, useValue: {
           getProducts: () => of({ items: [], total: 0, page: 1, pages: 1 }),
-          getProductById: () => of(null)
+          getProductById: () => of(null),
+          getCategories: () => of([])
         }},
         { provide: CART_SERVICE_TOKEN, useValue: {
           addToCart: () => of({})
