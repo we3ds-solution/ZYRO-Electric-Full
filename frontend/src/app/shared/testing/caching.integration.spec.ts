@@ -10,6 +10,7 @@ import { AuthService } from '../../auth/services/auth.service';
 import { OrderService } from '../../orders/services/order.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CacheInterceptor } from '../interceptors/cache.interceptor';
+import { SORT_STRATEGY_TOKEN, FILTER_STRATEGY_TOKEN, AUTH_SERVICE_TOKEN, ORDER_SERVICE_TOKEN, CART_SERVICE_TOKEN } from '../interfaces/dependency-injection';
 
 /**
  * Integration Tests for Multi-Layer Caching Strategy
@@ -48,6 +49,11 @@ describe('Multi-Layer Caching Integration Tests', () => {
         CartsService,
         AuthService,
         OrderService,
+        { provide: AUTH_SERVICE_TOKEN, useExisting: AuthService },
+        { provide: ORDER_SERVICE_TOKEN, useExisting: OrderService },
+        { provide: CART_SERVICE_TOKEN, useExisting: CartsService },
+        { provide: SORT_STRATEGY_TOKEN, useValue: { sort: (items: any[]) => items } },
+        { provide: FILTER_STRATEGY_TOKEN, useValue: { filter: (items: any[]) => items } },
         { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
       ]
     });

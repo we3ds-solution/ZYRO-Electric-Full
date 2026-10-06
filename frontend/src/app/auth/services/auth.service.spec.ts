@@ -2,19 +2,23 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { AUTH_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     TestBed.configureTestingModule({
+      providers: [ AuthService, { provide: AUTH_SERVICE_TOKEN, useExisting: AuthService } ],
       schemas: [ NO_ERRORS_SCHEMA ]});
     service = TestBed.inject(AuthService);
   });
 
   afterEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('should be created', () => {

@@ -4,8 +4,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthInterceptor } from './auth.interceptor';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { AUTH_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 
 describe('AuthInterceptor', () => {
   let http: HttpClient;
@@ -22,7 +22,7 @@ describe('AuthInterceptor', () => {
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         AuthInterceptor,
-        { provide: AuthService, useValue: authServiceSpy },
+        { provide: AUTH_SERVICE_TOKEN, useValue: authServiceSpy },
         { provide: Router, useValue: routerSpy },
         {
           provide: HTTP_INTERCEPTORS,

@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { CartComponent } from './cart.component';
-import { CartsService } from '../../services/carts.service';
-import { ProductsService } from '../../../products/services/products.service';
+import { CART_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -43,8 +42,8 @@ describe('CartComponent', () => {
         FormsModule
       ],
       providers: [
-        { provide: CartsService, useValue: mockCartService },
-        { provide: ProductsService, useValue: mockProductsService },
+        { provide: CART_SERVICE_TOKEN, useValue: mockCartService },
+        { provide: PRODUCT_SERVICE_TOKEN, useValue: mockProductsService },
         { provide: Router, useValue: mockRouter }
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

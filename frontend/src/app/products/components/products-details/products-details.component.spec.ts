@@ -6,14 +6,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
 import { ProductsDetailsComponent } from './products-details.component';
-import { ProductsService } from '../../services/products.service';
-import { CartsService } from '../../../carts/services/carts.service';
+import { PRODUCT_SERVICE_TOKEN, CART_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 describe('ProductsDetailsComponent', () => {
   let component: ProductsDetailsComponent;
   let fixture: ComponentFixture<ProductsDetailsComponent>;
-  let productsService: jasmine.SpyObj<ProductsService>;
-  let cartsService: jasmine.SpyObj<CartsService>;
+  let productsServiceSpy: any;
+  let cartsServiceSpy: any;
   let router: Router;
 
   const mockProduct = {
@@ -44,8 +43,8 @@ describe('ProductsDetailsComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        { provide: ProductsService, useValue: productsSpy },
-        { provide: CartsService, useValue: cartsSpy },
+        { provide: PRODUCT_SERVICE_TOKEN, useValue: productsSpy },
+        { provide: CART_SERVICE_TOKEN, useValue: cartsSpy },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -60,14 +59,14 @@ describe('ProductsDetailsComponent', () => {
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
 
-    productsService = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
-    cartsService = TestBed.inject(CartsService) as jasmine.SpyObj<CartsService>;
+    productsServiceSpy = TestBed.inject(PRODUCT_SERVICE_TOKEN) as any;
+    cartsServiceSpy = TestBed.inject(CART_SERVICE_TOKEN) as any;
     router = TestBed.inject(Router);
     
     spyOn(router, 'navigate');
 
-    productsService.getProductById.and.returnValue(of(mockProduct as any));
-    productsService.getProductReviews.and.returnValue(of(mockReviews as any));
+    productsServiceSpy.getProductById.and.returnValue(of(mockProduct as any));
+    productsServiceSpy.getProductReviews.and.returnValue(of(mockReviews as any));
   });
 
   beforeEach(() => {
@@ -91,14 +90,14 @@ describe('ProductsDetailsComponent', () => {
 
   describe('ngOnInit / loadProduct', () => {
     it('should load product and reviews if id is present', () => {
-      expect(productsService.getProductById).toHaveBeenCalledWith('1');
+      expect(productsServiceSpy.getProductById).toHaveBeenCalledWith('1');
       expect(component.product).toEqual(mockProduct as any);
-      expect(productsService.getProductReviews).toHaveBeenCalledWith('1');
+      expect(productsServiceSpy.getProductReviews).toHaveBeenCalledWith('1');
       expect(component.reviews).toEqual(mockReviews.items as any);
     });
 
     it('should handle product not found error', () => {
-      productsService.getProductById.and.returnValue(throwError(() => new Error('Not found')));
+      productsServiceSpy.getProductById.and.returnValue(throwError(() => new Error('Not found')));
       component.loadProduct();
       
       expect(component.toast.show).toHaveBeenCalled();
@@ -117,7 +116,7 @@ describe('ProductsDetailsComponent', () => {
 
     it('should handle reviews fetch error gracefully', () => {
       component.reviews = [];
-      productsService.getProductReviews.and.returnValue(throwError(() => new Error('Error')));
+      productsServiceSpy.getProductReviews.and.returnValue(throwError(() => new Error('Error')));
       component.loadReviews('1');
       // Should not throw or crash, just handles silently
       expect(component.reviews).toEqual([]);
@@ -156,21 +155,21 @@ describe('ProductsDetailsComponent', () => {
     it('should not add to cart if product is null or stock is 0', () => {
       component.product = null;
       component.addToCart();
-      expect(cartsService.addToCart).not.toHaveBeenCalled();
+      expect(cartsServiceSpy.addToCart).not.toHaveBeenCalled();
 
       component.product = { stock: 0 } as any;
       component.addToCart();
-      expect(cartsService.addToCart).not.toHaveBeenCalled();
+      expect(cartsServiceSpy.addToCart).not.toHaveBeenCalled();
     });
 
     it('should add to cart successfully', () => {
-      cartsService.addToCart.and.returnValue(of({} as any));
+      cartsServiceSpy.addToCart.and.returnValue(of({} as any));
       component.product = { id: '1', title: 'Test Product', stock: 10 } as any;
       component.quantity = 2;
       
       component.addToCart();
       
-      expect(cartsService.addToCart).toHaveBeenCalledWith({ productId: '1', quantity: 2 });
+      expect(cartsServiceSpy.addToCart).toHaveBeenCalledWith({ productId: '1', quantity: 2 });
       expect(component.toast.show).toHaveBeenCalled();
       expect(component.toast.type).toBe('success');
       expect(component.toast.title).toBe('Added to cart');
@@ -178,7 +177,7 @@ describe('ProductsDetailsComponent', () => {
     });
 
     it('should handle add to cart error', () => {
-      cartsService.addToCart.and.returnValue(throwError(() => new Error('Error')));
+      cartsServiceSpy.addToCart.and.returnValue(throwError(() => new Error('Error')));
       component.product = { id: '1', stock: 10 } as any;
       
       component.addToCart();

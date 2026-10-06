@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
-import { AuthService } from '../../auth/services/auth.service';
-import { OrderService } from '../../orders/services/order.service';
 import { of } from 'rxjs';
+import { AUTH_SERVICE_TOKEN, ORDER_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -20,8 +19,8 @@ describe('ProfileComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ProfileComponent],
       providers: [
-        { provide: AuthService, useValue: mockAuthService },
-        { provide: OrderService, useValue: mockOrderService }
+        { provide: AUTH_SERVICE_TOKEN, useValue: mockAuthService },
+        { provide: ORDER_SERVICE_TOKEN, useValue: mockOrderService }
       ]
     })
     .compileComponents();

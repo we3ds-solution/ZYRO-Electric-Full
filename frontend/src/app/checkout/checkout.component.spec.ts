@@ -3,16 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CartsService } from '../carts/services/carts.service';
-import { AuthService } from '../auth/services/auth.service';
-import { OrderService } from '../orders/services/order.service';
 import { of } from 'rxjs';
+import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, ORDER_SERVICE_TOKEN } from '../shared/interfaces/dependency-injection';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
   let fixture: ComponentFixture<CheckoutComponent>;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
-  let orderServiceSpy: jasmine.SpyObj<OrderService>;
+  let authServiceSpy: any;
+  let orderServiceSpy: any;
   let cartsServiceSpy: any;
 
   beforeEach(async () => {
@@ -28,9 +26,9 @@ describe('CheckoutComponent', () => {
       imports: [ReactiveFormsModule, RouterTestingModule],
       providers: [
         FormBuilder,
-        { provide: CartsService, useValue: cartsServiceSpy },
-        { provide: AuthService, useValue: authServiceSpy },
-        { provide: OrderService, useValue: orderServiceSpy }
+        { provide: CART_SERVICE_TOKEN, useValue: cartsServiceSpy },
+        { provide: AUTH_SERVICE_TOKEN, useValue: authServiceSpy },
+        { provide: ORDER_SERVICE_TOKEN, useValue: orderServiceSpy }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();

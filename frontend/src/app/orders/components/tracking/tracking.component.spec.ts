@@ -1,11 +1,11 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrackingComponent } from './tracking.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderService } from '../../services/order.service';
 import { of, throwError } from 'rxjs';
 import { Order } from '../../models';
+import { ORDER_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 const mockOrder: Order = {
   id: 'ORD-TEST001',
@@ -45,7 +45,7 @@ describe('TrackingComponent', () => {
       declarations: [TrackingComponent],
       imports: [RouterTestingModule],
       providers: [
-        { provide: OrderService, useValue: orderServiceSpy },
+        { provide: ORDER_SERVICE_TOKEN, useValue: orderServiceSpy },
         { provide: Router, useValue: routerSpy },
         {
           provide: ActivatedRoute,
