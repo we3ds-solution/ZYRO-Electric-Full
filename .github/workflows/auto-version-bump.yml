@@ -55,15 +55,16 @@ jobs:
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "New version: $NEW_VERSION"
 
-      - name: Update frontend/package.json
+      - name: Update package.json files
         run: |
+          npm version --no-git-tag-version ${{ steps.new_version.outputs.version }}
           cd frontend
           npm version --no-git-tag-version ${{ steps.new_version.outputs.version }}
-          echo "Updated frontend/package.json to v${{ steps.new_version.outputs.version }}"
+          echo "Updated root and frontend package.json to v${{ steps.new_version.outputs.version }}"
 
       - name: Commit version bump
         run: |
-          git add frontend/package.json frontend/package-lock.json
+          git add package.json package-lock.json frontend/package.json frontend/package-lock.json
           git commit -m "chore: bump version to ${{ steps.new_version.outputs.version }} [skip ci]"
           git push origin main
 

@@ -66,7 +66,7 @@ jobs:
             echo ""
             echo "### Installation"
             echo "\`\`\`bash"
-            echo "npm install @mostafa-said7/zyro-electric@${{ steps.tag_info.outputs.version }}"
+            echo "npm install @we3ds-solution/zyro-electric@${{ steps.tag_info.outputs.version }}"
             echo "\`\`\`"
             echo ""
             echo "### Docker"
@@ -75,12 +75,12 @@ jobs:
             echo "\`\`\`"
             echo ""
             echo "---"
-            echo "**Auto-generated release** | [View on GitHub](https://github.com/Mostafa-SAID7/ZYRO-Electric/releases/tag/$TAG)"
+            echo "**Auto-generated release** | [View on GitHub](https://github.com/we3ds-solution/ZYRO-Electric/releases/tag/$TAG)"
             echo "$EOF_DELIMITER"
           } >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@3bb1273b0aaa2d76bbdf7a1b8e82c25d0f1ac906
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag_info.outputs.tag }}
           name: Release ${{ steps.tag_info.outputs.tag }}
@@ -88,8 +88,9 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            package.json
+            frontend/package.json
             README.md
+            CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -98,4 +99,4 @@ jobs:
           echo "✅ GitHub Release Created"
           echo "Tag: ${{ steps.tag_info.outputs.tag }}"
           echo "Version: ${{ steps.tag_info.outputs.version }}"
-          echo "URL: https://github.com/Mostafa-SAID7/ZYRO-Electric/releases/tag/${{ steps.tag_info.outputs.tag }}"
+          echo "URL: https://github.com/we3ds-solution/ZYRO-Electric/releases/tag/${{ steps.tag_info.outputs.tag }}"

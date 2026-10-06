@@ -7,7 +7,7 @@
 # ── Stage 1: Build Angular App with Node 22 ────────────────────────────────────
 FROM node:22-alpine AS builder
 
-LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
+LABEL maintainer="we3ds-solution <dev@we3ds.com>"
 LABEL description="ZYRO - Premium Tech Accessories E-Commerce Platform (Production Build)"
 LABEL brand="ZYRO - Tech. Organized. Elevated."
 
@@ -31,7 +31,7 @@ RUN npm run build
 # ── Stage 2: Serve with Nginx ─────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS production
 
-LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
+LABEL maintainer="we3ds-solution <dev@we3ds.com>"
 LABEL description="ZYRO - Tech Accessories E-Commerce Platform"
 
 WORKDIR /etc/nginx

@@ -16,16 +16,16 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.dev
     container_name: zyro-dev
-    image: msaid356/zyro-electric:dev
+    image: we3ds-solution/zyro-electric:dev
     ports:
       - "4200:4200"
     volumes:
       # Mount source code for live hot-reload
-      - ../src:/app/src
-      - ../angular.json:/app/angular.json
-      - ../tailwind.config.js:/app/tailwind.config.js
-      - ../tsconfig.json:/app/tsconfig.json
-      - ../tsconfig.app.json:/app/tsconfig.app.json
+      - ../frontend/src:/app/src
+      - ../frontend/angular.json:/app/angular.json
+      - ../frontend/tailwind.config.js:/app/tailwind.config.js
+      - ../frontend/tsconfig.json:/app/tsconfig.json
+      - ../frontend/tsconfig.app.json:/app/tsconfig.app.json
       # Prevent node_modules from being overwritten
       - /app/node_modules
     environment:
@@ -48,7 +48,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     container_name: zyro-prod
-    image: msaid356/zyro-electric:latest
+    image: we3ds-solution/zyro-electric:latest
     ports:
       - "3030:80"
     environment:

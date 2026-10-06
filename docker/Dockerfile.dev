@@ -3,9 +3,9 @@
 # Hot reload with ng serve for active development
 # Usage: docker-compose up (runs on port 4200)
 
-FROM node:22.22.3-alpine
+FROM node:22-alpine
 
-LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
+LABEL maintainer="we3ds-solution <dev@we3ds.com>"
 LABEL description="ZYRO - Tech Accessories Platform (Development with Hot Reload)"
 LABEL version="1.0.0"
 LABEL brand="ZYRO - Tech. Organized. Elevated."
@@ -15,14 +15,14 @@ WORKDIR /app
 # Install Angular CLI globally for development
 RUN npm install -g @angular/cli@18 --legacy-peer-deps
 
-# Copy dependency files
-COPY package.json package-lock.json ./
+# Copy dependency files from frontend/
+COPY frontend/package.json frontend/package-lock.json ./
 
 # Install all dependencies including devDependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy source code (will be overridden by volume mount in docker-compose)
-COPY . .
+# Copy frontend source code
+COPY frontend/ ./
 
 # Expose Angular dev server port
 EXPOSE 4200
