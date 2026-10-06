@@ -10,7 +10,8 @@ namespace Infrastructure.Authentication;
 public class PasswordService : IPasswordService
 {
     private const int KeySize = 64;
-    private const int Iterations = 10000;
+    // Updated to OWASP recommended iteration count for production security
+    private const int Iterations = 600000;
     private static readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA256;
 
     public string HashPassword(string password)

@@ -93,3 +93,18 @@ public class UserClaimDto
     public string ClaimType { get; set; } = string.Empty;
     public string ClaimValue { get; set; } = string.Empty;
 }
+
+/// <summary>
+/// Profile update request — only exposes fields that users are allowed to change.
+/// Deliberately excludes: Id, Username, Email, Roles, Claims, security flags.
+/// </summary>
+public class UpdateProfileRequest
+{
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? ProfilePictureUrl { get; set; }
+    public string? Bio { get; set; }
+    public string? Language { get; set; }
+}
+

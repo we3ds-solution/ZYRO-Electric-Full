@@ -1,44 +1,42 @@
 using Domain.Entities;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 /// <summary>
-/// User profile repository - single responsibility: user profile data access
+/// UserProfile repository — data access only.
+/// Does NOT call SaveChangesAsync; callers use IUnitOfWork for that.
 /// </summary>
 public class UserProfileRepository : IUserProfileRepository
 {
-    private readonly DbContext _context;
+    private readonly AppDbContext _context;
 
-    public UserProfileRepository(DbContext context)
+    public UserProfileRepository(AppDbContext context)
     {
-        _context = context;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public async Task<UserProfile?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<UserProfile>()
-            .AsNoTracking()
+        return await _context.UserProfiles
             .FirstOrDefaultAsync(p => p.UserId == userId, cancellationToken);
     }
 
     public async Task<IEnumerable<UserClaim>> GetUserClaimsAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<UserClaim>()
+        return await _context.UserClaims
             .AsNoTracking()
             .Where(c => c.UserId == userId)
             .ToListAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Stage profile for insertion — caller must call IUnitOfWork.SaveChangesAsync().
+    /// </summary>
     public async Task AddAsync(UserProfile profile, CancellationToken cancellationToken = default)
     {
-        _context.Set<UserProfile>().Add(profile);
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task UpdateAsync(UserProfile profile, CancellationToken cancellationToken = default)
-    {
-        _context.Set<UserProfile>().Update(profile);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.UserProfiles.AddAsync(profile, cancellationToken);
+        // No SaveChanges here — use IUnitOfWork
     }
 }

@@ -57,11 +57,11 @@ public static class AuthenticationExtensions
     }
 
     /// <summary>
-    /// Add repository layer - single responsibility: data access abstractions
-    /// Follows DIP: services depend on IUserRepository, not DbContext
+    /// Add repository layer and UnitOfWork
     /// </summary>
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
+        services.AddScoped<Infrastructure.Persistence.IUnitOfWork, Infrastructure.Persistence.UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
@@ -117,7 +117,7 @@ public static class AuthenticationExtensions
     /// <summary>
     /// Add CORS configuration - single responsibility: CORS setup
     /// </summary>
-    public static IServiceCollection AddAuthenticationCors(
+    public static IServiceCollection AddAppCors(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -126,7 +126,7 @@ public static class AuthenticationExtensions
 
         services.AddCors(options =>
         {
-            options.AddPolicy("AuthPolicy", builder =>
+            options.AddPolicy("AppCorsPolicy", builder =>
             {
                 builder
                     .WithOrigins(allowedOrigins)
@@ -150,7 +150,7 @@ public static class AuthenticationExtensions
         services.AddRepositories();
         services.AddDomainAuthenticationServices();
         services.AddAuthorizationServices();
-        services.AddAuthenticationCors(configuration);
+        services.AddAppCors(configuration);
 
         return services;
     }

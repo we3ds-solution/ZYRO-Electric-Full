@@ -1,14 +1,19 @@
 using Application.Dtos.Auth;
-using Domain.Entities;
 
 namespace Application.Services;
 
 /// <summary>
-/// Token management service interface - handles JWT and refresh token lifecycle
+/// Token management service interface — JWT and refresh token lifecycle.
+/// RefreshTokenAsync looks up user from the token itself; no null user accepted.
 /// </summary>
 public interface ITokenManagementService
 {
-    Task<RefreshTokenResponse> RefreshTokenAsync(string refreshToken, User user, IEnumerable<string> roles, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Rotate refresh token: validate old → revoke → issue new access + refresh tokens.
+    /// Loads user and roles from database using the token; does NOT accept null user.
+    /// </summary>
+    Task<RefreshTokenResponse> RefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
+
     Task RevokeTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
     Task RevokeAllUserTokensAsync(Guid userId, CancellationToken cancellationToken = default);
     string GenerateAccessToken(Guid userId, string username, IEnumerable<string> roles);

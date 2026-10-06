@@ -2,34 +2,20 @@ using Xunit;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
+using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 
 namespace Tests.Integration;
 
-public class TestDbContext : DbContext
-{
-    public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<User>().HasKey(u => u.Id);
-        // Ignore relationships for simple in-memory tests if not needed
-        modelBuilder.Entity<User>().Ignore(u => u.UserRoles);
-        modelBuilder.Entity<User>().Ignore(u => u.RefreshTokens);
-        modelBuilder.Entity<User>().Ignore(u => u.UserClaims);
-        modelBuilder.Entity<User>().Ignore(u => u.UserProfiles);
-    }
-}
-
 public class ExampleIntegrationTests
 {
-    private DbContext GetInMemoryContext()
+    private AppDbContext GetInMemoryContext()
     {
-        var options = new DbContextOptionsBuilder<TestDbContext>()
+        var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: $"InMemoryDb_{Guid.NewGuid()}")
             .Options;
             
-        var context = new TestDbContext(options);
+        var context = new AppDbContext(options);
         context.Database.EnsureCreated();
         return context;
     }
@@ -40,11 +26,14 @@ public class ExampleIntegrationTests
         // Arrange
         using var context = GetInMemoryContext();
         var repository = new UserRepository(context);
+        var unitOfWork = new UnitOfWork(context);
 
         var user = new User("testuser", "test@test.com", "Test", "User");
 
         // Act
         await repository.AddAsync(user);
+        await unitOfWork.SaveChangesAsync(); // Commit via UnitOfWork
+
         var retrievedUser = await repository.GetUserByIdAsync(user.Id);
 
         // Assert
@@ -58,12 +47,19 @@ public class ExampleIntegrationTests
         // Arrange
         using var context = GetInMemoryContext();
         var repository = new UserRepository(context);
+        var unitOfWork = new UnitOfWork(context);
+
         var user = new User("updateuser", "update@test.com", "Update", "User");
         await repository.AddAsync(user);
+        await unitOfWork.SaveChangesAsync();
 
         // Act
-        user.SetFirstName("UpdatedName");
-        await repository.UpdateAsync(user);
+        var trackedUser = await repository.GetTrackedUserByIdAsync(user.Id);
+        trackedUser!.SetFirstName("UpdatedName");
+        
+        repository.Update(trackedUser);
+        await unitOfWork.SaveChangesAsync(); // Commit via UnitOfWork
+
         var retrievedUser = await repository.GetUserByIdAsync(user.Id);
 
         // Assert
