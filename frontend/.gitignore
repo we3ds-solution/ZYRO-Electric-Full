@@ -17,6 +17,7 @@ test-log/
 .env
 .env.*
 !.env.example
+.npmrc
 
 # Vercel deployment cache
 .vercel/

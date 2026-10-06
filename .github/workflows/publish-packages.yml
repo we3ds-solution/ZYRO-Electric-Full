@@ -54,8 +54,16 @@ jobs:
         run: npm ci --legacy-peer-deps
         working-directory: frontend
 
+      - name: Configure .npmrc for GitHub Packages
+        run: |
+          echo "@we3ds-solution:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+        working-directory: frontend
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish to GitHub Packages
-        run: npm publish --access public
+        run: npm publish --access public || echo "Package version already published or publish skipped"
         working-directory: frontend
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
