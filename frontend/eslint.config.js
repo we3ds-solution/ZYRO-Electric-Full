@@ -24,7 +24,6 @@ module.exports = tseslint.config(
       "prefer-const": "warn",
       "no-prototype-builtins": "warn",
       "@angular-eslint/prefer-standalone": "warn",
-      "@angular-eslint/prefer-inject": "warn",
       "@angular-eslint/directive-selector": [
         "error",
         {
