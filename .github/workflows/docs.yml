@@ -44,6 +44,10 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -55,6 +59,8 @@ jobs:
         uses: actions/configure-pages@v4
         with:
           enablement: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
 
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -64,3 +70,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
