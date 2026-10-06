@@ -64,7 +64,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.14.0",
-    "angular-eslint": "18.4.3",
+    "angular-eslint": "22.5.0",
     "autoprefixer": "^10.5.4",
     "eslint": "^9.39.1",
     "jasmine-core": "~5.1.0",
