@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the multi-layer caching strategy for the Market-User e-commerce application using:
+This document outlines the multi-layer caching strategy for the **ZYRO Electric** e-commerce application using:
 - **In-Memory Caching** (fastest, temporary)
 - **Session Storage** (expires with browser close)
 - **Local Storage** (persistent across sessions)

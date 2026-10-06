@@ -1,146 +1,145 @@
-# 🛠️ Setup & Installation Guide
+# 🛠️ Local Setup Guide — ZYRO Electric
 
-## Prerequisites
-
-- Node.js 20+ (Recommended: 20.x LTS)
-- npm 10+ or yarn
-- Git
-
-## Installation Steps
-
-### 1. Install Dependencies
-
-```bash
-# Clean install with legacy peer deps flag (fixes OpenSSL issue on Node 22)
-npm install --legacy-peer-deps
-
-# Or if you prefer yarn
-yarn install
-```
-
-### 2. Verify Installation
-
-```bash
-# Check Angular CLI
-ng version
-
-# Check Node and npm
-node --version
-npm --version
-```
-
-### 3. Start Development Server
-
-```bash
-npm start
-```
-
-The app will open at `http://localhost:4200/`
-
-## Troubleshooting
-
-### Issue: `ERR_OSSL_EVP_UNSUPPORTED` on Netlify
-
-**Solution:** Already configured in `netlify.toml` with:
-```
-NODE_OPTIONS = "--openssl-legacy-provider"
-NODE_VERSION = "20"
-```
-
-### Issue: Port 4200 Already in Use
-
-```bash
-# Use different port
-ng serve --port 4201
-```
-
-### Issue: Module Not Found Errors
-
-```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json
-npm install --legacy-peer-deps
-```
-
-## Build & Deployment
-
-### Local Build
-
-```bash
-npm run build
-# Output: dist/market/
-```
-
-### Deploy to Netlify
-
-1. Push to GitHub
-2. Connect repo in Netlify dashboard
-3. Netlify auto-reads `netlify.toml`
-4. Build command: `npm run build`
-5. Publish directory: `dist/market/browser`
-
-### Deploy to Vercel
-
-```bash
-npm install -g vercel
-vercel
-```
-
-## Development Tips
-
-### Add New Component
-
-```bash
-ng generate component components/product-card
-```
-
-### Add New Service
-
-```bash
-ng generate service services/product
-```
-
-### Format Code
-
-```bash
-# Using Prettier (optional)
-npm install --save-dev prettier
-npx prettier --write "src/**/*.{ts,html,scss}"
-```
-
-## Scripts Reference
-
-| Command | Purpose |
-|---------|---------|
-| `npm start` | Dev server (port 4200) |
-| `npm run build` | Production build |
-| `npm run preview` | Preview prod build |
-| `npm test` | Run unit tests |
-| `npm run watch` | Watch mode build |
-| `ng lint` | Lint code (if configured) |
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and update:
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` with your API endpoints and settings.
-
-## Hot Module Replacement (HMR)
-
-Already enabled in development mode. Changes auto-reload without full refresh.
-
-## Performance Tips
-
-1. **Lazy load modules** - Split code for better performance
-2. **Use OnPush change detection** - In components
-3. **Optimize images** - Compress before committing
-4. **Minify CSS/JS** - Automatic in production build
-5. **Enable service workers** - For offline support
+> For deployment to Netlify, Docker, or cloud → see **[DEPLOYMENT.md](./DEPLOYMENT.md)**
 
 ---
 
-Need help? Check [README.md](./README.md) or open an issue.
+## Prerequisites
+
+| Tool | Version | Required for |
+|------|---------|-------------|
+| Node.js | 20.x LTS | Frontend |
+| npm | 10+ | Frontend |
+| .NET SDK | 9.0 | Backend |
+| Git | any | Both |
+| Angular CLI | 18.x | Optional — code generation |
+
+---
+
+## 1. Clone & Install
+
+```bash
+git clone https://github.com/we3ds-solution/ZYRO-Electric.git
+cd ZYRO-Electric
+
+# Install all (frontend + backend)
+npm run install:all
+```
+
+---
+
+## 2. Environment Configuration
+
+```bash
+# Copy the template
+cp frontend/.env.example frontend/.env
+```
+
+Edit `frontend/.env` — set your API base URL and feature flags:
+
+```env
+API_BASE_URL=https://localhost:5001/api
+API_VERSION=v1
+ENABLE_MOCK_DATA=true
+```
+
+> `ENABLE_MOCK_DATA=true` skips the backend entirely — frontend runs on mock data.
+
+For the backend, copy and fill the auth config:
+
+```bash
+cp backend/src/Presentation/appsettings.auth.example.json \
+   backend/src/Presentation/appsettings.auth.json
+```
+
+---
+
+## 3. Database (Backend only)
+
+Apply EF Core migrations:
+
+```bash
+npm run backend:migrations
+# or: cd backend && dotnet ef database update --project src/Infrastructure --startup-project src/Presentation
+```
+
+> Default uses SQL Server. Switch to SQLite by updating the connection string in `appsettings.json`.
+
+---
+
+## 4. Run
+
+### Frontend (Angular)
+
+```bash
+npm run frontend:start
+# → http://localhost:4200
+```
+
+### Backend (.NET API)
+
+```bash
+npm run backend:start
+# → https://localhost:5001
+# → Swagger UI: https://localhost:5001/swagger
+```
+
+---
+
+## 5. Verify Installation
+
+```bash
+node --version    # Should be 20.x
+npm --version     # Should be 10+
+dotnet --version  # Should be 9.x
+ng version        # Angular CLI version
+```
+
+---
+
+## Development Tips
+
+### Generate Angular Artifacts
+
+```bash
+# Component
+ng generate component app/products/components/my-component
+
+# Service
+ng generate service app/shared/services/my-service
+```
+
+### Add a Backend Migration
+
+```bash
+cd backend
+dotnet ef migrations add MyMigrationName \
+  --project src/Infrastructure \
+  --startup-project src/Presentation
+```
+
+### Watch Mode
+
+```bash
+# Frontend — rebuilds on file change (HMR enabled)
+npm run frontend:start
+
+# Backend — restart on change
+cd backend && dotnet watch run --project src/Presentation
+```
+
+---
+
+## Troubleshooting
+
+| Issue | Fix |
+|-------|-----|
+| `ERR_OSSL_EVP_UNSUPPORTED` | Set `NODE_OPTIONS=--openssl-legacy-provider` or use Node 20 |
+| Port 4200 in use | `ng serve --port 4201` |
+| Module not found | `rm -rf frontend/node_modules && npm run frontend:install` |
+| EF migration fails | Check connection string in `appsettings.json` |
+| `dotnet: command not found` | Install [.NET 9 SDK](https://dotnet.microsoft.com/download) |
+
+---
+
+> Need more? → [GitHub Issues](https://github.com/we3ds-solution/ZYRO-Electric/issues) · `we3ds.solution@gmail.com`

@@ -71,7 +71,7 @@ jobs:
             echo ""
             echo "### Docker"
             echo "\`\`\`bash"
-            echo "docker pull ghcr.io/mostafa-said7/zyro-electric:${{ steps.tag_info.outputs.version }}"
+            echo "docker pull ghcr.io/we3ds-solution/zyro-electric:${{ steps.tag_info.outputs.version }}"
             echo "\`\`\`"
             echo ""
             echo "---"

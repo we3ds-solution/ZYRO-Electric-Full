@@ -6,12 +6,12 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
+      - 'frontend/src/**'
+      - 'frontend/package.json'
+      - 'frontend/package-lock.json'
       - 'docker/Dockerfile'
-      - 'angular.json'
       - '!**.md'
       - '!docs/**'
-      - '!.github/ISSUE_TEMPLATE/**'
 
 jobs:
   bump-version-and-tag:
@@ -39,7 +39,7 @@ jobs:
       - name: Get current version
         id: current_version
         run: |
-          VERSION=$(grep '"version"' package.json | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          VERSION=$(grep '"version"' frontend/package.json | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Current version: $VERSION"
 
@@ -55,20 +55,19 @@ jobs:
           echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "New version: $NEW_VERSION"
 
-      - name: Update package.json
+      - name: Update frontend/package.json
         run: |
-          sed -i 's/"version": "[^"]*"/"version": "${{ steps.new_version.outputs.version }}"/' package.json
-          echo "Updated package.json to v${{ steps.new_version.outputs.version }}"
+          cd frontend
+          npm version --no-git-tag-version ${{ steps.new_version.outputs.version }}
+          echo "Updated frontend/package.json to v${{ steps.new_version.outputs.version }}"
 
       - name: Commit version bump
         run: |
-          git add package.json
+          git add frontend/package.json frontend/package-lock.json
           git commit -m "chore: bump version to ${{ steps.new_version.outputs.version }} [skip ci]"
           git push origin main
-        continue-on-error: true
 
       - name: Create git tag
         run: |
           git tag -a "v${{ steps.new_version.outputs.version }}" -m "Release v${{ steps.new_version.outputs.version }}"
           git push origin "v${{ steps.new_version.outputs.version }}"
-        continue-on-error: true

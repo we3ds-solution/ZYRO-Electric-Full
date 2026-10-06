@@ -1,57 +1,69 @@
-# Contributing to Market
+# Contributing to ZYRO Electric
 
-Thank you for your interest in contributing to Market! We appreciate all contributions, from bug reports to feature requests and pull requests.
+Thank you for your interest in contributing to **ZYRO Electric**! We're [we3ds-solution](https://github.com/we3ds-solution) and we appreciate all contributions — from bug reports to feature requests and pull requests.
 
 ## Code of Conduct
 
-- Be respectful and constructive
-- Follow best practices
-- Write clean, maintainable code
-- Add tests for new features
-- Update documentation
+Please read and follow our [Code of Conduct](../CODE_OF_CONDUCT.md). Contact us at `we3ds.solution@gmail.com` to report any violations.
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/market.git`
+2. Clone your fork:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/ZYRO-Electric.git
+   cd ZYRO-Electric
+   ```
 3. Create a feature branch: `git checkout -b feature/amazing-feature`
-4. Install dependencies: `npm install --legacy-peer-deps`
+4. Install dependencies: `npm run install:all`
 5. Make your changes
-6. Commit: `git commit -m 'feat: add amazing feature'`
+6. Commit: `git commit -m 'feat(scope): add amazing feature'`
 7. Push: `git push origin feature/amazing-feature`
-8. Create a Pull Request
+8. Create a Pull Request targeting `develop`
 
 ## Development Workflow
 
-### Starting Development
+### Frontend (Angular 18)
 
 ```bash
-npm install --legacy-peer-deps
+cd frontend
+npm install
 npm start
+# Navigate to http://localhost:4200/
 ```
 
-Navigate to `http://localhost:4200/`
-
-### Building
+### Backend (ASP.NET 9)
 
 ```bash
-npm run build
+cd backend
+dotnet restore
+dotnet run --project src/Presentation
+# API at https://localhost:5001/swagger
 ```
 
-### Testing
+### Run All Tests
 
 ```bash
-npm test
+# Frontend
+npm run frontend:test
+
+# Backend
+npm run backend:test
 ```
 
-### Code Style
+### Build
 
-- Follow Angular style guide
-- Use TypeScript strict mode
-- Write meaningful commit messages
-- Keep components small and focused
+```bash
+# Frontend production build
+npm run frontend:build
+
+# Backend release build
+npm run backend:build
+```
 
 ## Commit Message Format
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 <type>(<scope>): <subject>
@@ -61,63 +73,64 @@ npm test
 <footer>
 ```
 
-Types:
+**Types:**
 - **feat**: A new feature
 - **fix**: A bug fix
-- **docs**: Documentation only
-- **style**: Changes that don't affect meaning (formatting, etc)
+- **docs**: Documentation only changes
+- **style**: Formatting, missing semicolons — no logic change
 - **refactor**: Code change that neither fixes a bug nor adds a feature
 - **test**: Adding or updating tests
-- **chore**: Changes to build process, dependencies, etc
+- **chore**: Build process, dependency changes
 
-Example:
+**Scopes:** `auth`, `products`, `cart`, `checkout`, `orders`, `shared`, `backend`, `docker`, `ci`, `docs`
+
+**Example:**
 ```
 feat(cart): add coupon code support
 
-Add ability to apply coupon codes to cart items with validation and discount calculation.
+Add ability to apply coupon codes to cart items with validation and
+discount calculation via CouponService.
 
 Closes #123
 ```
 
 ## Pull Request Process
 
-1. Ensure all tests pass: `npm test`
-2. Update README.md if needed
-3. Update docs if behavior changes
+1. Ensure all tests pass locally (`npm run frontend:test` + `npm run backend:test`)
+2. Update documentation if behavior changes
+3. Follow the [PR template](PULL_REQUEST_TEMPLATE.md) — fill in all sections
 4. Link related issues
-5. Request review from maintainers
+5. Request review from `@we3ds-solution` maintainers
 6. Address feedback and push updates
+7. PRs must target the `develop` branch (not `main` directly)
+
+## Branch Naming Convention
+
+| Branch type | Pattern | Example |
+|---|---|---|
+| Feature | `feature/<slug>` | `feature/wishlist-page` |
+| Bug fix | `bugfix/<slug>` | `bugfix/cart-quantity-overflow` |
+| Hot fix | `hotfix/<slug>` | `hotfix/auth-token-expiry` |
+| Release | `release/<version>` | `release/1.1.0` |
 
 ## Reporting Issues
 
-### Bug Report
-
-Include:
-- Description of the bug
-- Steps to reproduce
-- Expected behavior
-- Actual behavior
-- Environment (OS, Node version, etc)
-- Screenshots if applicable
-
-### Feature Request
-
-Include:
-- Description of the feature
-- Use cases
-- Examples
-- Proposed implementation (optional)
+Use the GitHub Issue templates:
+- **🐛 Bug Report** — reproducible defects
+- **✨ Feature Request** — new capabilities
+- **📚 Documentation** — doc improvements
+- **⚡ Performance** — speed or efficiency issues
 
 ## Questions?
 
 - Open an issue with the `question` label
 - Check existing issues and discussions
-- Review documentation
+- Email: `we3ds.solution@gmail.com`
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the same MIT license.
+By contributing, you agree that your contributions will be licensed under the **MIT License**.
 
 ---
 
-Thank you for contributing! 🎉
+Thank you for contributing to ZYRO Electric! ⚡

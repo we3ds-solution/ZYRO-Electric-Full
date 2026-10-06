@@ -14,7 +14,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.7
@@ -22,10 +22,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: '22.23.1'
+          node-version: '22'
 
       - name: Install frontend dependencies
-        run: npm install --ignore-scripts --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
         working-directory: frontend
 
       - name: Build
@@ -46,22 +46,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: '22.23.1'
+          node-version: '22'
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install frontend dependencies
-        run: npm install --ignore-scripts --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
         working-directory: frontend
 
       - name: Publish to npm
         run: npm publish
         working-directory: frontend
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-docker:
-    if: false
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -103,7 +101,5 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ steps.meta.outputs.owner }}/zyro-electric:latest
             ${{ env.REGISTRY }}/${{ steps.meta.outputs.owner }}/zyro-electric:${{ steps.meta.outputs.version }}
-            msaid356/zyro-electric:latest
-            msaid356/zyro-electric:${{ steps.meta.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

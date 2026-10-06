@@ -1,315 +1,146 @@
-# ⚡ ZYRO — Premium Tech Accessories Platform
+<div align="center">
 
-> **ZYRO** is a full-featured, production-ready e-commerce platform specializing in technology accessories. Built with **Angular 18**, **Tailwind CSS**, and deployable via **Netlify**, **Docker**, or any static host.
+# ⚡ ZYRO Electric
 
-**Tagline**: *"Tech. Organized. Elevated."*
+**Premium Tech Accessories Platform**
+
+*"Tech. Organized. Elevated."*
 
 [![Angular](https://img.shields.io/badge/Angular-18.2-DD0031?style=flat-square&logo=angular)](https://angular.io/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Node](https://img.shields.io/badge/Node-20.x-339933?style=flat-square&logo=nodedotjs)](https://nodejs.org/)
-[![Netlify](https://img.shields.io/badge/Deployed-Netlify-00C7B7?style=flat-square&logo=netlify)](https://netlify.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)](https://www.docker.com/)
-[![Brand](https://img.shields.io/badge/Brand-ZYRO-007AFF?style=flat-square)](#-zyro--brand-guidelines)
-[![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
+[![Build](https://github.com/we3ds-solution/ZYRO-Electric/actions/workflows/build-app.yml/badge.svg)](https://github.com/we3ds-solution/ZYRO-Electric/actions)
+[![Tests](https://github.com/we3ds-solution/ZYRO-Electric/actions/workflows/run-tests.yml/badge.svg)](https://github.com/we3ds-solution/ZYRO-Electric/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
+
+**Maintained by [we3ds-solution](https://github.com/we3ds-solution) · [we3ds.com](https://we3ds.com) · `we3ds.solution@gmail.com`**
+
+</div>
 
 ---
 
-## ⚡ ZYRO Technologies
+## What is ZYRO Electric?
 
-ZYRO specializes in **10 high-growth technology niches**:
+A full-stack, production-ready **e-commerce monorepo** for technology accessories — combining an **Angular 18 SPA** frontend with an **ASP.NET 9 Clean Architecture** backend.
 
-### Premium Accessory Categories
+| Layer | Technology | Role |
+|-------|-----------|------|
+| Frontend | Angular 18 + Tailwind CSS | SPA, UI, state management |
+| Backend | ASP.NET 9 + EF Core | REST API, auth, data |
+| Auth | JWT + Refresh Tokens | Stateless, secure sessions |
+| CI/CD | GitHub Actions | Build, test, release, deploy |
+| Hosting | Netlify / Docker / Nginx | Flexible deployment targets |
 
-| Category | Focus | Market |
-|----------|-------|--------|
-| 📱 **Smartphone Accessories** | Protection, charging, audio | $50B+ |
-| 💻 **Laptop Accessories** | Cases, docks, cooling, stands | $35B+ |
-| 🔌 **Cable Management** | Organization, storage, routing | $8B+ |
-| 🖥️ **Desk Tech** | Lighting, organizing, gadgets | $28B+ |
-| 🏠 **Smart Device Accessories** | IoT, wearables, hubs | $22B+ |
-| ⚡ **Charging Accessories** | Chargers, cables, power banks | $18B+ |
-| ✈️ **Travel Tech** | Organizers, adapters, gear | $16B+ |
-| 📷 **Photography Accessories** | Lenses, lighting, stabilizers | $8B+ |
-| 🎬 **Content Creator Equipment** | Cameras, mics, lights, streams | $32B+ |
-| 🗂️ **Electronics Organization** | Storage, display, management | $12B+ |
-
-**Combined Market Opportunity**: $240B+ | **Growth Rate**: 15-20% annually
-
-### 🛍️ Shopping Experience
-- **Product Catalog** — Grid/list view with pagination and real-time filtering
-- **Advanced Filters** — Category, price range, star rating, and stock status filters
-- **Smart Search** — Instant search bar with debounce in the header
-- **Sort Options** — Sort by newest, price (low/high), rating, and popularity
-- **Product Details** — Rich product pages with image gallery, specs, and reviews
-- **Related Products** — Suggested items on each product page
-
-### 🛒 Cart & Checkout
-- **Slide-out Cart Drawer** — Real-time cart with product images, quantity controls
-- **Cart Page** — Full cart management with coupon code support
-- **Checkout Flow** — Multi-step form with address and payment fields
-- **Order Tracking** — Order history and status tracking page
-
-### 👤 Authentication
-- **Modal Auth System** — Login / Register modals embedded in the header
-- **Form Validation** — Reactive forms with real-time error feedback
-- **Session Persistence** — Auth state managed via `BehaviorSubject`
-
-### 🎨 UI / Design
-- **Dark / Light Mode** — CSS variable-based theming with smooth transitions
-- **Premium Components** — Custom dropdowns, toasts, filter panel, sort dropdown
-- **Lucide Icons** — Consistent icon set via `lucide-angular`
-- **Glassmorphism & Micro-animations** — Modern design language throughout
-- **Fully Responsive** — Mobile-first layouts from 320px to 4K
-- **404 Page** — Animated, themed not-found page with navigation
-
-### 🏗️ Architecture
-- **Lazy-loaded Modules** — Products, Cart, Auth, Checkout, Orders each lazy loaded
-- **Reactive Services** — `BehaviorSubject`-powered state for cart and products
-- **Shared UI Library** — Reusable components in `shared/ui/components/`
-- **Mock Data Layer** — Fully functional offline-first with realistic mock products
+> Full tech stack and architecture → **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)**
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- **Node.js** `20.x` or higher
-- **npm** `9+`
-- **Angular CLI** `18.x` (optional, for code generation)
-
-### Install & Run
+**Prerequisites:** Node.js 20+, .NET SDK 9.0, Git
 
 ```bash
-# Clone the repository
-git clone https://github.com/Mostafa-SAID7/Market-User.git
-cd Market-User
+# Clone
+git clone https://github.com/we3ds-solution/ZYRO-Electric.git
+cd ZYRO-Electric
 
-# Install dependencies (legacy peer deps required for Angular 18 compat)
-npm install --legacy-peer-deps
+# Install everything (frontend + backend)
+npm run install:all
 
-# Start the development server
-npm start
+# Run frontend  →  http://localhost:4200
+npm run frontend:start
+
+# Run backend (new terminal)  →  https://localhost:5001/swagger
+npm run backend:start
 ```
 
-Open your browser at **[http://localhost:4200](http://localhost:4200)**
+> Frontend-only (uses mock data, no backend needed):
+> ```bash
+> cd frontend && npm install && npm start
+> ```
+
+> Detailed setup, troubleshooting & env config → **[docs/SETUP.md](./docs/SETUP.md)**
+
+---
+
+## 📦 Key Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run install:all` | Install all dependencies |
+| `npm run frontend:start` | Angular dev server |
+| `npm run frontend:test` | Jasmine + Karma tests |
+| `npm run frontend:lint` | ESLint check |
+| `npm run backend:start` | .NET API server |
+| `npm run backend:test` | xUnit tests |
+| `npm run backend:migrations` | Apply EF Core migrations |
+
+---
+
+## ✨ Highlights
+
+- 🛍️ **Product catalog** — grid/list, real-time filters, sort, search with debounce
+- 🛒 **Slide-out cart drawer** — reactive state via `BehaviorSubject`
+- 👤 **JWT auth** — login / register modals, refresh token rotation
+- 🌗 **Dark / Light mode** — CSS variable theming, persisted to localStorage
+- 🏗️ **Clean Architecture** — Domain → Application → Infrastructure → Presentation
+- ⚡ **SOLID** — all 5 principles applied across Angular shared module
+- 🗂️ **Multi-layer cache** — memory + localStorage + sessionStorage strategy
+- 🎨 **Glassmorphism & micro-animations** — premium mobile-first design
+
+> Module breakdown, auth flow, caching design → **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)**
 
 ---
 
 ## 🐳 Docker
 
-### Option 1 — Development with Docker
-
 ```bash
-# Build and start the development container
-docker-compose up
+# Development
+docker-compose up          # → http://localhost:4200
 
-# App will be available at http://localhost:4200
+# Production (Nginx)
+docker build -t zyro-electric .
+docker run -p 80:80 zyro-electric  # → http://localhost
 ```
 
-### Option 2 — Production Build with Nginx
-
-```bash
-# Build the production image
-docker build -t market-app .
-
-# Run the production container
-docker run -p 80:80 market-app
-
-# App will be available at http://localhost
-```
-
-### Option 3 — Docker Compose (All-in-one)
-
-```bash
-# Production mode
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
-
-# Open http://localhost
-```
+> Full deployment options (Netlify, Docker, cloud) → **[docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)**
 
 ---
 
-## 📜 Available Scripts
+## 📚 Documentation
 
-| Command | Description |
-|---|---|
-| `npm start` | Start development server with auto-open |
-| `npm run build` | Production build → `dist/market/` |
-| `npm run watch` | Development build with file watching |
-| `npm test` | Run unit tests (Karma + Jasmine) |
-| `npm run lint` | Lint TypeScript and templates |
-| `npm run preview` | Serve production build locally |
-
----
-
-## 📁 Project Structure
-
-```
-Market-User/
-├── .github/
-│   ├── workflows/
-│   │   ├── build.yml          # CI: build & test on push/PR
-│   │   └── deploy.yml         # CD: auto-deploy to Netlify
-│   └── ISSUE_TEMPLATE/
-├── src/
-│   ├── app/
-│   │   ├── auth/              # Login & Register components
-│   │   ├── carts/             # Cart drawer, cart page, cart service
-│   │   ├── checkout/          # Checkout form & order placement
-│   │   ├── home/              # Landing page, hero, categories
-│   │   ├── orders/            # Order history & tracking
-│   │   ├── products/          # Product list, detail, filters, services
-│   │   │   ├── components/
-│   │   │   │   ├── all-products/     # Main product grid page
-│   │   │   │   ├── product/          # Product card component
-│   │   │   │   └── products-details/ # Product detail page
-│   │   │   ├── data/                 # Mock product data
-│   │   │   ├── models/               # Product interfaces
-│   │   │   └── services/             # ProductsService
-│   │   └── shared/
-│   │       ├── components/           # Header, Footer, Select
-│   │       ├── data/                 # Shared mock data & constants
-│   │       └── ui/
-│   │           └── components/       # Reusable UI library
-│   │               ├── card/         # Product card UI
-│   │               ├── drawer/       # Slide-out drawer
-│   │               ├── filter-panel/ # Advanced filter sidebar
-│   │               ├── input/        # Form input wrapper
-│   │               ├── not-found/    # 404 page component
-│   │               ├── pagination/   # Page navigation
-│   │               ├── search-bar/   # Header search
-│   │               ├── sort-dropdown/# Custom sort select
-│   │               └── toast/        # Notification toasts
-│   ├── environments/
-│   │   ├── environment.ts            # Dev environment config
-│   │   └── environment.prod.ts       # Production environment config
-│   ├── styles.scss                   # Global design system & utilities
-│   └── scrollbar.scss                # Custom scrollbar styles
-├── docs/                             # Extended documentation
-├── Dockerfile                        # Production multi-stage build
-├── Dockerfile.dev                    # Development container
-├── docker-compose.yml                # Docker Compose config
-├── nginx.conf                        # Nginx config for production
-├── netlify.toml                      # Netlify deployment config
-├── angular.json                      # Angular workspace config
-├── tailwind.config.js                # Tailwind CSS customization
-└── tsconfig.json                     # TypeScript config
-```
-
----
-
-## 🧩 Tech Stack
-
-| Layer | Technology | Version |
-|---|---|---|
-| Framework | Angular | 18.2 |
-| Language | TypeScript | 5.4 |
-| Styling | Tailwind CSS | 3.4 |
-| Icons | Lucide Angular | 0.394 |
-| State | RxJS BehaviorSubject | 7.8 |
-| HTTP | Angular HttpClient | 18.2 |
-| Forms | Angular Reactive Forms | 18.2 |
-| Routing | Angular Router | 18.2 |
-| Build | Angular CLI / Webpack | 18.2 |
-| Server | Nginx (Docker) | 1.27 Alpine |
-| CI/CD | GitHub Actions | - |
-| Hosting | Netlify | - |
-
----
-
-## ⚙️ Environment Variables
-
-Copy `.env.example` to `.env` and configure:
-
-```env
-# API Configuration (when connecting to a real backend)
-API_BASE_URL=https://api.yourmarket.com
-API_VERSION=v1
-
-# Feature Flags
-ENABLE_ANALYTICS=false
-ENABLE_MOCK_DATA=true
-
-# Netlify (for GitHub Actions deployment)
-NETLIFY_AUTH_TOKEN=your_netlify_token
-NETLIFY_SITE_ID=your_site_id
-```
-
-> **Note:** Currently the app runs fully on mock data. No backend required.
-
----
-
-## 🔄 CI / CD Pipeline
-
-### GitHub Actions
-
-| Workflow | Trigger | Steps |
-|---|---|---|
-| **Build & Test** (`build.yml`) | Push/PR to `main`, `develop` | Install → Build → Test → Upload artifacts |
-| **Deploy** (`deploy.yml`) | Push to `main` | Install → Build → Deploy to Netlify |
-
-### Netlify (Direct)
-The app is also connected directly to Netlify for instant deploys on every push to `main`. Configuration in [`netlify.toml`](./netlify.toml):
-
-```toml
-[build]
-  command = "npm run build"
-  publish = "dist/market"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
-
----
-
-## 🐳 Docker Details
-
-### Production Image
-- **Base:** `node:20-alpine` (build stage) + `nginx:1.27-alpine` (serve stage)
-- **Multi-stage build** — final image contains only static assets + Nginx
-- **Image size:** ~25MB (compressed)
-- **Port:** `80`
-
-### Development Image
-- **Base:** `node:20-alpine`
-- **Hot reload** via Angular's `ng serve`
-- **Port:** `4200`
-- **Volume mounts:** `src/` for live editing
+| Doc | What's inside |
+|-----|--------------|
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System diagram, module map, auth flow, CI/CD pipeline |
+| [API.md](./docs/API.md) | All REST endpoints, request/response shapes, JWT config |
+| [SETUP.md](./docs/SETUP.md) | Local install, env config, troubleshooting |
+| [DEPLOYMENT.md](./docs/DEPLOYMENT.md) | Netlify, Docker, pre-deploy checklist |
+| [TESTING.md](./docs/TESTING.md) | Frontend (Jasmine/Karma) + backend (xUnit) guides |
+| [SOLID/OVERVIEW.md](./docs/SOLID/OVERVIEW.md) | How all 5 SOLID principles are applied |
+| [CHANGELOG.md](./CHANGELOG.md) | Version history |
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -m 'feat: add my feature'`
-4. Push to the branch: `git push origin feature/my-feature`
-5. Open a Pull Request
+```bash
+git checkout -b feature/my-feature
+git commit -m 'feat(scope): description'
+git push origin feature/my-feature
+# Open PR → targeting develop
+```
 
-See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for detailed guidelines.
-
----
-
-## 📄 Documentation
-
-| Document | Description |
-|---|---|
-| [Setup Guide](./docs/SETUP.md) | Detailed local setup instructions |
-| [Deployment Guide](./docs/DEPLOYMENT.md) | Netlify, Docker, and manual deployment |
-| [Project Summary](./docs/PROJECT_SUMMARY.md) | Architecture decisions and design patterns |
-| [Contributing](.github/CONTRIBUTING.md) | How to contribute to the project |
+> Branch rules, commit format, PR process → **[.github/CONTRIBUTING.md](.github/CONTRIBUTING.md)**  
+> Workflow details → **[.github/WORKFLOWS.md](.github/WORKFLOWS.md)**
 
 ---
 
 ## 📝 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
+MIT © [we3ds-solution](https://github.com/we3ds-solution) — see [LICENSE](LICENSE)
 
 <div align="center">
-  <sub>Built with ❤️ using Angular 18 + Tailwind CSS</sub>
+  <sub>Built with ❤️ by <a href="https://github.com/we3ds-solution">we3ds-solution</a> · <a href="https://we3ds.com">we3ds.com</a></sub>
 </div>

@@ -1,15 +1,14 @@
 # ⚡ ZYRO - Tech Accessories Platform
-# Docker Production Build (Multi-stage: Node v22.22.3 → Nginx)
-# Build: docker build -t msaid356/zyro-electric:latest .
-# Run:   docker run -p 3030:80 msaid356/zyro-electric:latest
-# Push:  docker push msaid356/zyro-electric:latest
+# Docker Production Build (Multi-stage: Node v22 → Nginx)
+# Build: docker build -t we3ds-solution/zyro-electric:latest .
+# Run:   docker run -p 3030:80 we3ds-solution/zyro-electric:latest
+# Push:  docker push we3ds-solution/zyro-electric:latest
 
-# ── Stage 1: Build Angular App with Node 22.22.3 ───────────────────────────────
-FROM node:22.22.3-alpine AS builder
+# ── Stage 1: Build Angular App with Node 22 ────────────────────────────────────
+FROM node:22-alpine AS builder
 
 LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
 LABEL description="ZYRO - Premium Tech Accessories E-Commerce Platform (Production Build)"
-LABEL version="1.0.0"
 LABEL brand="ZYRO - Tech. Organized. Elevated."
 
 # Set shell for Alpine to enable pipefail
@@ -17,24 +16,23 @@ SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 
 WORKDIR /app
 
-# Copy dependency files
-COPY package.json ./
+# Copy frontend dependency files
+COPY frontend/package.json frontend/package-lock.json ./
 
 # Install ALL dependencies (need devDependencies for build)
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
-# Copy source code
-COPY . .
+# Copy frontend source code
+COPY frontend/ ./
 
 # Build the production bundle (optimized)
 RUN npm run build
 
-# ── Stage 2: Serve with Nginx 1.27-alpine ──────────────────────────────────────
+# ── Stage 2: Serve with Nginx ─────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS production
 
 LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
 LABEL description="ZYRO - Tech Accessories E-Commerce Platform"
-LABEL version="1.0.0"
 
 WORKDIR /etc/nginx
 

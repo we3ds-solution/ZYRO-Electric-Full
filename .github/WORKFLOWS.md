@@ -1,167 +1,133 @@
-# GitHub Workflows - ZYRO-Electric
+# GitHub Workflows — ZYRO Electric
 
-Clear documentation of all workflows and their purposes.
+Documentation for all CI/CD workflows. Maintained by [we3ds-solution](https://github.com/we3ds-solution).
 
-## Workflow Structure
+---
+
+## Workflow Overview
 
 ```
-BUILD WORKFLOWS
-├─ build-app.yml              (Compile Angular application)
-└─ build-docker.yml           (Build Docker image)
-
-VALIDATION WORKFLOWS
-├─ validate-feature.yml       (Feature branch validation)
-└─ validate-bugfix.yml        (Bugfix/hotfix branch validation)
-
-CHECK WORKFLOWS (Quality Assurance)
-├─ check-lint.yml             (ESLint code style)
-├─ check-tests.yml            (Unit tests & coverage)
-├─ check-security.yml         (Security vulnerabilities)
-├─ check-validation.yml       (Configuration validation)
-└─ check-analysis.yml         (Code analysis & types)
-
-PUBLISH & DEPLOY
-├─ publish-packages.yml       (NPM + Docker release)
-└─ deploy-netlify.yml         (Production deployment)
+.github/workflows/
+├── build-app.yml           # Compile Angular application
+├── run-tests.yml           # Run frontend unit tests
+├── coverage.yml            # Coverage reports
+├── security.yml            # Security scanning
+├── validate-branch.yml     # Branch naming enforcement
+├── publish-packages.yml    # NPM + Docker release
+├── auto-version-bump.yml   # Bump package.json version + git tag
+├── auto-release.yml        # Create GitHub release from tag
+└── docs.yml                # Generate Compodoc API documentation
 ```
+
+---
 
 ## Detailed Workflow Guide
 
-### 1. Build Workflows
-
-#### build-app.yml
-- **Triggers:** Push to main/develop/feature/*/bugfix/*, Pull requests
-- **Purpose:** Compile Angular application to production bundle
-- **Steps:** Checkout → Node setup → Install → Build → Verify → Upload artifacts
-- **Outputs:** Build artifacts (5 days retention)
-
-#### build-docker.yml
-- **Triggers:** Push to any branch/PR, Manual trigger
-- **Purpose:** Build Docker image (verification only, no push)
-- **Steps:** Checkout → Buildx setup → Build image locally → Verify
-- **Outputs:** None (build verification only)
+### `build-app.yml` — Build Application
+- **Triggers:** Push to `main`, `develop`, `feature/*`, `bugfix/*`; Pull Requests
+- **Purpose:** Compile Angular 18 application to production bundle; verify build succeeds
+- **Steps:** Checkout → Node 20 setup → `npm ci` → `npm run frontend:build` → Upload artifacts
+- **Artifacts:** Build outputs (5 days retention)
 
 ---
 
-### 2. Validation Workflows
-
-#### validate-feature.yml
-- **Triggers:** Push to feature/*, Pull requests to develop
-- **Purpose:** Validate feature branch naming and build
-- **Rules:** Branch must match `feature/[a-z0-9-]+` pattern
-- **Steps:** Validate name → Build → Upload artifacts
-- **Outputs:** Feature build artifacts (7 days retention)
-
-#### validate-bugfix.yml
-- **Triggers:** Push to bugfix/*, hotfix/*, Pull requests
-- **Purpose:** Validate bugfix/hotfix branch naming and build
-- **Rules:** Branch must match `bugfix/[a-z0-9-]+` or `hotfix/[a-z0-9-]+` pattern
-- **Steps:** Validate name → Build → Verify → Upload artifacts
-- **Outputs:** Bugfix build artifacts (7 days retention)
+### `run-tests.yml` — Unit Tests
+- **Triggers:** Push to all branches; Pull Requests
+- **Purpose:** Run Angular unit tests (Jasmine + Karma) in headless Chrome
+- **Command:** `npm run frontend:test -- --watch=false --browsers=ChromeHeadless`
+- **Outputs:** Test results in CI log
 
 ---
 
-### 3. Check Workflows (Quality Assurance)
-
-#### check-lint.yml
-- **Triggers:** Push to all branches, Pull requests
-- **Purpose:** Validate code style with ESLint
-- **Command:** `npm run lint`
-- **Behavior:** Reports issues (non-blocking)
-- **Files Checked:** All TypeScript/JavaScript files
-
-#### check-tests.yml
-- **Triggers:** Push to all branches, Pull requests
-- **Purpose:** Run unit tests and generate coverage reports
-- **Command:** `npm run test -- --watch=false --code-coverage`
-- **Outputs:** Coverage reports (30 days retention)
-- **Features:** Posts coverage comments on PRs
-
-#### check-security.yml
-- **Triggers:** Push to all branches, Pull requests, Weekly schedule
-- **Purpose:** Security scanning and vulnerability detection
-- **Checks:**
-  - `npm audit` - Dependency vulnerabilities
-  - Secret scanning - Hardcoded secrets (TruffleHog)
-  - CodeQL - Advanced code analysis
-  - Dockerfile scan - Container security (Hadolint)
-
-#### check-validation.yml
-- **Triggers:** Push to all branches, Pull requests
-- **Purpose:** Validate configuration files and structure
-- **Checks:**
-  - package.json syntax
-  - tsconfig.json syntax
-  - angular.json syntax
-  - Dependencies integrity
-  - Dockerfile existence
-  - No .env file committed
-  - No .env in repository
-
-#### check-analysis.yml
-- **Triggers:** Push to all branches, Pull requests
-- **Purpose:** Code quality analysis and type checking
-- **Checks:**
-  - TypeScript type checking (`tsc --noEmit`)
-  - Bundle size analysis
-  - Build verification
-  - Node modules analysis
+### `coverage.yml` — Coverage Report
+- **Triggers:** Push to all branches; Pull Requests
+- **Purpose:** Run tests with code coverage and publish the report
+- **Command:** `npm run frontend:test -- --watch=false --code-coverage`
+- **Outputs:** `coverage/` report artifact (30 days retention)
+- **Features:** Posts coverage summary comment on PRs
 
 ---
 
-### 4. Publish & Deploy
+### `security.yml` — Security Scan
+- **Triggers:** Push to all branches; Pull Requests; Weekly schedule (Mondays 08:00 UTC)
+- **Purpose:** Multi-layer security scanning
+- **Checks:**
+  - `npm audit` — dependency vulnerabilities
+  - TruffleHog — hardcoded secrets detection
+  - Hadolint — Dockerfile linting
 
-#### publish-packages.yml
-- **Triggers:** Push to main, Tag push (v*), Manual trigger
-- **Purpose:** Publish NPM package and Docker image
+---
+
+### `validate-branch.yml` — Branch Name Validation
+- **Triggers:** Push to any branch; Pull Requests
+- **Purpose:** Enforce branch naming convention
+- **Allowed patterns:**
+  - `feature/<slug>` — new features
+  - `bugfix/<slug>` — bug fixes
+  - `hotfix/<slug>` — urgent production fixes
+  - `release/<version>` — release preparation
+  - `chore/<slug>` — maintenance tasks
+  - `main`, `develop` — protected branches
+
+---
+
+### `publish-packages.yml` — Publish Packages
+- **Triggers:** Push to `main`; Tag push (`v*`); Manual trigger
+- **Purpose:** Publish NPM package and Docker image to GHCR
 - **Jobs:**
-  1. **build** - Compile application
-  2. **publish-npm** - Publish to GitHub Packages (@mostafa-said7/zyro-electric)
-  3. **publish-docker** - Push to GHCR (ghcr.io/mostafa-said7/zyro-electric)
-- **Tags Created:**
-  - `latest` - Latest stable version
-  - Version number - Semantic versioning (v1.0.5 → 1.0.5)
-
-#### deploy-netlify.yml
-- **Triggers:** Push to main, Tag push (v*), Manual trigger
-- **Purpose:** Deploy production build to Netlify
-- **Steps:** Checkout → Build → Deploy
-- **Environment Variables Required:**
-  - NETLIFY_AUTH_TOKEN
-  - NETLIFY_SITE_ID
+  1. **build** — Compile application
+  2. **publish-npm** — Publish to GitHub Packages (`@we3ds-solution/zyro-electric`)
+  3. **publish-docker** — Push to GHCR (`ghcr.io/we3ds-solution/zyro-electric`)
+- **Tags created:**
+  - `latest` — latest stable release
+  - Version number from tag (e.g., `v1.0.5` → `1.0.5`)
 
 ---
 
-## Branch Triggers
+### `auto-version-bump.yml` — Auto Version Bump
+- **Triggers:** Push to `main` (conventional commit detected)
+- **Purpose:** Read commit type, bump `package.json` version accordingly, push a git tag
+- **Logic:**
+  - `feat:` → minor bump
+  - `fix:` / `chore:` → patch bump
+  - `BREAKING CHANGE:` → major bump
+
+---
+
+### `auto-release.yml` — Auto GitHub Release
+- **Triggers:** Tag push (`v*`)
+- **Purpose:** Generate GitHub Release with auto-generated changelog from commits since last tag
+- **Outputs:** GitHub Release with changelog, source archives
+
+---
+
+### `docs.yml` — Generate Documentation
+- **Triggers:** Push to `main`
+- **Purpose:** Generate Compodoc API documentation from Angular source
+- **Command:** `npx compodoc -p tsconfig.json -d ../docs`
+- **Outputs:** HTML documentation published to `docs/` or GitHub Pages
+
+---
+
+## Branch Trigger Matrix
 
 | Branch | Triggered Workflows |
-|--------|-------------------|
-| main | build-app, build-docker, check-*, publish-packages, deploy-netlify |
-| develop | build-app, build-docker, check-* |
-| feature/* | validate-feature, build-app, build-docker, check-* |
-| bugfix/* | validate-bugfix, build-app, build-docker, check-* |
-| hotfix/* | validate-bugfix, build-app, build-docker, check-* |
+|--------|---------------------|
+| `main` | build-app, run-tests, coverage, security, validate-branch, publish-packages, auto-version-bump, docs |
+| `develop` | build-app, run-tests, coverage, security, validate-branch |
+| `feature/*` | build-app, run-tests, security, validate-branch |
+| `bugfix/*` | build-app, run-tests, security, validate-branch |
+| `hotfix/*` | build-app, run-tests, security, validate-branch |
+| Tag `v*` | publish-packages, auto-release |
 
 ---
 
-## Pull Request Triggers
+## Pull Request Trigger Matrix
 
-| Target | Triggered Workflows |
-|--------|-------------------|
-| → main | build-app, build-docker, check-*, validate-bugfix |
-| → develop | build-app, build-docker, check-*, validate-feature, validate-bugfix |
-
----
-
-## Naming Convention
-
-All workflows follow clear, direct naming:
-
-- **build-** : Compilation and Docker build
-- **validate-** : Branch validation and structure
-- **check-** : Quality assurance checks
-- **publish-** : Release and packaging
-- **deploy-** : Production deployment
+| PR Target | Triggered Workflows |
+|-----------|---------------------|
+| → `main` | build-app, run-tests, coverage, security, validate-branch |
+| → `develop` | build-app, run-tests, coverage, security, validate-branch |
 
 ---
 
@@ -169,120 +135,82 @@ All workflows follow clear, direct naming:
 
 | Secret | Scope | Used By |
 |--------|-------|---------|
-| GH_PAT | write:packages, read:packages | publish-packages.yml |
-| NETLIFY_AUTH_TOKEN | Netlify | deploy-netlify.yml |
-| NETLIFY_SITE_ID | Netlify | deploy-netlify.yml |
+| `GH_PAT` | `write:packages`, `read:packages` | `publish-packages.yml` |
+| `NETLIFY_AUTH_TOKEN` | Netlify | External deploy (if configured) |
+| `NETLIFY_SITE_ID` | Netlify | External deploy (if configured) |
 
 ---
 
 ## Workflow Execution Flow
 
-### For Feature Branch:
+### Feature Branch Push
 ```
-1. Push to feature/xyz
-2. validate-feature.yml runs (branch name check + build)
-3. build-app.yml runs (main build)
-4. build-docker.yml runs (Docker build)
-5. check-lint.yml runs (linting)
-6. check-tests.yml runs (unit tests)
-7. check-security.yml runs (security scan)
-8. check-validation.yml runs (config validation)
-9. check-analysis.yml runs (code analysis)
+1. Push to feature/my-feature
+2. validate-branch.yml  →  branch name check
+3. build-app.yml        →  Angular build
+4. run-tests.yml        →  unit tests
+5. security.yml         →  security scan
 ```
 
-### For Main Branch:
+### Main Branch Merge
 ```
-1. Push to main (or merge PR)
-2. build-app.yml runs
-3. build-docker.yml runs
-4. All check-*.yml run in parallel
-5. publish-packages.yml runs (on success)
-6. deploy-netlify.yml runs (on success)
+1. Merge PR → main
+2. build-app.yml + run-tests.yml + coverage.yml + security.yml  (parallel)
+3. auto-version-bump.yml  →  bumps version, creates git tag
+4. auto-release.yml       →  creates GitHub Release
+5. publish-packages.yml   →  publishes NPM + Docker
+6. docs.yml               →  regenerates Compodoc docs
 ```
 
-### For Release:
+### Release Tag Push
 ```
-1. Tag push (v1.0.5)
-2. publish-packages.yml runs
-   - Publishes NPM @mostafa-said7/zyro-electric@1.0.5
-   - Pushes Docker ghcr.io/mostafa-said7/zyro-electric:1.0.5
-   - Pushes Docker ghcr.io/mostafa-said7/zyro-electric:latest
-3. deploy-netlify.yml runs
+1. git tag v1.1.0 && git push origin v1.1.0
+2. publish-packages.yml   →  publishes @we3ds-solution/zyro-electric@1.1.0
+                              & ghcr.io/we3ds-solution/zyro-electric:1.1.0
+3. auto-release.yml       →  creates GitHub Release
+```
+
+---
+
+## Status Badges
+
+```markdown
+[![Build](https://github.com/we3ds-solution/ZYRO-Electric/actions/workflows/build-app.yml/badge.svg)](https://github.com/we3ds-solution/ZYRO-Electric/actions)
+[![Tests](https://github.com/we3ds-solution/ZYRO-Electric/actions/workflows/run-tests.yml/badge.svg)](https://github.com/we3ds-solution/ZYRO-Electric/actions)
+[![Security](https://github.com/we3ds-solution/ZYRO-Electric/actions/workflows/security.yml/badge.svg)](https://github.com/we3ds-solution/ZYRO-Electric/actions)
+[![Coverage](https://github.com/we3ds-solution/ZYRO-Electric/actions/workflows/coverage.yml/badge.svg)](https://github.com/we3ds-solution/ZYRO-Electric/actions)
 ```
 
 ---
 
 ## Common Issues & Solutions
 
-### Linting Fails
+### Build Fails
 ```bash
-npm run lint -- --fix
-git add .
-git commit -m "Fix linting issues"
+# Clean install
+cd frontend
+rm -rf node_modules
+npm install
+npm run frontend:build
 ```
 
 ### Tests Fail
 ```bash
-npm run test -- --watch
-# Fix failing tests
+cd frontend
+npm run frontend:test -- --watch
+# Fix failing tests, then re-run
 ```
 
-### Security Warnings
+### Security Warning
 ```bash
+cd frontend
 npm audit
 npm audit fix
 ```
 
-### Validation Errors
-Check `.env` is not committed:
-```bash
-git ls-files --error-unmatch .env
-```
-
-### Docker Build Fails
-Check Dockerfile is valid:
-```bash
-docker build -t test:1.0 .
-```
+### Branch Name Rejected
+Branch must match one of: `feature/*`, `bugfix/*`, `hotfix/*`, `release/*`, `chore/*`, `main`, `develop`.
 
 ---
 
-## Artifact Retention
-
-| Artifact | Retention | Job |
-|----------|-----------|-----|
-| build-* | 5 days | build-app |
-| feature-build-* | 7 days | validate-feature |
-| bugfix-build-* | 7 days | validate-bugfix |
-| coverage-report-* | 30 days | check-tests |
-
----
-
-## Status Badges (for README)
-
-```markdown
-[![Build](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions/workflows/build-app.yml/badge.svg)](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions)
-[![Docker](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions/workflows/build-docker.yml/badge.svg)](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions)
-[![Lint](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions/workflows/check-lint.yml/badge.svg)](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions)
-[![Tests](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions/workflows/check-tests.yml/badge.svg)](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions)
-[![Security](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions/workflows/check-security.yml/badge.svg)](https://github.com/Mostafa-SAID7/ZYRO-Electric/actions)
-```
-
----
-
-## All Workflows at a Glance
-
-| File | Name | Purpose |
-|------|------|---------|
-| build-app.yml | Build Application | Compile Angular app & upload artifacts |
-| build-docker.yml | Build Docker Image | Build container image |
-| validate-branch.yml | Validate Branch Naming | Check feature/bugfix branch names |
-| auto-version-bump.yml | Auto Version Bump & Tag | Bumps package.json & pushes git tag |
-| auto-release.yml | Auto Create Release | Generates GitHub release on tag push |
-| run-tests.yml | Run Unit Tests | Run test suite |
-| deploy-vercel.yml | Deploy to Vercel | Production deployment |
-| publish-packages.yml | Publish Packages | Release NPM + Docker |
-
----
-
-**Total:** 11 workflows with clear, descriptive names. No duplicates. Proper separation by functionality.
+**Total:** 9 workflows — no duplicates, clear separation by purpose.
