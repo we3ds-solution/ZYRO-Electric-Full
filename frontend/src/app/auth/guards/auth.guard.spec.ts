@@ -7,7 +7,7 @@ import { AUTH_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let authServiceSpy: any;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {

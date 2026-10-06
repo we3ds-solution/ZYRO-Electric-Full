@@ -34,7 +34,7 @@ const mockOrder: Order = {
 describe('TrackingComponent', () => {
   let component: TrackingComponent;
   let fixture: ComponentFixture<TrackingComponent>;
-  let orderServiceSpy: jasmine.SpyObj<OrderService>;
+  let orderServiceSpy: any;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
