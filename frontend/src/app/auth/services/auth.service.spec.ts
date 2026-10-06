@@ -2,19 +2,23 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { AUTH_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     TestBed.configureTestingModule({
+      providers: [ AuthService, { provide: AUTH_SERVICE_TOKEN, useExisting: AuthService } ],
       schemas: [ NO_ERRORS_SCHEMA ]});
     service = TestBed.inject(AuthService);
   });
 
   afterEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('should be created', () => {
@@ -49,10 +53,13 @@ describe('AuthService', () => {
       expect(service.isAuthenticated()).toBeTrue();
     }));
 
-    it('should persist auth to localStorage', fakeAsync(() => {
+    it('should persist auth token to storage after login', fakeAsync(() => {
       service.login({ email: 'a@b.com', password: 'x' }).subscribe();
       tick(600);
-      expect(localStorage.getItem('authData')).not.toBeNull();
+      // login without rememberMe defaults to sessionStorage
+      const hasToken = sessionStorage.getItem('auth_token') !== null
+        || localStorage.getItem('auth_token') !== null;
+      expect(hasToken).toBeTrue();
     }));
   });
 

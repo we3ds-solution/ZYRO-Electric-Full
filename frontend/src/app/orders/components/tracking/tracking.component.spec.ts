@@ -1,11 +1,12 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrackingComponent } from './tracking.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderService } from '../../services/order.service';
 import { of, throwError } from 'rxjs';
 import { Order } from '../../models';
+import { ORDER_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
+import { InvoiceGeneratorService } from '../../services/invoice-generator.service';
 
 const mockOrder: Order = {
   id: 'ORD-TEST001',
@@ -34,7 +35,7 @@ const mockOrder: Order = {
 describe('TrackingComponent', () => {
   let component: TrackingComponent;
   let fixture: ComponentFixture<TrackingComponent>;
-  let orderServiceSpy: jasmine.SpyObj<OrderService>;
+  let orderServiceSpy: any;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
@@ -45,8 +46,9 @@ describe('TrackingComponent', () => {
       declarations: [TrackingComponent],
       imports: [RouterTestingModule],
       providers: [
-        { provide: OrderService, useValue: orderServiceSpy },
+        { provide: ORDER_SERVICE_TOKEN, useValue: orderServiceSpy },
         { provide: Router, useValue: routerSpy },
+        { provide: InvoiceGeneratorService, useValue: { generateInvoice: () => {} } },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { paramMap: { get: () => 'ORD-TEST001' } } }
@@ -106,8 +108,8 @@ describe('TrackingComponent', () => {
   });
 
   describe('getStatusIcon()', () => {
-    it('should return "clock" for pending', () => {
-      expect(component.getStatusIcon('pending')).toBe('clock');
+    it('should return "loader-2" for pending', () => {
+      expect(component.getStatusIcon('pending')).toBe('loader-2');
     });
 
     it('should return "truck" for shipped', () => {
@@ -122,8 +124,8 @@ describe('TrackingComponent', () => {
       expect(component.getStatusIcon('cancelled')).toBe('x-circle');
     });
 
-    it('should return "info" for unknown status', () => {
-      expect(component.getStatusIcon('unknown_status')).toBe('info');
+    it('should return "alert-circle" for unknown status', () => {
+      expect(component.getStatusIcon('unknown_status')).toBe('alert-circle');
     });
   });
 

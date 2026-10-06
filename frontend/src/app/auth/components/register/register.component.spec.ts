@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { RegisterComponent } from './register.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../../services/auth.service';
 import { of, throwError } from 'rxjs';
+import { AUTH_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let authServiceSpy: any;
 
   beforeEach(async () => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['register']);
@@ -19,7 +19,7 @@ describe('RegisterComponent', () => {
       imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([{ path: 'products', redirectTo: '' }])],
       providers: [
         FormBuilder,
-        { provide: AuthService, useValue: authServiceSpy }
+        { provide: AUTH_SERVICE_TOKEN, useValue: authServiceSpy }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();

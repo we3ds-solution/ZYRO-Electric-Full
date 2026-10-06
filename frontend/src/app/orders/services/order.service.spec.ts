@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { OrderService } from './order.service';
+import { ORDER_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 import { OrderItem, ShippingAddress, PaymentMethod } from '../models';
 
 describe('OrderService', () => {
@@ -30,13 +31,16 @@ describe('OrderService', () => {
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     TestBed.configureTestingModule({
+      providers: [ OrderService, { provide: ORDER_SERVICE_TOKEN, useExisting: OrderService } ],
       schemas: [ NO_ERRORS_SCHEMA ]});
     service = TestBed.inject(OrderService);
   });
 
   afterEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
   });
 
   it('should be created', () => {

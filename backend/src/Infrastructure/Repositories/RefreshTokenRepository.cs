@@ -1,62 +1,64 @@
 using Domain.Entities;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 /// <summary>
-/// Refresh token repository implementation - data access for RefreshToken entity
+/// RefreshToken repository — data access only.
+/// Does NOT call SaveChangesAsync; callers use IUnitOfWork for that.
 /// </summary>
 public class RefreshTokenRepository : IRefreshTokenRepository
 {
-    private readonly DbContext _context;
+    private readonly AppDbContext _context;
 
-    public RefreshTokenRepository(DbContext context)
+    public RefreshTokenRepository(AppDbContext context)
     {
-        _context = context;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<RefreshToken>()
-            .AsNoTracking()
+        return await _context.RefreshTokens
             .FirstOrDefaultAsync(rt => rt.Token == token, cancellationToken);
     }
 
     public async Task<RefreshToken?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<RefreshToken>()
+        return await _context.RefreshTokens
             .FirstOrDefaultAsync(rt => rt.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<RefreshToken>> GetUserTokensAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<RefreshToken>()
+        return await _context.RefreshTokens
             .Where(rt => rt.UserId == userId)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<RefreshToken>> GetActiveUserTokensAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<RefreshToken>()
+        return await _context.RefreshTokens
             .Where(rt => rt.UserId == userId && !rt.IsRevoked && rt.ExpiresAt > DateTime.UtcNow)
             .ToListAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Stage token for insertion — caller must call IUnitOfWork.SaveChangesAsync().
+    /// </summary>
     public async Task AddAsync(RefreshToken token, CancellationToken cancellationToken = default)
     {
-        await _context.Set<RefreshToken>().AddAsync(token, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.RefreshTokens.AddAsync(token, cancellationToken);
+        // No SaveChanges here — use IUnitOfWork
     }
 
-    public async Task UpdateAsync(RefreshToken token, CancellationToken cancellationToken = default)
-    {
-        _context.Set<RefreshToken>().Update(token);
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-
+    /// <summary>
+    /// Revoke all active tokens for a user and stage the update.
+    /// Caller must call IUnitOfWork.SaveChangesAsync().
+    /// </summary>
     public async Task RevokeAllUserTokensAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var tokens = await _context.Set<RefreshToken>()
+        var tokens = await _context.RefreshTokens
             .Where(rt => rt.UserId == userId && !rt.IsRevoked)
             .ToListAsync(cancellationToken);
 
@@ -64,7 +66,6 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         {
             token.Revoke();
         }
-
-        await _context.SaveChangesAsync(cancellationToken);
+        // No SaveChanges here — use IUnitOfWork
     }
 }

@@ -112,8 +112,6 @@ public class AuthController : ControllerBase
         {
             var response = await _tokenService.RefreshTokenAsync(
                 request.RefreshToken,
-                null!, // User loaded from token
-                Array.Empty<string>(),
                 cancellationToken);
             
             return Ok(response);
@@ -170,19 +168,16 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfile(
-        [FromBody] UserProfileDto profile,
+        [FromBody] UpdateProfileRequest request,
         CancellationToken cancellationToken = default)
     {
         var userId = ClaimsHelper.GetUserId(User);
         if (userId == Guid.Empty)
             return Unauthorized();
 
-        if (profile.Id != userId)
-            return BadRequest(new { message = "Cannot update another user's profile" });
-
         try
         {
-            await _profileService.UpdateProfileAsync(userId, profile, cancellationToken);
+            await _profileService.UpdateProfileAsync(userId, request, cancellationToken);
             return Ok(new { message = "Profile updated successfully" });
         }
         catch (InvalidOperationException ex)

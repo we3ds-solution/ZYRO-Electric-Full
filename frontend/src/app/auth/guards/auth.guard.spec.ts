@@ -1,4 +1,4 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthGuard } from './auth.guard';
@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let authServiceSpy: any;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {

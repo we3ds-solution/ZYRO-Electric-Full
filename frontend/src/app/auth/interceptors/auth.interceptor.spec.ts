@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 describe('AuthInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let authServiceSpy: any;
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {

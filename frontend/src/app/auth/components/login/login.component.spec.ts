@@ -3,14 +3,14 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { LoginComponent } from './login.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { AUTH_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let authServiceSpy: any;
 
   beforeEach(async () => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
@@ -20,7 +20,7 @@ describe('LoginComponent', () => {
       imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([{ path: 'products', redirectTo: '' }])],
       providers: [
         FormBuilder,
-        { provide: AuthService, useValue: authServiceSpy },
+        { provide: AUTH_SERVICE_TOKEN, useValue: authServiceSpy },
         {
           provide: ActivatedRoute,
           useValue: { snapshot: { queryParams: { returnUrl: '/products' } } }

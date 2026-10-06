@@ -3,7 +3,8 @@ using Domain.Entities;
 namespace Infrastructure.Repositories;
 
 /// <summary>
-/// Refresh token repository - single responsibility: RefreshToken data access
+/// RefreshToken repository interface — data access only.
+/// No SaveChangesAsync — use IUnitOfWork from Infrastructure.Persistence.
 /// </summary>
 public interface IRefreshTokenRepository
 {
@@ -12,6 +13,5 @@ public interface IRefreshTokenRepository
     Task<IEnumerable<RefreshToken>> GetUserTokensAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<IEnumerable<RefreshToken>> GetActiveUserTokensAsync(Guid userId, CancellationToken cancellationToken = default);
     Task AddAsync(RefreshToken token, CancellationToken cancellationToken = default);
-    Task UpdateAsync(RefreshToken token, CancellationToken cancellationToken = default);
     Task RevokeAllUserTokensAsync(Guid userId, CancellationToken cancellationToken = default);
 }

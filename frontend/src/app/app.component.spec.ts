@@ -5,10 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { FooterComponent } from './shared/layout/footer/footer.component';
-import { CartsService } from './carts/services/carts.service';
-import { AuthService } from './auth/services/auth.service';
-import { ProductsService } from './products/services/products.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from './shared/interfaces/dependency-injection';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -24,9 +23,19 @@ describe('AppComponent', () => {
         FooterComponent
       ],
       providers: [
-        CartsService,
-        AuthService,
-        ProductsService
+        { provide: CART_SERVICE_TOKEN, useValue: {
+          cartItemCount$: of(0), cartItems$: of([]), cartTotal$: of(0),
+          addToCart: () => of({}), removeFromCart: () => of({}),
+          updateCartItem: () => of({}), clearCart: () => of({})
+        }},
+        { provide: AUTH_SERVICE_TOKEN, useValue: {
+          getCurrentUser: () => null, isAuthenticated: () => false,
+          authState$: of({ isAuthenticated: false, user: null }),
+          login: () => of({}), logout: () => of({}), register: () => of({})
+        }},
+        { provide: PRODUCT_SERVICE_TOKEN, useValue: {
+          getProductById: () => of({}), getProducts: () => of({ items: [], total: 0, page: 1, pages: 1 })
+        }}
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
