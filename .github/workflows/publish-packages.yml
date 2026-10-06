@@ -31,6 +31,8 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: frontend
+        env:
+          NG_DISABLE_VERSION_CHECK: 'true'
 
   publish-npm:
     needs: build
