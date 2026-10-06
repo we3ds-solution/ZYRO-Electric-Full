@@ -42,7 +42,7 @@
     "@angular/forms": "^18.2.0",
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
-    "@angular/router": "^18.2.0",
+    "@angular/router": "^22.2.1",
     "framer-motion": "^13.1.0",
     "jspdf": "^4.2.1",
     "lucide-angular": "^0.468.0",
