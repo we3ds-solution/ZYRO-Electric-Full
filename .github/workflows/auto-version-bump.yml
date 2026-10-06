@@ -135,3 +135,37 @@ jobs:
         run: |
           git tag -a "v${{ steps.new_version.outputs.version }}" -m "Release v${{ steps.new_version.outputs.version }}"
           git push origin "v${{ steps.new_version.outputs.version }}"
+
+      - name: Create GitHub Release
+        if: steps.bump_analysis.outputs.should_bump == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ steps.new_version.outputs.version }}"
+          name: "Release v${{ steps.new_version.outputs.version }}"
+          body: |
+            ## ZYRO Electric Release v${{ steps.new_version.outputs.version }}
+
+            ### Release Info
+            - **Version**: ${{ steps.new_version.outputs.version }}
+            - **Tag**: v${{ steps.new_version.outputs.version }}
+
+            ### Installation
+            ```bash
+            npm install @we3ds-solution/zyro-electric@${{ steps.new_version.outputs.version }}
+            ```
+
+            ### Docker Image
+            ```bash
+            docker pull ghcr.io/we3ds-solution/zyro-electric:${{ steps.new_version.outputs.version }}
+            ```
+
+            ---
+            *Maintained by [we3ds-solution](https://github.com/we3ds-solution)*
+          draft: false
+          prerelease: false
+          files: |
+            frontend/package.json
+            README.md
+            CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
