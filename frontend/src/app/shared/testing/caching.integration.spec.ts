@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { take } from 'rxjs';
 import { CacheService } from '../services/cache.service';
 import { StorageService } from '../services/storage.service';
 import { CookieService } from '../services/cookie.service';
@@ -239,10 +240,19 @@ describe('Multi-Layer Caching Integration Tests', () => {
     });
 
     it('should extend session on activity', () => {
+      // Simulate an aged session that is about to expire
+      const state = sessionService.getSessionState();
+      (sessionService as any).sessionStateSubject.next({
+        ...state,
+        expiresAt: Date.now() + 1000,
+        remainingTime: 1000
+      });
+
       const remainingBefore = sessionService.getRemainingTime();
-      
+      expect(remainingBefore).toBeLessThanOrEqual(1000);
+
       sessionService.extendSession();
-      
+
       const remainingAfter = sessionService.getRemainingTime();
       expect(remainingAfter).toBeGreaterThan(remainingBefore);
     });
@@ -338,7 +348,7 @@ describe('Multi-Layer Caching Integration Tests', () => {
     });
 
     it('should cache cart summary in memory', (done) => {
-      cartsService.cartSummary$.subscribe(summary => {
+      cartsService.cartSummary$.pipe(take(1)).subscribe(summary => {
         expect(summary).toBeTruthy();
         expect(summary.itemCount).toBeDefined();
         expect(summary.total).toBeDefined();
