@@ -1,6 +1,6 @@
 {
   "name": "@we3ds-solution/zyro-electric",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "ZYRO - Tech Accessories E-Commerce Platform",
   "engines": {
     "node": ">=22.0.0",
