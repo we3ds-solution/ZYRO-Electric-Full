@@ -6,8 +6,55 @@ updates:
       interval: weekly
       day: monday
       time: '03:00'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
     reviewers:
       - Mostafa-SAID7
     allow:
       - dependency-type: all
+    groups:
+      angular:
+        patterns:
+          - "@angular/*"
+      commitlint:
+        patterns:
+          - "@commitlint/*"
+          - "commitlint"
+      eslint:
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+      build-tooling:
+        patterns:
+          - "@angular-devkit/*"
+          - "vite"
+          - "rollup"
+          - "webpack"
+          - "esbuild"
+      types:
+        patterns:
+          - "@types/*"
+      testing:
+        patterns:
+          - "jasmine*"
+          - "karma*"
+          - "jest"
+      remaining:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@angular/*"
+          - "@commitlint/*"
+          - "commitlint"
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "@angular-devkit/*"
+          - "vite"
+          - "rollup"
+          - "webpack"
+          - "esbuild"
+          - "@types/*"
+          - "jasmine*"
+          - "karma*"
+          - "jest"
