@@ -21,10 +21,13 @@
   <!-- Preconnect for faster font loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Load Cairo font via link tag (non-blocking, no FOUC) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Prefetch hero banners for faster slide transitions (not LCP, so prefetch not preload) -->
-  <link rel="prefetch" as="image" href="https://haxel.me/cdn/shop/files/IMG_8914.jpg?v=1789668996&width=900">
+  <!-- Preconnect to image CDN: saves DNS+TLS (~300-600ms) before LCP image -->
+  <link rel="preconnect" href="https://haxel.me">
+  <!-- Load Cairo font (only weights used by the app) via link tag (non-blocking, no FOUC) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- LCP hero image: preload at high priority (prefetch would idle-queue it) -->
+  <link rel="preload" as="image" fetchpriority="high" href="https://haxel.me/cdn/shop/files/IMG_8914.jpg?v=1789668996&width=900">
+  <!-- Next slider images, low priority -->
   <link rel="prefetch" as="image" href="https://haxel.me/cdn/shop/files/Haxels_Black_Shorts_Front_Hero_from_Olive_Base.png?v=1789666981&width=900">
   <link rel="prefetch" as="image" href="https://haxel.me/cdn/shop/files/Haxel_Black_on_Black_-_Final_Aligned.png?v=1785074092&width=900">
   <!-- Critical inline CSS + shimmer skeleton -->
