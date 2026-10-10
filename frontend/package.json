@@ -1,6 +1,6 @@
 {
   "name": "@haxel/activewear",
-  "version": "1.0.43",
+  "version": "1.0.44",
   "description": "Haxel - Performance Activewear E-Commerce Platform (Men, Women & Footwear)",
   "engines": {
     "node": ">=22.0.0",
