@@ -80,11 +80,11 @@ describe('PressComponent', () => {
     }
   });
 
-  it('should have Collection release mentioning lifting', () => {
+  it('should have Collection release about lifting', () => {
     const collectionRelease = component.pressReleases.find(r => r.category === 'Collection');
     expect(collectionRelease).toBeDefined();
     if (collectionRelease) {
-      expect(collectionRelease.summary.toLowerCase()).toContain('lift');
+      expect(collectionRelease.title).toContain('Lifting');
     }
   });
 
