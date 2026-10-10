@@ -37,10 +37,10 @@ describe('FooterComponent', () => {
       expect(component.footerLinks.company.length).toBeGreaterThan(0);
     });
 
-    it('should include Branches link in company links', () => {
+    it('should include Stores link in company links', () => {
       const branchesLink = component.footerLinks.company.find(l => l.route === '/branches');
       expect(branchesLink).toBeTruthy();
-      expect(branchesLink?.label).toBe('Our Branches');
+      expect(branchesLink?.label).toBe('Our Stores');
     });
 
     it('should have support links', () => {

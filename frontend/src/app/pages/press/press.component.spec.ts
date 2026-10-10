@@ -54,53 +54,53 @@ describe('PressComponent', () => {
     expect(component.pressReleases.length).toBe(4);
   });
 
-  it('should have press release categories: Launch, Expansion, Funding, Milestone', () => {
+  it('should have press release categories: Drop, Footwear, Collection, Milestone', () => {
     const categories = component.pressReleases.map(r => r.category);
-    expect(categories).toContain('Launch');
-    expect(categories).toContain('Expansion');
-    expect(categories).toContain('Funding');
+    expect(categories).toContain('Drop');
+    expect(categories).toContain('Footwear');
+    expect(categories).toContain('Collection');
     expect(categories).toContain('Milestone');
   });
 
-  it('should have Launch release in August 2026', () => {
-    const launchRelease = component.pressReleases.find(r => r.category === 'Launch');
-    expect(launchRelease).toBeDefined();
-    if (launchRelease) {
-      expect(launchRelease.date).toContain('August');
-      expect(launchRelease.date).toContain('2026');
+  it('should have Drop release in August 2026', () => {
+    const dropRelease = component.pressReleases.find(r => r.category === 'Drop');
+    expect(dropRelease).toBeDefined();
+    if (dropRelease) {
+      expect(dropRelease.date).toContain('August');
+      expect(dropRelease.date).toContain('2026');
     }
   });
 
-  it('should have Expansion release in July 2026', () => {
-    const expansionRelease = component.pressReleases.find(r => r.category === 'Expansion');
-    expect(expansionRelease).toBeDefined();
-    if (expansionRelease) {
-      expect(expansionRelease.date).toContain('July');
-      expect(expansionRelease.date).toContain('2026');
+  it('should have Footwear release in July 2026', () => {
+    const footwearRelease = component.pressReleases.find(r => r.category === 'Footwear');
+    expect(footwearRelease).toBeDefined();
+    if (footwearRelease) {
+      expect(footwearRelease.date).toContain('July');
+      expect(footwearRelease.date).toContain('2026');
     }
   });
 
-  it('should have Funding release mentioning $10M', () => {
-    const fundingRelease = component.pressReleases.find(r => r.category === 'Funding');
-    expect(fundingRelease).toBeDefined();
-    if (fundingRelease) {
-      expect(fundingRelease.summary).toContain('$10M');
+  it('should have Collection release mentioning lifting', () => {
+    const collectionRelease = component.pressReleases.find(r => r.category === 'Collection');
+    expect(collectionRelease).toBeDefined();
+    if (collectionRelease) {
+      expect(collectionRelease.summary.toLowerCase()).toContain('lift');
     }
   });
 
-  it('should have Milestone release mentioning 100,000 customers', () => {
+  it('should have Milestone release mentioning bestsellers', () => {
     const milestoneRelease = component.pressReleases.find(r => r.category === 'Milestone');
     expect(milestoneRelease).toBeDefined();
     if (milestoneRelease) {
-      expect(milestoneRelease.summary).toContain('100,000');
+      expect(milestoneRelease.summary.toLowerCase()).toContain('bestseller');
     }
   });
 
-  it('should have media contact Sarah Johnson with VP Marketing title', () => {
-    const sarahContact = component.mediaContacts.find(c => c.name === 'Sarah Johnson');
-    expect(sarahContact).toBeDefined();
-    if (sarahContact) {
-      expect(sarahContact.title).toContain('VP Marketing');
+  it('should have media contact Haxel Support with Customer Care title', () => {
+    const supportContact = component.mediaContacts.find(c => c.name === 'Haxel Support');
+    expect(supportContact).toBeDefined();
+    if (supportContact) {
+      expect(supportContact.title).toContain('Customer Care');
     }
   });
 
@@ -112,8 +112,8 @@ describe('PressComponent', () => {
 
   it('should have media contact with phone number', () => {
     component.mediaContacts.forEach(contact => {
-      // Phone should have digits or letters (allowing +, -, space for formatting)
-      expect(contact.phone).toMatch(/^[\d+\-\s\w]+$/);
+      // Phone should have digits (allowing +, -, space, parens for formatting)
+      expect(contact.phone).toMatch(/^[\d+\-\s\w()]+$/);
     });
   });
 
@@ -123,10 +123,10 @@ describe('PressComponent', () => {
     });
   });
 
-  it('should have Expansion release mentioning 150+ countries', () => {
-    const expansionRelease = component.pressReleases.find(r => r.category === 'Expansion');
-    if (expansionRelease) {
-      expect(expansionRelease.summary).toContain('150+');
+  it('should have Footwear release mentioning comfort', () => {
+    const footwearRelease = component.pressReleases.find(r => r.category === 'Footwear');
+    if (footwearRelease) {
+      expect(footwearRelease.summary.toLowerCase()).toContain('comfort');
     }
   });
 });

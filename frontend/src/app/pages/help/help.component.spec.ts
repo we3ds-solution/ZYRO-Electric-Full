@@ -56,8 +56,8 @@ describe('HelpComponent', () => {
 
   it('should have 3 FAQ categories: Ordering, Shipping, Returns', () => {
     const categories = component.faqs.map(f => f.category);
-    expect(categories).toContain('Ordering & Purchases');
+    expect(categories).toContain('Ordering & Sizing');
     expect(categories).toContain('Shipping & Delivery');
-    expect(categories).toContain('Returns & Refunds');
+    expect(categories).toContain('Exchanges & Returns');
   });
 });

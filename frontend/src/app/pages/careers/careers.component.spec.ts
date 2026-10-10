@@ -66,19 +66,19 @@ describe('CareersComponent', () => {
     expect(remoteJobs.length).toBeGreaterThan(0);
   });
 
-  it('should have job departments: Engineering, Product, Design, Operations', () => {
+  it('should have job departments: Retail, Operations, Product, Marketing', () => {
     const departments = new Set(component.jobs.map(j => j.department));
-    expect(departments.has('Engineering')).toBeTruthy();
-    expect(departments.has('Product')).toBeTruthy();
-    expect(departments.has('Design')).toBeTruthy();
+    expect(departments.has('Retail')).toBeTruthy();
     expect(departments.has('Operations')).toBeTruthy();
+    expect(departments.has('Product')).toBeTruthy();
+    expect(departments.has('Marketing')).toBeTruthy();
   });
 
-  it('should have benefit titles including Salary, Health Insurance, Learning', () => {
+  it('should have benefit titles including Pay, Gear, Training', () => {
     const titles = component.benefits.map(b => b.title);
-    expect(titles).toContain('Competitive Salary');
-    expect(titles).toContain('Health Insurance');
-    expect(titles).toContain('Learning & Development');
+    expect(titles).toContain('Competitive Pay');
+    expect(titles).toContain('Haxel Gear');
+    expect(titles).toContain('Training Support');
   });
 
   it('should have unique job IDs', () => {
