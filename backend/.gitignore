@@ -1,0 +1,27 @@
+﻿# .NET build output
+bin/
+obj/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+
+# User-specific files
+*.user
+*.suo
+
+# Test results
+TestResults/
+*.trx
+
+# Environment / secrets
+appsettings.*.json
+!appsettings.json
+!appsettings.auth.example.json
+
+# IDE
+.vs/
+.vscode/
+.idea/
+.DS_Store

@@ -1,0 +1,102 @@
+<div class="min-h-screen bg-background text-foreground">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 pt-6">
+    <!-- Breadcrumb (Haxel: Home / Shop / Collection) -->
+    <nav class="flex items-center justify-center gap-1.5 text-xs font-semibold text-muted-foreground mb-3" aria-label="Breadcrumb">
+      <a routerLink="/" class="hover:text-foreground transition-colors">Home</a>
+      <span>/</span>
+      <a routerLink="/products" class="hover:text-foreground transition-colors">Shop</a>
+      <span>/</span>
+      <span class="text-foreground font-bold">{{ activeCategoryName }}</span>
+    </nav>
+
+    <!-- Collection title -->
+    <h1 class="text-4xl md:text-5xl font-black text-center tracking-tight mb-2">{{ activeCategoryName }}</h1>
+    <p class="text-center text-sm text-muted-foreground font-semibold mb-6">{{ totalProducts }} products</p>
+
+    <!-- Toolbar -->
+    <div class="flex items-center justify-between gap-3 py-3 border-y border-border/70 sticky top-16 z-20 bg-background/95 backdrop-blur">
+      <button
+        (click)="showFilters = !showFilters"
+        class="inline-flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full border border-border hover:bg-secondary transition-colors">
+        <lucide-icon name="filter" class="w-4 h-4"></lucide-icon>
+        Filter and sort
+      </button>
+      <span class="hidden sm:block text-xs font-semibold text-muted-foreground">{{ totalProducts }} products</span>
+      <app-ui-sort-dropdown
+        label="Sort by"
+        [options]="sortOptions"
+        [(selectedSort)]="sortBy"
+        (sortChange)="onSortChange($event)">
+      </app-ui-sort-dropdown>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 md:px-6 py-8">
+    <div class="flex gap-8 items-start">
+      <!-- Filters (collapsible, Haxel drawer-style on mobile) -->
+      @if (showFilters) {
+        <div class="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-32">
+          <div class="bg-card border border-border rounded-3xl shadow-lg overflow-hidden">
+            <app-ui-filter-panel
+              [filterGroups]="filterGroups"
+              (filterChange)="onFilterChange($event)"
+              (panelReset)="resetFilters()">
+            </app-ui-filter-panel>
+          </div>
+        </div>
+      }
+
+      <!-- Products Grid -->
+      <div class="flex-1 min-w-0">
+        <!-- Loading -->
+        @if (isLoading) {
+          <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+            @for (i of [1,2,3,4,5,6,7,8]; track i) {
+              <app-ui-skeleton></app-ui-skeleton>
+            }
+          </div>
+        }
+
+        <!-- Grid -->
+        @if (!isLoading && products.length > 0) {
+          <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+            @for (product of products; track product) {
+              <app-product
+                [product]="product"
+                (addToCart)="addToCart($event)">
+              </app-product>
+            }
+          </div>
+        }
+
+        <!-- No Products -->
+        @if (!isLoading && products.length === 0) {
+          <div class="text-center py-16">
+            <lucide-icon name="inbox" class="w-16 h-16 text-muted-foreground mx-auto mb-4"></lucide-icon>
+            <h3 class="text-lg font-bold mb-2">No products found</h3>
+            <p class="text-muted-foreground mb-6">Try adjusting your filters</p>
+            <button
+              (click)="resetFilters()"
+              class="btn-primary px-6 py-2.5 rounded-full inline-flex items-center gap-2 text-sm font-bold">
+              <lucide-icon name="rotate-ccw" class="w-4 h-4"></lucide-icon>
+              Clear all
+            </button>
+          </div>
+        }
+
+        <!-- Pagination -->
+        @if (!isLoading && totalPages > 1) {
+          <app-ui-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            [totalItems]="totalProducts"
+            (pageChange)="onPageChange($event)">
+          </app-ui-pagination>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <app-ui-toast #toast></app-ui-toast>
+</div>

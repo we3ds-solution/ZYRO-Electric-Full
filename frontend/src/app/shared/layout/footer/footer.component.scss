@@ -1,0 +1,12 @@
+// Footer styles - minimal, using Tailwind for most styling
+// Only custom styles that can't be achieved with Tailwind
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+a {
+  cursor: pointer;
+  user-select: none;
+}

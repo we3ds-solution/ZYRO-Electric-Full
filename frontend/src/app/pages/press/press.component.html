@@ -1,0 +1,132 @@
+<!-- Hero -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Press Room</h1>
+    <p class="text-lg text-muted-foreground">Latest news, press releases, and media resources about Haxel.</p>
+  </div>
+</section>
+
+<!-- Press Releases -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-12">Latest Press Releases</h2>
+
+    <div class="space-y-6">
+      @for (release of pressReleases; track release) {
+        <div class="glass-card p-8 rounded-lg hover:border-accent transition-colors">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+            <div>
+              <span class="badge-accent mb-3 inline-block">{{ release.category }}</span>
+              <h3 class="text-2xl font-bold text-accent">{{ release.title }}</h3>
+            </div>
+            <p class="text-sm text-muted-foreground whitespace-nowrap">{{ release.date }}</p>
+          </div>
+          <p class="text-muted-foreground">{{ release.summary }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Media Resources -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-12">Media Resources</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="glass-card p-8 rounded-lg border border-border">
+        <h3 class="text-xl font-bold text-accent mb-4">Brand Assets</h3>
+        <ul class="space-y-3 text-muted-foreground">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Logo Files (PNG, SVG)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.3A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path>
+            </svg>
+            <span>Brand Guidelines</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Product Screenshots</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.3A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Fact Sheet</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="glass-card p-8 rounded-lg border border-border">
+        <h3 class="text-xl font-bold text-accent mb-4">Company Information</h3>
+        <ul class="space-y-3 text-muted-foreground">
+          <li>
+            <p class="text-sm font-semibold text-foreground">Company Name</p>
+            <p>Haxel, Inc. (Haxel)</p>
+          </li>
+          <li>
+            <p class="text-sm font-semibold text-foreground">Founded</p>
+            <p>2024</p>
+          </li>
+          <li>
+            <p class="text-sm font-semibold text-foreground">Headquarters</p>
+            <p>San Francisco, California</p>
+          </li>
+          <li>
+            <p class="text-sm font-semibold text-foreground">Employees</p>
+            <p>50+ team members</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Media Contacts -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-12">Media Contacts</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (contact of mediaContacts; track contact) {
+        <div class="glass-card p-8 rounded-lg border border-border">
+          <p class="text-lg font-bold text-accent mb-2">{{ contact.name }}</p>
+          <p class="text-sm text-muted-foreground mb-4">{{ contact.title }}</p>
+          <div class="space-y-3">
+            <a [href]="'mailto:' + contact.email" class="flex items-center gap-2 text-accent hover:text-primary transition-colors">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+              </svg>
+              {{ contact.email }}
+            </a>
+            <a [href]="'tel:' + contact.phone" class="flex items-center gap-2 text-accent hover:text-primary transition-colors">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773c.346.662.75 1.32 1.206 1.93l1.378-1.378a1 1 0 011.414 0l3.536 3.536a1 1 0 010 1.414l-1.378 1.378c.61.456 1.268.86 1.93 1.206l.773-1.548a1 1 0 011.06-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2.153a1 1 0 01-.986-.836l-.74-4.435a1 1 0 01.54-1.06l1.548-.773c-.346-.662-.75-1.32-1.206-1.93l-1.378 1.378a1 1 0 01-1.414 0l-3.536-3.536a1 1 0 010-1.414l1.378-1.378c-.61-.456-1.268-.86-1.93-1.206l-.773 1.548a1 1 0 01-1.06.54l-4.435-.74A1 1 0 012 4.153V3z"></path>
+              </svg>
+              {{ contact.phone }}
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+      <h2 class="text-2xl font-bold text-accent mb-4">Get in Touch</h2>
+      <p class="text-muted-foreground mb-6">Have media inquiries? Contact our press team directly.</p>
+      <a routerLink="/contact" class="btn-primary inline-block">Contact Us</a>
+    </div>
+  </div>
+</section>

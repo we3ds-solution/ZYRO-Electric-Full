@@ -1,0 +1,9 @@
+/* Spinner component - uses lds-grid animation from src/styles.scss */
+/* No custom styles - all handled by main stylesheet */
+
+.lds-grid {
+  display: inline-flex;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}

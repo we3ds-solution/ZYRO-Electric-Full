@@ -1,0 +1,74 @@
+<div
+  tabindex="0"
+  (click)="viewDetails()"
+  (keyup.enter)="viewDetails()"
+  class="group cursor-pointer">
+  <div class="bg-card rounded-3xl overflow-hidden border border-border/50 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full">
+    <!-- Image -->
+    <div class="relative aspect-[3/4] overflow-hidden bg-muted">
+      @if (product.image && !imgError) {
+        <img
+          [src]="product.image"
+          [alt]="product.title"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+          (error)="imgError = true">
+      }
+      @if (!product.image || imgError) {
+        <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-muted to-secondary gap-2">
+          <lucide-icon name="image" class="w-12 h-12 text-muted-foreground opacity-40"></lucide-icon>
+          <span class="text-xs text-muted-foreground">No image</span>
+        </div>
+      }
+
+      <!-- Save / Sold out badge -->
+      @if (product.stock === 0) {
+        <span class="absolute top-3 left-3 bg-foreground text-background px-2.5 py-1 rounded-lg text-[10px] font-black tracking-wider uppercase shadow-md">
+          Sold out
+        </span>
+      } @else if (product.discount) {
+        <span class="absolute top-3 left-3 bg-red-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-black tracking-wider uppercase shadow-md">
+          Save {{ product.discount }}%
+        </span>
+      }
+
+      <!-- Hover quick add -->
+      @if (product.stock > 0) {
+        <button
+          (click)="addCart(); $event.stopPropagation()"
+          class="absolute bottom-3 left-3 right-3 bg-card/95 backdrop-blur-md text-foreground py-2.5 rounded-xl opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 text-xs font-black uppercase tracking-wider border border-border/50 hover:bg-accent hover:text-accent-foreground hover:border-accent">
+          Quick Add
+        </button>
+      }
+      @if (product.stock === 0) {
+        <div class="absolute inset-0 bg-black/45 flex items-center justify-center">
+          <span class="text-white font-black text-xs tracking-widest uppercase bg-red-500/90 px-4 py-2 rounded-xl">Out of Stock</span>
+        </div>
+      }
+    </div>
+
+    <!-- Info -->
+    <div class="p-3.5 space-y-2 flex-1 flex flex-col">
+      <!-- Sizes -->
+      <div class="flex flex-wrap gap-1">
+        @for (size of sizesFor(); track size) {
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-secondary text-muted-foreground">{{ size }}</span>
+        }
+      </div>
+      <h3 class="text-[13px] font-bold line-clamp-2 leading-snug">{{ product.title }}</h3>
+      <!-- Rating -->
+      <div class="flex items-center gap-1">
+        <lucide-icon name="star" class="w-3.5 h-3.5 fill-yellow-500 text-yellow-500"></lucide-icon>
+        <span class="text-xs font-bold">{{ product.rating?.average || 0 }}</span>
+        <span class="text-[11px] text-muted-foreground font-semibold">({{ (product?.rating?.count || 0) | number }})</span>
+      </div>
+      <!-- Price -->
+      <div class="flex items-baseline gap-2 pt-1 mt-auto">
+        @if (product.originalPrice) {
+          <span class="text-xs text-muted-foreground font-semibold line-through">LE {{ product.originalPrice | number:'1.0-0' }}</span>
+        }
+        <span class="text-base font-black text-accent">LE {{ product.price | number:'1.0-0' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

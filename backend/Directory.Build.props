@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Disable warning for missing XML comments (CS1591) globally across all backend projects -->
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+</Project>

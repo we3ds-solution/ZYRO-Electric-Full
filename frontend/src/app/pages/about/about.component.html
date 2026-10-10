@@ -1,0 +1,142 @@
+<!-- Hero Section -->
+<section class="py-20 md:py-32">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <div class="text-center">
+      <h1 class="text-hero-xl gradient-text mb-6">About Haxel</h1>
+      <p class="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+        Performance activewear proudly 100% local — for running, lifting, low-impact and everyday lifestyle.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-section-xl mb-6">Our Mission</h2>
+        <p class="text-lg text-muted-foreground mb-6 leading-relaxed">
+          At Haxel, we believe movement should feel good. Our mission is to design performance essentials — from Flowform leggings to Haxel 4 footwear — that keep up with you from training sessions to everything after.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-accent text-2xl">✓</span>
+            <p class="text-foreground"><strong>Quality First:</strong> Every fit tested for training</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-accent text-2xl">✓</span>
+            <p class="text-foreground"><strong>Customer Centric:</strong> Sun–Thu support & easy returns</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-accent text-2xl">✓</span>
+            <p class="text-foreground"><strong>100% Local:</strong> Designed & made in Egypt</p>
+          </div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="bg-card border border-border rounded-2xl p-8 accent-glow">
+          <div class="text-6xl mb-4">🏋️</div>
+          <h3 class="text-2xl font-bold text-accent mb-4">Proudly 100% Local</h3>
+          <p class="text-muted-foreground mb-6">
+            From a simple idea that Egypt deserves world-class activewear, Haxel was born — built with our local training community.
+          </p>
+          <p class="text-sm text-muted-foreground">
+            Today, we serve athletes across Egypt with Men, Women & Footwear collections rated 4.78★.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Our Values</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (value of values; track value) {
+        <div class="glass-card p-8 rounded-xl hover:border-accent transition-colors">
+          <div class="text-5xl mb-4">{{ value.icon }}</div>
+          <h3 class="text-xl font-bold text-accent mb-3">{{ value.title }}</h3>
+          <p class="text-muted-foreground">{{ value.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">By The Numbers</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      @for (stat of stats; track stat) {
+        <div class="text-center">
+          <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">
+            {{ stat.value }}
+          </div>
+          <p class="text-muted-foreground">{{ stat.label }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">What Our Customers Say</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      @for (testimonial of testimonials; track testimonial) {
+        <div class="glass-card p-8 rounded-xl">
+          <div class="flex gap-1 mb-4">
+            @for (i of [1,2,3,4,5]; track i) {
+              <span class="text-accent text-lg">⭐</span>
+            }
+          </div>
+          <p class="text-muted-foreground mb-6 italic">
+            "{{ testimonial.text }}"
+          </p>
+          <p class="font-semibold text-foreground">— {{ testimonial.name }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 md:p-16 rounded-2xl text-center accent-glow">
+      <h2 class="text-section-xl mb-6">Ready to Move in Haxel?</h2>
+      <p class="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+        Explore Men, Women & Footwear — running, lifting, low-impact and lifestyle.
+      </p>
+      <button class="btn-primary text-lg px-8 py-3">
+        Shop Now
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Info -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Learn More</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <a routerLink="/help" class="glass-card p-8 rounded-xl hover:border-accent transition-all hover:translate-y-[-4px] cursor-pointer">
+        <h3 class="text-xl font-bold text-accent mb-3">Help Center</h3>
+        <p class="text-muted-foreground">Find answers to common questions and get support.</p>
+      </a>
+      <a routerLink="/contact" class="glass-card p-8 rounded-xl hover:border-accent transition-all hover:translate-y-[-4px] cursor-pointer">
+        <h3 class="text-xl font-bold text-accent mb-3">Contact Us</h3>
+        <p class="text-muted-foreground">Get in touch with our support team.</p>
+      </a>
+      <a routerLink="/careers" class="glass-card p-8 rounded-xl hover:border-accent transition-all hover:translate-y-[-4px] cursor-pointer">
+        <h3 class="text-xl font-bold text-accent mb-3">Careers</h3>
+        <p class="text-muted-foreground">Join our growing team and make an impact.</p>
+      </a>
+    </div>
+  </div>
+</section>

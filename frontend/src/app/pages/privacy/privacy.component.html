@@ -1,0 +1,82 @@
+<!-- Hero Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Privacy Policy</h1>
+    <p class="text-lg text-muted-foreground">
+      Last Updated: {{ lastUpdated }}<br>
+      Effective Date: {{ effectiveDate }}
+    </p>
+  </div>
+</section>
+
+<!-- Introduction -->
+<section class="py-12 md:py-16">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card p-8 rounded-lg border border-border">
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        Haxel ("Company," "we," "us," or "our") operates the Haxel e-commerce platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our platform. Please read this carefully and contact us if you have questions.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Sections -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="space-y-12">
+      @for (section of sections; track section; let i = $index) {
+        <div class="scroll-mt-20">
+          <h2 class="text-3xl font-bold text-accent mb-6">{{ i + 1 }}. {{ section.title }}</h2>
+          <div class="glass-card p-8 rounded-lg border border-border">
+            <ul class="space-y-4">
+              @for (item of section.content; track item) {
+                <li class="flex gap-3">
+                  <svg class="w-6 h-6 text-accent flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="text-muted-foreground">{{ item }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+      <h2 class="text-2xl font-bold text-accent mb-4">Privacy Questions?</h2>
+      <p class="text-muted-foreground mb-6">
+        Contact our Privacy Team for any concerns or requests.
+      </p>
+      <a routerLink="/contact" class="btn-primary inline-block">
+        Contact Us
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Related Links -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Related Pages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a routerLink="/terms" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Terms of Service</h3>
+        <p class="text-sm text-muted-foreground">Read our complete terms and conditions.</p>
+      </a>
+      <a routerLink="/cookies" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Cookie Policy</h3>
+        <p class="text-sm text-muted-foreground">How we use cookies and tracking technologies.</p>
+      </a>
+      <a routerLink="/contact" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Contact Us</h3>
+        <p class="text-sm text-muted-foreground">Get in touch with our team.</p>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,122 @@
+<!-- Hero Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Cookie Policy</h1>
+    <p class="text-lg text-muted-foreground">Learn how we use cookies and tracking technologies to enhance your experience.</p>
+  </div>
+</section>
+
+<!-- What Are Cookies -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-8">What Are Cookies?</h2>
+    <div class="glass-card p-8 rounded-lg border border-border">
+      <p class="text-muted-foreground leading-relaxed mb-6">
+        Cookies are small text files stored on your device when you visit our platform. They contain information about your browsing activity and preferences, helping us enhance your experience and understand how you use our site.
+      </p>
+      <div class="bg-secondary p-6 rounded-lg">
+        <p class="text-sm text-muted-foreground">
+          <strong class="text-accent">Note:</strong> You cannot disable essential cookies—the platform won't function without them. You can manage non-essential cookies through your preferences.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cookie Types -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-12">Types of Cookies We Use</h2>
+
+    <div class="space-y-6">
+      @for (cookie of cookieTypes; track cookie) {
+        <div class="glass-card p-8 rounded-lg hover:border-accent transition-colors">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Cookie Type</p>
+              <h3 class="text-xl font-bold text-accent">{{ cookie.name }}</h3>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Duration</p>
+              <p class="font-semibold text-foreground">{{ cookie.duration }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Purpose</p>
+              <p class="text-foreground">{{ cookie.purpose }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Managing Cookies -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-12">Managing Your Cookies</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="glass-card p-8 rounded-lg border border-border">
+        <h3 class="text-lg font-bold text-accent mb-4">Cookie Banner</h3>
+        <p class="text-muted-foreground mb-4">When you first visit, a banner appears explaining our cookie use.</p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>✓ Accept All - Allow all cookies</li>
+          <li>✓ Reject All - Disable non-essential cookies</li>
+          <li>✓ Customize - Choose which cookies to accept</li>
+        </ul>
+      </div>
+
+      <div class="glass-card p-8 rounded-lg border border-border">
+        <h3 class="text-lg font-bold text-accent mb-4">Browser Controls</h3>
+        <p class="text-muted-foreground mb-4">Control cookies through your browser settings:</p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>Chrome: Settings → Privacy → Cookies</li>
+          <li>Firefox: Preferences → Privacy → Cookies</li>
+          <li>Safari: Preferences → Privacy → Cookies</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Third-Party Services -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-8">Third-Party Cookies</h2>
+
+    <div class="glass-card p-8 rounded-lg border border-border">
+      <p class="text-muted-foreground mb-6">We use services that set their own cookies:</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-secondary p-4 rounded">
+          <p class="font-semibold text-accent mb-2">Google Analytics</p>
+          <p class="text-sm text-muted-foreground">Understanding user behavior and traffic</p>
+        </div>
+        <div class="bg-secondary p-4 rounded">
+          <p class="font-semibold text-accent mb-2">Stripe</p>
+          <p class="text-sm text-muted-foreground">Payment processing and security</p>
+        </div>
+        <div class="bg-secondary p-4 rounded">
+          <p class="font-semibold text-accent mb-2">Facebook Pixel</p>
+          <p class="text-sm text-muted-foreground">Ads and conversion tracking</p>
+        </div>
+        <div class="bg-secondary p-4 rounded">
+          <p class="font-semibold text-accent mb-2">Vercel Analytics</p>
+          <p class="text-sm text-muted-foreground">Site performance monitoring</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+      <h2 class="text-2xl font-bold text-accent mb-4">Cookie Questions?</h2>
+      <p class="text-muted-foreground mb-6">We're happy to help explain our cookie practices.</p>
+      <a routerLink="/contact" class="btn-primary inline-block">Get in Touch</a>
+    </div>
+  </div>
+</section>

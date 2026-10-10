@@ -1,0 +1,116 @@
+<!-- Hero Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Help Center</h1>
+    <p class="text-xl text-muted-foreground">Find answers to common questions or get in touch with our support team.</p>
+  </div>
+</section>
+
+<!-- Search Section -->
+<section class="py-12 md:py-16">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="relative mb-8">
+      <input
+        type="text"
+        placeholder="Search for help topics..."
+        class="form-input w-full pl-12 text-lg"
+        >
+        <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-24">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+      <div class="space-y-6">
+        @for (faqSection of faqs; track faqSection) {
+          <div>
+            <h2 class="text-2xl font-bold text-accent mb-6">{{ faqSection.category }}</h2>
+            <div class="space-y-4 mb-12">
+              @for (faq of faqSection.items; track faq; let i = $index) {
+                <div
+                  class="glass-card rounded-lg overflow-hidden border border-border"
+                  >
+                  <button
+                    (click)="expandedFAQ = expandedFAQ === (faqSection.category + i) ? null : (faqSection.category + i)"
+                    class="w-full p-6 flex items-center justify-between hover:bg-secondary transition-colors"
+                    >
+                    <span class="text-left font-semibold text-foreground pr-4">
+                      {{ faq.question }}
+                    </span>
+                    <svg
+                      class="w-6 h-6 text-accent flex-shrink-0 transition-transform"
+                      [class.transform]="expandedFAQ === (faqSection.category + i)"
+                      [class.rotate-180]="expandedFAQ === (faqSection.category + i)"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                  </button>
+                  @if (expandedFAQ === (faqSection.category + i)) {
+                    <div
+                      class="px-6 pb-6 pt-0 border-t border-border"
+                      >
+                      <p class="text-muted-foreground leading-relaxed">
+                        {{ faq.answer }}
+                      </p>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="py-16 md:py-24">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+      <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+        <h2 class="text-section-xl mb-6">Didn't find what you're looking for?</h2>
+        <p class="text-lg text-muted-foreground mb-8">
+          Our support team is here to help. Get in touch with us anytime.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button class="btn-primary px-8 py-3">
+            Contact Support
+          </button>
+          <button class="btn-outline px-8 py-3">
+            Live Chat
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="py-16 md:py-24">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+      <h2 class="text-section-xl text-center mb-12">Popular Topics</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a routerLink="/shipping" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer group">
+          <h3 class="font-bold text-lg text-accent mb-2 group-hover:text-primary transition-colors">Shipping Info</h3>
+          <p class="text-sm text-muted-foreground">Learn about our shipping options and delivery times.</p>
+        </a>
+        <a routerLink="/returns" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer group">
+          <h3 class="font-bold text-lg text-accent mb-2 group-hover:text-primary transition-colors">Return Policy</h3>
+          <p class="text-sm text-muted-foreground">Easy 30-day returns and refunds guaranteed.</p>
+        </a>
+        <a routerLink="/privacy" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer group">
+          <h3 class="font-bold text-lg text-accent mb-2 group-hover:text-primary transition-colors">Privacy Policy</h3>
+          <p class="text-sm text-muted-foreground">How we protect and use your data.</p>
+        </a>
+        <a routerLink="/terms" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer group">
+          <h3 class="font-bold text-lg text-accent mb-2 group-hover:text-primary transition-colors">Terms of Service</h3>
+          <p class="text-sm text-muted-foreground">Read our complete terms and conditions.</p>
+        </a>
+      </div>
+    </div>
+  </section>

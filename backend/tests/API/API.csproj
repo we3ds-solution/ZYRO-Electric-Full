@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Common/Common.csproj" />
+    <ProjectReference Include="../../src/Presentation/Presentation.csproj" />
+    <ProjectReference Include="../../src/Infrastructure/Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Testing Framework -->
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    
+    <!-- API Testing -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.0" />
+    
+    <!-- Assertions & Mocking -->
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    
+    <!-- Database Testing -->
+    <PackageReference Include="Testcontainers" Version="3.7.0" />
+    <PackageReference Include="Testcontainers.MsSql" Version="3.7.0" />
+    
+    <!-- HTTP Client Testing -->
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+    
+    <!-- Fixtures & Builders -->
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
+    <PackageReference Include="AutoFixture.Xunit2" Version="4.18.1" />
+    <PackageReference Include="Bogus" Version="35.3.0" />
+    
+    <!-- Code Coverage -->
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

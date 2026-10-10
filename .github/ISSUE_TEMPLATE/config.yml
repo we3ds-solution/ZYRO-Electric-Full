@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/Mostafa-SAID7/ZYRO-Electric/blob/main/README.md
+    about: Read the project documentation and setup guide
+  
+  - name: 💬 Discussions
+    url: https://github.com/Mostafa-SAID7/ZYRO-Electric/discussions
+    about: Ask questions or start a discussion with the community
+  
+  - name: 🐛 Report Security Issue
+    url: https://github.com/Mostafa-SAID7/ZYRO-Electric/security/advisories/new
+    about: Report security vulnerabilities privately
+  
+  - name: 📝 Contributing Guide
+    url: https://github.com/Mostafa-SAID7/ZYRO-Electric/blob/main/CONTRIBUTING.md
+    about: Learn how to contribute to this project

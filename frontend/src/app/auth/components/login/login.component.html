@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <app-ui-card padding="lg">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold gradient-text mb-2">Welcome Back</h1>
+        <p class="text-muted-foreground">Sign in to your account</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Email -->
+        <div>
+          <label for="login-email" class="section-label">Email</label>
+          <input
+            id="login-email"
+            type="email"
+            formControlName="email"
+            placeholder="you@example.com"
+            class="form-input w-full mt-2"
+            [class.error]="isFieldInvalid('email')">
+            @if (isFieldInvalid('email')) {
+              <span class="text-xs text-red-500">
+                Please enter a valid email
+              </span>
+            }
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label for="login-password" class="section-label">Password</label>
+            <input
+              id="login-password"
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              class="form-input w-full mt-2"
+              [class.error]="isFieldInvalid('password')">
+              @if (isFieldInvalid('password')) {
+                <span class="text-xs text-red-500">
+                  Password is required
+                </span>
+              }
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="remember"
+                formControlName="rememberMe"
+                class="w-4 h-4 rounded">
+                <label for="remember" class="text-sm text-muted-foreground cursor-pointer">
+                  Remember me
+                </label>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                [disabled]="!loginForm.valid || isLoading"
+                class="btn-primary w-full py-2 flex items-center justify-center gap-2">
+                @if (!isLoading) {
+                  <lucide-icon name="log-in" class="w-4 h-4"></lucide-icon>
+                }
+                @if (isLoading) {
+                  <span>Signing in...</span>
+                }
+                @if (!isLoading) {
+                  <span>Sign In</span>
+                }
+              </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-4 my-6">
+              <div class="flex-1 h-px bg-border"></div>
+              <span class="text-xs text-muted-foreground">or</span>
+              <div class="flex-1 h-px bg-border"></div>
+            </div>
+
+            <!-- Register Link -->
+            <div class="text-center">
+              <p class="text-muted-foreground mb-4">
+                Don't have an account?
+                <a routerLink="/auth/register" class="text-accent font-semibold hover:underline">
+                  Sign up here
+                </a>
+              </p>
+            </div>
+          </app-ui-card>
+
+          <!-- Demo Credentials -->
+          <div class="mt-6 card glass-card p-4 text-xs text-muted-foreground">
+            <p class="font-semibold mb-2">Demo Credentials:</p>
+            <p>Email: demo&#64;haxel.me</p>
+            <p>Password: demo123</p>
+          </div>
+        </div>
+
+        <!-- Toast -->
+        <app-ui-toast #toast></app-ui-toast>
+      </div>

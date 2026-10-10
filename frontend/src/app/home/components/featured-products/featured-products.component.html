@@ -1,0 +1,77 @@
+<section class="max-w-7xl mx-auto px-4 md:px-6 py-14">
+  <div class="space-y-8">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-center md:text-left">
+        <h2 class="text-3xl md:text-4xl font-black mb-2">{{ title }}</h2>
+        <p class="text-muted-foreground font-medium">{{ subtitle }}</p>
+      </div>
+      <button
+        (click)="goToProducts()"
+        class="btn-outline rounded-full px-6 py-2.5 text-sm font-bold flex items-center gap-2 group flex-shrink-0">
+        Shop All
+        <lucide-icon name="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Product rail -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
+      @for (product of featuredProducts; track product) {
+        <div
+          tabindex="0"
+          (click)="goToProduct(product.id)"
+          (keyup.enter)="goToProduct(product.id)"
+          class="group cursor-pointer">
+          <div class="bg-card rounded-3xl overflow-hidden border border-border/50 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full">
+            <!-- Product Image -->
+            <div class="relative aspect-[3/4] overflow-hidden bg-muted">
+              @if (!product.hasError) {
+                <img
+                  [src]="product.image"
+                  [alt]="product.name"
+                  loading="lazy"
+                  (error)="product.hasError = true"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              }
+              @if (product.hasError) {
+                <div class="w-full h-full flex flex-col items-center justify-center bg-card">
+                  <lucide-icon name="image" class="w-10 h-10 text-muted-foreground/30 mb-2"></lucide-icon>
+                  <span class="text-xs text-muted-foreground font-medium">Image unavailable</span>
+                </div>
+              }
+              <!-- Save badge -->
+              @if (product.badge) {
+                <span
+                  class="absolute top-3 left-3 bg-red-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-black tracking-wider uppercase shadow-md">
+                  Save {{ product.badge }}
+                </span>
+              }
+            </div>
+            <!-- Product Info -->
+            <div class="p-3.5 space-y-2 flex-1 flex flex-col">
+              <!-- Sizes -->
+              @if (product.sizes?.length) {
+                <div class="flex flex-wrap gap-1">
+                  @for (size of product.sizes; track size) {
+                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-secondary text-muted-foreground">{{ size }}</span>
+                  }
+                </div>
+              }
+              <p class="text-[13px] font-bold line-clamp-2 leading-snug">{{ product.name }}</p>
+              <div class="flex items-center gap-1">
+                <lucide-icon name="star" class="w-3.5 h-3.5 fill-yellow-500 text-yellow-500"></lucide-icon>
+                <span class="text-xs font-bold">{{ product.rating }}</span>
+                <span class="text-[11px] text-muted-foreground font-semibold">({{ product.reviews | number }})</span>
+              </div>
+              <div class="flex items-baseline gap-2 pt-1 mt-auto">
+                <span class="text-base font-black text-accent">LE {{ product.price }}</span>
+                @if (product.originalPrice) {
+                  <span class="text-xs text-muted-foreground font-semibold line-through">LE {{ product.originalPrice }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

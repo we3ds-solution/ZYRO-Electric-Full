@@ -1,0 +1,221 @@
+<div class="min-h-screen bg-background text-foreground">
+  <!-- Header -->
+  <div class="max-w-6xl mx-auto px-4 md:px-6 pt-6 pb-2">
+    <div class="relative overflow-hidden bg-card border border-border p-8 rounded-[2rem] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 group">
+      <div class="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div class="relative flex items-center gap-4 z-10">
+        <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20">
+          <lucide-icon name="credit-card" class="w-7 h-7 text-accent"></lucide-icon>
+        </div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-black gradient-text tracking-tight mb-1">Checkout</h1>
+          <p class="text-sm text-muted-foreground font-medium">Complete your Haxel order securely</p>
+        </div>
+      </div>
+      <div class="relative z-10 flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-xl border border-border/50">
+        <lucide-icon name="lock" class="w-4 h-4 text-accent"></lucide-icon>
+        <span class="text-sm font-bold text-foreground">Secure Checkout</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto p-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Form Section -->
+      <div class="lg:col-span-2">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <!-- Shipping Address -->
+          <app-ui-card padding="lg">
+            <h2 class="text-lg font-bold text-accent mb-4 flex items-center gap-2">
+              <lucide-icon name="map-pin" class="w-5 h-5"></lucide-icon>
+              Shipping Address
+            </h2>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="checkout-first-name" class="section-label">First Name</label>
+                  <input
+                    id="checkout-first-name"
+                    type="text"
+                    formControlName="firstName"
+                    class="form-input w-full mt-2">
+                  </div>
+                  <div>
+                    <label for="checkout-last-name" class="section-label">Last Name</label>
+                    <input
+                      id="checkout-last-name"
+                      type="text"
+                      formControlName="lastName"
+                      class="form-input w-full mt-2">
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="checkout-street" class="section-label">Street Address</label>
+                    <input
+                      id="checkout-street"
+                      type="text"
+                      formControlName="streetAddress"
+                      class="form-input w-full mt-2">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label for="checkout-city" class="section-label">City</label>
+                        <input
+                          id="checkout-city"
+                          type="text"
+                          formControlName="city"
+                          class="form-input w-full mt-2">
+                        </div>
+                        <div>
+                          <label for="checkout-state" class="section-label">State</label>
+                          <input
+                            id="checkout-state"
+                            type="text"
+                            formControlName="state"
+                            class="form-input w-full mt-2">
+                          </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                          <div>
+                            <label for="checkout-zip" class="section-label">ZIP Code</label>
+                            <input
+                              id="checkout-zip"
+                              type="text"
+                              formControlName="zipCode"
+                              class="form-input w-full mt-2">
+                            </div>
+                            <div>
+                              <label for="checkout-country" class="section-label">Country</label>
+                              <input
+                                id="checkout-country"
+                                type="text"
+                                formControlName="country"
+                                class="form-input w-full mt-2">
+                              </div>
+                            </div>
+                          </div>
+                        </app-ui-card>
+
+                        <!-- Payment Method -->
+                        <app-ui-card padding="lg">
+                          <h2 class="text-lg font-bold text-accent mb-4 flex items-center gap-2">
+                            <lucide-icon name="credit-card" class="w-5 h-5"></lucide-icon>
+                            Payment Method
+                          </h2>
+
+                          <div class="space-y-3">
+                            <label class="flex items-center gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-muted transition">
+                              <input
+                                type="radio"
+                                formControlName="paymentMethod"
+                                value="card"
+                                class="w-4 h-4">
+                                <span class="flex-1 font-semibold">Credit Card</span>
+                                <lucide-icon name="credit-card" class="w-5 h-5 text-accent"></lucide-icon>
+                              </label>
+
+                              <label class="flex items-center gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-muted transition">
+                                <input
+                                  type="radio"
+                                  formControlName="paymentMethod"
+                                  value="paypal"
+                                  class="w-4 h-4">
+                                  <span class="flex-1 font-semibold">PayPal</span>
+                                  <lucide-icon name="globe" class="w-5 h-5 text-accent"></lucide-icon>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-muted transition">
+                                  <input
+                                    type="radio"
+                                    formControlName="paymentMethod"
+                                    value="apple"
+                                    class="w-4 h-4">
+                                    <span class="flex-1 font-semibold">Apple Pay</span>
+                                    <lucide-icon name="smartphone" class="w-5 h-5 text-accent"></lucide-icon>
+                                  </label>
+                                </div>
+                              </app-ui-card>
+
+                              <!-- Order Summary -->
+                              <button
+                                type="submit"
+                                [disabled]="!checkoutForm.valid || isProcessing"
+                                class="btn-primary w-full rounded-xl py-4 text-lg font-black flex items-center justify-center gap-3 shadow-lg shadow-accent/20 group">
+                                @if (!isProcessing) {
+                                  <lucide-icon name="check-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></lucide-icon>
+                                }
+                                @if (isProcessing) {
+                                  <lucide-icon name="loader-2" class="w-5 h-5 animate-spin"></lucide-icon>
+                                }
+                                @if (isProcessing) {
+                                  <span>Processing...</span>
+                                }
+                                @if (!isProcessing) {
+                                  <span>Complete Order</span>
+                                }
+                              </button>
+                            </form>
+                          </div>
+
+                          <!-- Order Summary Sidebar -->
+                          <div>
+                            <app-ui-card padding="lg" variant="glass">
+                              <h3 class="text-lg font-bold text-accent mb-4 flex items-center gap-2">
+                                <lucide-icon name="shopping-bag" class="w-5 h-5"></lucide-icon>
+                                Order Summary
+                              </h3>
+
+                              <!-- Items -->
+                              <div class="space-y-3 mb-4 max-h-96 overflow-y-auto custom-scrollbar">
+                                @for (item of cartItems; track item) {
+                                  <div
+                                    class="flex justify-between items-start gap-2 pb-3 border-b border-border">
+                                    <div>
+                                      <p class="font-semibold text-sm">{{ item.product?.title || 'Product' }}</p>
+                                      <p class="text-xs text-muted-foreground">Qty: {{ item.quantity }}</p>
+                                    </div>
+                                    <p class="font-semibold whitespace-nowrap">LE {{ item.price * item.quantity | number:'1.2-2' }}</p>
+                                  </div>
+                                }
+                              </div>
+
+                              <!-- Summary -->
+                              <div class="space-y-2 pt-4 border-t border-border">
+                                <div class="flex justify-between text-sm">
+                                  <span>Subtotal:</span>
+                                  <span>LE {{ subtotal | number:'1.2-2' }}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                  <span>Shipping:</span>
+                                  <span class="text-accent">Free</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                  <span>Tax (10%):</span>
+                                  <span>LE {{ subtotal * 0.1 | number:'1.2-2' }}</span>
+                                </div>
+                                <div class="flex justify-between text-lg font-bold text-accent pt-2 border-t border-border">
+                                  <span>Total:</span>
+                                  <span>LE {{ total | number:'1.2-2' }}</span>
+                                </div>
+                              </div>
+                            </app-ui-card>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Confirmation Dialog -->
+                    <app-ui-confirmation #confirm
+                      title="Confirm Order"
+                      message="Please review your order details before confirming."
+                      confirmLabel="Place Order"
+                      type="default"
+                      (confirmed)="completeOrder()">
+                    </app-ui-confirmation>
+
+                    <!-- Toast -->
+                    <app-ui-toast #toast></app-ui-toast>

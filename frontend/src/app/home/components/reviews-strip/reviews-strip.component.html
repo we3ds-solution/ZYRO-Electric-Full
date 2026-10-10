@@ -1,0 +1,21 @@
+<section class="bg-secondary/30 border-y border-border/50 py-14">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl md:text-4xl font-black mb-2">Feedbacks</h2>
+      <p class="font-bold text-lg">
+        {{ rating }} <span class="text-yellow-500">★</span>
+        <span class="text-muted-foreground font-semibold text-sm">({{ reviewCount }}) Verified</span>
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5">
+      @for (review of reviews; track review) {
+        <div class="bg-card border border-border rounded-[1.5rem] p-6 shadow-sm">
+          <div class="text-yellow-500 font-black tracking-widest mb-3">★★★★★</div>
+          <p class="text-sm text-muted-foreground font-medium leading-relaxed mb-4">"{{ review.text }}"</p>
+          <p class="text-sm font-black">— {{ review.name }}</p>
+          <p class="text-[11px] font-bold text-emerald-500 uppercase tracking-wider mt-1">Verified buyer</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

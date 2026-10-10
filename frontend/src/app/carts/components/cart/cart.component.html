@@ -1,0 +1,209 @@
+<div class="min-h-screen bg-background text-foreground overflow-hidden">
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-2">
+    <div class="relative overflow-hidden bg-card border border-border p-8 rounded-[2rem] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 group">
+      <div class="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div class="relative flex items-center gap-4 z-10">
+        <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20">
+          <lucide-icon name="shopping-cart" class="w-7 h-7 text-accent"></lucide-icon>
+        </div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-black gradient-text tracking-tight mb-1">Shopping Cart</h1>
+          <p class="text-sm text-muted-foreground font-medium">Review your items before checkout</p>
+        </div>
+      </div>
+      <div class="relative z-10 flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-xl border border-border/50">
+        <lucide-icon name="package" class="w-4 h-4 text-accent"></lucide-icon>
+        <span class="text-sm font-black text-foreground">{{ cartItems.length }}</span>
+        <span class="text-sm text-muted-foreground font-semibold">{{ cartItems.length === 1 ? 'Item' : 'Items' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 md:px-6 py-8">
+    <!-- Empty State -->
+    @if (!cartItems || cartItems.length === 0) {
+      <div class="text-center py-32">
+        <div class="w-32 h-32 bg-secondary rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-border/50">
+          <lucide-icon name="shopping-cart" class="w-16 h-16 text-muted-foreground/40"></lucide-icon>
+        </div>
+        <h2 class="text-3xl font-black mb-3">Your cart is empty</h2>
+        <p class="text-lg text-muted-foreground font-medium mb-10">Start shopping to add items to your cart</p>
+        <button
+          (click)="continueShopping()"
+          class="btn-primary rounded-xl px-8 py-3.5 text-base inline-flex items-center gap-3 shadow-lg shadow-accent/20 group">
+          <lucide-icon name="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></lucide-icon>
+          Continue Shopping
+        </button>
+      </div>
+    }
+
+    <!-- Cart Content -->
+    @if (cartItems && cartItems.length > 0) {
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Cart Items List -->
+        <div class="lg:col-span-2 space-y-4">
+          <!-- Single Cart Item -->
+          @for (item of cartItems; track item) {
+            <div
+              class="bg-card border border-border rounded-[2rem] p-6 shadow-sm transition-all hover:shadow-md hover:border-border flex flex-col sm:flex-row items-center gap-6 group">
+              <!-- Product Image -->
+              <div class="w-24 h-24 rounded-2xl bg-muted flex-shrink-0 overflow-hidden border border-border/50">
+                @if (item.product?.image && !item.hasError) {
+                  <img [src]="item.product.image" [alt]="item.product?.title"
+                    (error)="item.hasError = true"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                }
+                @if (!item.product?.image || item.hasError) {
+                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-secondary">
+                    <lucide-icon name="image" class="w-8 h-8 text-muted-foreground/40"></lucide-icon>
+                  </div>
+                }
+              </div>
+              <!-- Product Info -->
+              <div class="flex-1 min-w-0 text-center sm:text-left">
+                <h3 class="font-bold text-lg leading-tight mb-1 truncate">{{ item.product?.title || 'Product' }}</h3>
+                <p class="text-sm text-muted-foreground font-medium mb-2">SKU: {{ item.product?.sku || 'N/A' }}</p>
+                <p class="text-xl font-black text-accent">LE {{ item.price | number:'1.2-2' }}</p>
+              </div>
+              <!-- Quantity Controls -->
+              <div class="flex items-center bg-secondary/50 rounded-full border border-border/50 p-1 gap-1 flex-shrink-0">
+                <button
+                  (click)="decreaseQuantity(item)"
+                  class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-background transition-colors">
+                  <lucide-icon name="minus" class="w-4 h-4"></lucide-icon>
+                </button>
+                <span class="w-10 text-center font-black text-lg">{{ item.quantity }}</span>
+                <button
+                  (click)="increaseQuantity(item)"
+                  class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-background transition-colors">
+                  <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
+                </button>
+              </div>
+              <!-- Item Total & Remove -->
+              <div class="text-center sm:text-right flex-shrink-0">
+                <p class="font-black text-xl mb-3">LE {{ item.price * item.quantity | number:'1.2-2' }}</p>
+                <button
+                  (click)="removeItem(item)"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-red-400 hover:bg-red-500/10 hover:text-red-500 transition-all border border-transparent hover:border-red-500/20">
+                  <lucide-icon name="trash-2" class="w-3.5 h-3.5"></lucide-icon>
+                  Remove
+                </button>
+              </div>
+            </div>
+          }
+          <!-- Footer Actions -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+            <button
+              (click)="continueShopping()"
+              class="btn-outline rounded-full px-6 py-3 flex items-center gap-2 group">
+              <lucide-icon name="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></lucide-icon>
+              Continue Shopping
+            </button>
+            <button
+              (click)="showClearConfirm()"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold text-red-400 hover:bg-red-500/10 hover:text-red-500 transition-all border border-transparent hover:border-red-500/20">
+              <lucide-icon name="trash" class="w-4 h-4"></lucide-icon>
+              Clear All
+            </button>
+          </div>
+        </div>
+        <!-- Order Summary Sidebar -->
+        <div>
+          <div class="bg-card border border-border rounded-[2rem] p-8 shadow-lg sticky top-24">
+            <!-- Summary Header -->
+            <div class="flex items-center gap-3 mb-8">
+              <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20">
+                <lucide-icon name="shopping-bag" class="w-5 h-5 text-accent"></lucide-icon>
+              </div>
+              <h2 class="text-xl font-black">Order Summary</h2>
+            </div>
+            <!-- Line Items -->
+            <div class="space-y-4 mb-8">
+              <div class="flex justify-between items-center">
+                <span class="text-muted-foreground font-semibold">Subtotal</span>
+                <span class="font-bold text-lg">LE {{ cartSummary.subtotal | number:'1.2-2' }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-muted-foreground font-semibold">Tax (10%)</span>
+                <span class="font-bold">LE {{ cartSummary.tax | number:'1.2-2' }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-muted-foreground font-semibold">Shipping</span>
+                <span>
+                  @if (cartSummary.shipping > 0) {
+                    <span class="font-bold">LE {{ cartSummary.shipping | number:'1.2-2' }}</span>
+                  }
+                  @if (cartSummary.shipping === 0) {
+                    <span class="text-accent font-black">Free ✓</span>
+                  }
+                </span>
+              </div>
+              <div class="h-px bg-border/50"></div>
+              <div class="flex justify-between items-center">
+                <span class="font-black text-xl">Total</span>
+                <span class="font-black text-2xl text-accent">LE {{ cartSummary.total | number:'1.2-2' }}</span>
+              </div>
+            </div>
+            <!-- Coupon Section -->
+            <div class="mb-8">
+              <p class="section-label mb-3">Coupon Code</p>
+              <div class="flex gap-2">
+                <input
+                  [(ngModel)]="couponCode"
+                  placeholder="Enter coupon code"
+                  class="form-input flex-1 rounded-full py-3 text-sm">
+                  <button
+                    (click)="applyCoupon()"
+                    class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center flex-shrink-0 shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                    <lucide-icon name="check" class="w-5 h-5"></lucide-icon>
+                  </button>
+                </div>
+              </div>
+              <!-- Checkout Button -->
+              <button
+                (click)="proceedToCheckout()"
+                class="btn-primary w-full rounded-full py-5 flex items-center justify-center gap-3 text-lg font-black shadow-lg shadow-accent/20 group mb-8">
+                <lucide-icon name="credit-card" class="w-6 h-6 group-hover:scale-110 transition-transform"></lucide-icon>
+                Proceed to Checkout
+              </button>
+              <!-- Trust Badges -->
+              <div class="border-t border-border/50 pt-6 space-y-3">
+                <div class="flex items-center gap-3 text-muted-foreground">
+                  <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                    <lucide-icon name="lock" class="w-4 h-4 text-accent"></lucide-icon>
+                  </div>
+                  <span class="text-sm font-semibold">Secure checkout</span>
+                </div>
+                <div class="flex items-center gap-3 text-muted-foreground">
+                  <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                    <lucide-icon name="truck" class="w-4 h-4 text-accent"></lucide-icon>
+                  </div>
+                  <span class="text-sm font-semibold">Free shipping on orders over 3 items</span>
+                </div>
+                <div class="flex items-center gap-3 text-muted-foreground">
+                  <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                    <lucide-icon name="undo-2" class="w-4 h-4 text-accent"></lucide-icon>
+                  </div>
+                  <span class="text-sm font-semibold">30-day returns</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <app-ui-confirmation #confirm
+      title="Clear Cart"
+      message="Are you sure you want to remove all items from your cart? This action cannot be undone."
+      confirmLabel="Yes, Clear Cart"
+      cancelLabel="Cancel"
+      type="danger"
+      (confirmed)="clearCart()">
+    </app-ui-confirmation>
+
+    <!-- Toast -->
+    <app-ui-toast #toast></app-ui-toast>
+  </div>

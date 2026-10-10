@@ -1,0 +1,28 @@
+<section class="max-w-7xl mx-auto px-4 md:px-6 py-14">
+  <div class="flex gap-5 md:gap-8 justify-start md:justify-center overflow-x-auto pb-2 scrollbar-none">
+    @for (category of categories; track category) {
+      <div
+        tabindex="0"
+        (click)="goToCategory(category)"
+        (keyup.enter)="goToCategory(category)"
+        class="group cursor-pointer flex flex-col items-center gap-3 flex-shrink-0 w-28 md:w-36">
+        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-border group-hover:border-accent transition-all shadow-md group-hover:shadow-xl bg-muted">
+          @if (category.image) {
+            <img
+              [src]="category.image"
+              [alt]="category.name"
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          }
+          @if (!category.image) {
+            <div [ngClass]="'bg-gradient-to-br ' + category.color" class="w-full h-full flex items-center justify-center text-3xl">
+              {{ category.icon }}
+            </div>
+          }
+        </div>
+        <p class="font-bold text-xs md:text-sm text-center leading-tight">{{ category.name }}</p>
+        <span class="text-[11px] font-black uppercase tracking-wider text-accent underline underline-offset-4 decoration-1 group-hover:decoration-2">Shop Now</span>
+      </div>
+    }
+  </div>
+</section>

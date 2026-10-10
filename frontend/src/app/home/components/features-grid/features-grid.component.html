@@ -1,0 +1,15 @@
+<section class="bg-secondary/30 border-y border-border/50 py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-6">
+    <div class="grid md:grid-cols-3 gap-12">
+      @for (feature of features; track feature) {
+        <div class="text-center space-y-4 group">
+          <div class="w-20 h-20 mx-auto bg-card rounded-[2rem] flex items-center justify-center text-4xl shadow-sm border border-border/50 group-hover:-translate-y-2 group-hover:shadow-md transition-all duration-300">
+            {{ feature.icon }}
+          </div>
+          <h3 class="font-black text-xl">{{ feature.title }}</h3>
+          <p class="text-muted-foreground font-medium max-w-xs mx-auto">{{ feature.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

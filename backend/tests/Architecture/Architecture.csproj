@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Domain/Domain.csproj" />
+    <ProjectReference Include="../../src/Application/Application.csproj" />
+    <ProjectReference Include="../../src/Infrastructure/Infrastructure.csproj" />
+    <ProjectReference Include="../../src/Presentation/Presentation.csproj" />
+    <ProjectReference Include="../Common/Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Testing Framework -->
+    <PackageReference Include="xunit" Version="2.6.6" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    
+    <!-- Architecture Testing -->
+    <PackageReference Include="NetArchTest.Rules" Version="1.3.2" />
+    <PackageReference Include="TngTech.ArchUnitNET" Version="0.13.3" />
+    
+    <!-- Assertions -->
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    
+    <!-- Code Coverage -->
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

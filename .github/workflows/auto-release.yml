@@ -1,0 +1,102 @@
+name: Auto Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: 0
+
+      - name: Get tag info
+        id: tag_info
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Tag: $TAG"
+          echo "Version: $VERSION"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          TAG="${{ steps.tag_info.outputs.tag }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 $TAG^ 2>/dev/null || echo "")
+          
+          echo "Current tag: $TAG"
+          echo "Previous tag: $PREV_TAG"
+          
+          if [ -z "$PREV_TAG" ]; then
+            # First release - show all commits
+            COMMITS=$(git log --oneline $TAG --pretty=format:"* %h - %s (%an)")
+          else
+            # Show commits since last tag
+            COMMITS=$(git log --oneline $PREV_TAG..$TAG --pretty=format:"* %h - %s (%an)")
+          fi
+          
+          # Output for GitHub using dynamic EOF
+          EOF_DELIMITER=$(openssl rand -hex 8)
+          {
+            echo "changelog<<$EOF_DELIMITER"
+            echo "## What's Changed"
+            echo ""
+            echo "### Commits"
+            echo "$COMMITS"
+            echo ""
+            echo "### Release Info"
+            echo "- **Version**: ${{ steps.tag_info.outputs.version }}"
+            echo "- **Tag**: $TAG"
+            echo "- **Date**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            echo "- **Commit**: $(git rev-parse --short HEAD)"
+            echo ""
+            echo "### Features & Fixes"
+            echo "See commits above for detailed changes."
+            echo ""
+            echo "### Installation"
+            echo "\`\`\`bash"
+            echo "npm install @we3ds-solution/zyro-electric@${{ steps.tag_info.outputs.version }}"
+            echo "\`\`\`"
+            echo ""
+            echo "### Docker"
+            echo "\`\`\`bash"
+            echo "docker pull ghcr.io/we3ds-solution/zyro-electric:${{ steps.tag_info.outputs.version }}"
+            echo "\`\`\`"
+            echo ""
+            echo "---"
+            echo "**Auto-generated release** | [View on GitHub](https://github.com/we3ds-solution/ZYRO-Electric/releases/tag/$TAG)"
+            echo "$EOF_DELIMITER"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag_info.outputs.tag }}
+          name: Release ${{ steps.tag_info.outputs.tag }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+          files: |
+            frontend/package.json
+            README.md
+            CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release notification
+        run: |
+          echo "✅ GitHub Release Created"
+          echo "Tag: ${{ steps.tag_info.outputs.tag }}"
+          echo "Version: ${{ steps.tag_info.outputs.version }}"
+          echo "URL: https://github.com/we3ds-solution/ZYRO-Electric/releases/tag/${{ steps.tag_info.outputs.tag }}"

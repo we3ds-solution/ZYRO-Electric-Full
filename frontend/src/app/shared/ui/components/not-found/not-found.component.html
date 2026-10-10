@@ -1,0 +1,77 @@
+<div class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+  <!-- Decorative Ambient Blur Blobs -->
+  <div class="absolute w-[350px] h-[350px] bg-accent/10 rounded-full blur-3xl -top-20 -left-20 animate-pulse pointer-events-none"></div>
+  <div class="absolute w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl -bottom-20 -right-20 animate-pulse pointer-events-none" style="animation-delay: 2s;"></div>
+
+  <div class="max-w-xl w-full relative z-10 animate-in fade-in slide-in-from-bottom-8 duration-700 bg-card border border-border p-8 md:p-10 rounded-[2.5rem] shadow-2xl">
+    
+    <!-- 404 Floating Icon & Large Text -->
+    <div class="text-center mb-8 relative">
+      <div class="inline-block relative mb-4">
+        <div class="text-8xl md:text-9xl font-black gradient-text tracking-tighter animate-pulse">
+          404
+        </div>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-black text-foreground mb-3 tracking-tight">
+        Page Not Found
+      </h1>
+      <p class="text-base md:text-lg text-muted-foreground font-medium max-w-md mx-auto">
+        {{ message }}
+      </p>
+    </div>
+
+    <!-- Error Icon & Illustration Container -->
+    <div class="flex justify-center mb-8">
+      <div class="w-24 h-24 rounded-[2rem] bg-secondary/40 backdrop-blur-md border border-border/50 flex items-center justify-center shadow-lg animate-bounce">
+        <lucide-icon name="search-x" class="w-10 h-10 text-accent"></lucide-icon>
+      </div>
+    </div>
+
+    <!-- Suggestions Panel -->
+    <div class="bg-secondary/30 backdrop-blur-md border border-border/40 p-6 rounded-[1.5rem] w-full mb-8">
+      <h2 class="text-base font-black text-accent uppercase tracking-widest mb-4">What you can do:</h2>
+      <ul class="space-y-3.5">
+        <li class="flex items-center gap-3 text-muted-foreground font-semibold hover:text-foreground transition-colors group">
+          <div class="w-6 h-6 rounded-lg bg-secondary/80 flex items-center justify-center group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+            <lucide-icon name="arrow-right" class="w-3.5 h-3.5"></lucide-icon>
+          </div>
+          Check the URL for typos
+        </li>
+        <li class="flex items-center gap-3 text-muted-foreground font-semibold hover:text-foreground transition-colors group">
+          <div class="w-6 h-6 rounded-lg bg-secondary/80 flex items-center justify-center group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+            <lucide-icon name="arrow-right" class="w-3.5 h-3.5"></lucide-icon>
+          </div>
+          Return to the home page
+        </li>
+        <li class="flex items-center gap-3 text-muted-foreground font-semibold hover:text-foreground transition-colors group">
+          <div class="w-6 h-6 rounded-lg bg-secondary/80 flex items-center justify-center group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+            <lucide-icon name="arrow-right" class="w-3.5 h-3.5"></lucide-icon>
+          </div>
+          Try browsing our products
+        </li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button 
+        (click)="goHome()"
+        class="btn-primary rounded-full px-8 py-4 font-black flex items-center justify-center gap-2.5 shadow-lg shadow-accent/20 group hover:scale-105 transition-transform duration-200">
+        <lucide-icon name="home" class="w-5 h-5 group-hover:scale-110 transition-transform"></lucide-icon>
+        Back to Home
+      </button>
+      <button 
+        (click)="goProducts()"
+        class="btn-outline rounded-full px-8 py-4 font-bold flex items-center justify-center gap-2.5 hover:bg-secondary/40 transition-colors">
+        <lucide-icon name="package" class="w-5 h-5"></lucide-icon>
+        View Products
+      </button>
+    </div>
+
+    <!-- Extra Info -->
+    <div class="text-center mt-10 text-xs text-muted-foreground font-mono space-y-1">
+      <p>Error Code: {{ errorCode }}</p>
+      <p>Timestamp: {{ timestamp }}</p>
+    </div>
+  </div>
+</div>

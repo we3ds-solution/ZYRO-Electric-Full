@@ -1,0 +1,299 @@
+<div class="min-h-screen bg-background text-foreground overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 py-6">
+    <!-- Breadcrumb (Haxel: Home / Product) -->
+    <nav class="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground mb-6" aria-label="Breadcrumb">
+      <a routerLink="/" class="hover:text-foreground transition-colors">Home</a>
+      <span>/</span>
+      @if (product) {
+        <span class="text-foreground font-bold truncate max-w-[60vw]">{{ product.title }}</span>
+      }
+      @if (!product && !isLoading) {
+        <span class="text-foreground font-bold">Product</span>
+      }
+      <span class="flex-1"></span>
+      <button (click)="goBack()" class="inline-flex items-center gap-1 hover:text-foreground transition-colors">
+        <lucide-icon name="arrow-left" class="w-3.5 h-3.5"></lucide-icon>
+        Back
+      </button>
+    </nav>
+
+    <!-- Loading -->
+    @if (isLoading) {
+      <div class="text-center py-20">
+        <lucide-icon name="loader-2" class="w-12 h-12 animate-spin text-accent mx-auto"></lucide-icon>
+      </div>
+    }
+
+    <!-- Product -->
+    @if (!isLoading && product) {
+      <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 mb-14">
+          <!-- Gallery -->
+          <div>
+            <div class="relative w-full aspect-square bg-muted rounded-[2rem] border border-border overflow-hidden shadow-xl">
+              @if (activeImage && !imgError) {
+                <img
+                  [src]="activeImage"
+                  [alt]="product.title"
+                  (error)="imgError = true"
+                  class="w-full h-full object-cover">
+              }
+              @if (!activeImage || imgError) {
+                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-muted to-secondary gap-3">
+                  <lucide-icon name="image" class="w-24 h-24 text-muted-foreground/30"></lucide-icon>
+                  <span class="text-sm font-semibold text-muted-foreground">Product image unavailable</span>
+                </div>
+              }
+              @if (product.stock === 0) {
+                <span class="absolute top-4 left-4 bg-foreground text-background px-3 py-1.5 rounded-xl text-xs font-black tracking-wider uppercase shadow-lg">Sold out</span>
+              } @else if (product.discount) {
+                <span class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1.5 rounded-xl text-xs font-black tracking-wider uppercase shadow-lg">Save {{ product.discount }}%</span>
+              }
+            </div>
+            <!-- Thumbnails -->
+            @if (galleryImages().length > 1) {
+              <div class="flex gap-3 mt-3">
+                @for (img of galleryImages(); track img; let i = $index) {
+                  <button
+                    (click)="activeImage = img"
+                    class="w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all"
+                    [class.border-accent]="activeImage === img"
+                    [class.border-border]="activeImage !== img">
+                    <img [src]="img" [alt]="product.title + ' view ' + (i + 1)" loading="lazy" class="w-full h-full object-cover">
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Info -->
+          <div class="flex flex-col">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">Haxel • {{ formatCategory(product.category) }}</p>
+            <h1 class="text-3xl md:text-4xl font-black mb-3 leading-tight tracking-tight">{{ product.title }}</h1>
+
+            <!-- Price row -->
+            <div class="flex items-center gap-3 mb-1">
+              @if (product.originalPrice) {
+                <span class="text-lg text-muted-foreground font-semibold line-through">LE {{ product.originalPrice | number:'1.0-0' }}</span>
+              }
+              <span class="text-3xl font-black text-foreground">LE {{ product.price | number:'1.0-0' }}</span>
+              @if (product.discount) {
+                <span class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-xs font-black">Save {{ product.discount }}%</span>
+              }
+            </div>
+            <p class="text-xs text-muted-foreground font-medium mb-4">Tax included. Shipping calculated at checkout.</p>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-4">
+              <div class="flex items-center gap-0.5">
+                @for (i of [1,2,3,4,5]; track i) {
+                  <lucide-icon
+                    name="star"
+                    [class]="i <= Math.floor(product.rating?.average || 0) ? 'fill-yellow-500 text-yellow-500' : 'text-muted'"
+                  class="w-4 h-4"></lucide-icon>
+                }
+              </div>
+              <span class="text-sm font-bold">{{ product.rating?.average || 0 }}</span>
+              <span class="text-sm text-muted-foreground font-semibold">({{ product.rating?.count || 0 }})</span>
+            </div>
+
+            <!-- Stock -->
+            <p class="text-sm font-bold mb-5">
+              @if (product.stock > 0) {
+                <span class="text-emerald-500">{{ product.stock }} in stock</span>
+              }
+              @if (product.stock === 0) {
+                <span class="text-red-500">Out of stock</span>
+              }
+            </p>
+
+            <!-- Size -->
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm font-black">Size: @if (selectedSize) { <span class="text-accent">{{ selectedSize }}</span> }</p>
+              <details class="relative">
+                <summary class="text-xs font-bold text-muted-foreground underline underline-offset-4 cursor-pointer list-none hover:text-foreground">Sizing guide</summary>
+                <div class="absolute right-0 top-6 z-20 w-64 bg-card border border-border rounded-2xl shadow-xl p-4 text-xs">
+                  <p class="font-black mb-2">Haxel size guide</p>
+                  <p class="text-muted-foreground font-medium leading-relaxed">Apparel S–2XL (women XS–L). Compression fits snug — size up for a relaxed fit. Footwear 41–45 men / 37–40 women.</p>
+                </div>
+              </details>
+            </div>
+            <div class="flex flex-wrap gap-2 mb-6">
+              @for (size of sizesFor(); track size) {
+                <button
+                  (click)="selectSize(size)"
+                  class="min-w-11 h-11 px-3 rounded-xl border text-sm font-bold transition-all"
+                  [class.bg-foreground]="selectedSize === size"
+                  [class.text-background]="selectedSize === size"
+                  [class.border-foreground]="selectedSize === size"
+                  [class.bg-background]="selectedSize !== size"
+                  [class.border-border]="selectedSize !== size"
+                  [class.hover-border-foreground]="selectedSize !== size">
+                  {{ size }}
+                </button>
+              }
+            </div>
+
+            <!-- Quantity + Add to cart -->
+            <div class="flex gap-3 mb-5">
+              <div class="flex items-center bg-secondary/50 rounded-full px-1.5 py-1.5 border border-border flex-shrink-0">
+                <button
+                  (click)="decreaseQuantity()"
+                  class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-background transition-colors"
+                  aria-label="Decrease quantity">
+                  <lucide-icon name="minus" class="w-4 h-4"></lucide-icon>
+                </button>
+                <span class="text-base font-black px-4">{{ quantity }}</span>
+                <button
+                  (click)="increaseQuantity()"
+                  class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-background transition-colors"
+                  aria-label="Increase quantity">
+                  <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
+                </button>
+              </div>
+              <button
+                (click)="addToCart()"
+                [disabled]="product.stock === 0"
+                class="btn-primary flex-1 rounded-full py-3.5 flex items-center justify-center gap-2 font-black uppercase tracking-wider text-sm shadow-lg shadow-accent/20 disabled:opacity-50">
+                <lucide-icon name="shopping-cart" class="w-5 h-5"></lucide-icon>
+                {{ product.stock === 0 ? 'Sold Out' : 'Add to cart' }}
+              </button>
+            </div>
+
+            <!-- Perks -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
+              <div class="flex flex-col items-center gap-1.5 bg-secondary/40 border border-border/60 rounded-2xl py-3 px-2 text-center">
+                <lucide-icon name="shopping-bag" class="w-5 h-5 text-accent"></lucide-icon>
+                <span class="text-[11px] font-bold leading-tight">Over 3 Items<br><span class="text-muted-foreground font-semibold">Free ship</span></span>
+              </div>
+              <div class="flex flex-col items-center gap-1.5 bg-secondary/40 border border-border/60 rounded-2xl py-3 px-2 text-center">
+                <lucide-icon name="truck" class="w-5 h-5 text-accent"></lucide-icon>
+                <span class="text-[11px] font-bold leading-tight">Fast<br><span class="text-muted-foreground font-semibold">Delivery</span></span>
+              </div>
+              <div class="flex flex-col items-center gap-1.5 bg-secondary/40 border border-border/60 rounded-2xl py-3 px-2 text-center">
+                <lucide-icon name="undo-2" class="w-5 h-5 text-accent"></lucide-icon>
+                <span class="text-[11px] font-bold leading-tight">Easy<br><span class="text-muted-foreground font-semibold">Returns</span></span>
+              </div>
+              <div class="flex flex-col items-center gap-1.5 bg-secondary/40 border border-border/60 rounded-2xl py-3 px-2 text-center">
+                <lucide-icon name="message-square" class="w-5 h-5 text-accent"></lucide-icon>
+                <span class="text-[11px] font-bold leading-tight">Quick<br><span class="text-muted-foreground font-semibold">Support</span></span>
+              </div>
+            </div>
+
+            <!-- Payments -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[11px] font-black px-3 py-1.5 bg-muted rounded-lg border border-border">VISA</span>
+              <span class="text-[11px] font-black px-3 py-1.5 bg-muted rounded-lg border border-border">MASTERCARD</span>
+              <span class="text-[11px] font-black px-3 py-1.5 bg-muted rounded-lg border border-border">APPLE PAY</span>
+              <span class="text-[11px] font-black px-3 py-1.5 bg-muted rounded-lg border border-border">CASH ON DELIVERY</span>
+            </div>
+
+            <!-- Accordions -->
+            <div class="border-t border-border mb-6">
+              <details class="border-b border-border group" open>
+                <summary class="py-4 font-black text-sm cursor-pointer list-none flex items-center justify-between">Product information <span class="text-muted-foreground group-open:rotate-45 transition-transform text-lg leading-none">+</span></summary>
+                <p class="pb-5 text-sm text-muted-foreground leading-relaxed font-medium">{{ product.description }}</p>
+                <p class="pb-5 text-xs font-mono text-muted-foreground">SKU: {{ product.sku }}</p>
+              </details>
+              <details class="border-b border-border group">
+                <summary class="py-4 font-black text-sm cursor-pointer list-none flex items-center justify-between">Shipping & Returns <span class="text-muted-foreground group-open:rotate-45 transition-transform text-lg leading-none">+</span></summary>
+                <p class="pb-5 text-sm text-muted-foreground leading-relaxed font-medium">2–5 business days across Egypt. Free shipping over 3 items. Smooth & easy 14-day exchange & returns — free size exchange.</p>
+              </details>
+              <details class="border-b border-border group">
+                <summary class="py-4 font-black text-sm cursor-pointer list-none flex items-center justify-between">Care Guide <span class="text-muted-foreground group-open:rotate-45 transition-transform text-lg leading-none">+</span></summary>
+                <p class="pb-5 text-sm text-muted-foreground leading-relaxed font-medium">Machine wash cold, inside out. Hang dry. Do not bleach or iron prints.</p>
+              </details>
+            </div>
+
+            <!-- Share -->
+            <button (click)="copyLink()" class="inline-flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors w-fit">
+              <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
+              {{ linkCopied ? 'Copied to clipboard' : 'Share this product' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="mt-4">
+          <div class="bg-card border border-border rounded-[2rem] p-8 md:p-10 shadow-xl">
+            <h2 class="text-2xl md:text-3xl font-black mb-6">Product information & Reviews</h2>
+            <!-- Summary + bars -->
+            <div class="flex flex-col md:flex-row gap-8 mb-10">
+              <div class="text-center md:w-48 flex-shrink-0">
+                <p class="text-5xl font-black">{{ product.rating?.average || 0 }}</p>
+                <div class="flex items-center justify-center gap-0.5 my-2">
+                  @for (i of [1,2,3,4,5]; track i) {
+                    <lucide-icon
+                      name="star"
+                      [class]="i <= Math.floor(product.rating?.average || 0) ? 'fill-yellow-500 text-yellow-500' : 'text-muted'"
+                    class="w-4 h-4"></lucide-icon>
+                  }
+                </div>
+                <p class="text-xs text-muted-foreground font-semibold">{{ product.rating?.count || 0 }} reviews</p>
+              </div>
+              <div class="flex-1 space-y-2">
+                @for (star of [5,4,3,2,1]; track star) {
+                  <div class="flex items-center gap-3 text-xs font-bold">
+                    <span class="w-8">{{ star }} ★</span>
+                    <div class="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
+                      <div class="h-full bg-yellow-500 rounded-full" [style.width.%]="ratingPercent(star)"></div>
+                    </div>
+                    <span class="w-10 text-right text-muted-foreground">{{ ratingPercent(star) }}%</span>
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="space-y-5">
+              @for (review of reviews; track review) {
+                <div class="bg-background rounded-3xl p-6 border border-border/50 shadow-sm">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center font-bold">
+                        {{ review.userName.charAt(0) }}
+                      </div>
+                      <div>
+                        <h4 class="font-bold">{{ review.userName }}</h4>
+                        <p class="text-xs text-muted-foreground font-medium">{{ review.createdAt | date:'mediumDate' }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-1 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border/50">
+                      @for (i of [1,2,3,4,5]; track i) {
+                        <lucide-icon
+                          name="star"
+                          [class]="i <= review.rating ? 'fill-yellow-500 text-yellow-500' : 'text-muted'"
+                        class="w-3.5 h-3.5"></lucide-icon>
+                      }
+                    </div>
+                  </div>
+                  <h5 class="font-bold mb-2">{{ review.title }}</h5>
+                  <p class="text-muted-foreground leading-relaxed mb-4 font-medium text-sm">{{ review.comment }}</p>
+                  <button class="inline-flex items-center gap-2 px-4 py-2 bg-secondary rounded-xl text-xs font-bold hover:text-accent transition-colors">
+                    <lucide-icon name="thumbs-up" class="w-3.5 h-3.5"></lucide-icon>
+                    Helpful ({{ review.helpful }})
+                  </button>
+                </div>
+              }
+            </div>
+            @if (reviews.length === 0) {
+              <div class="text-center py-14 bg-background rounded-3xl border border-border/50 border-dashed">
+                <lucide-icon name="message-square" class="w-14 h-14 text-muted-foreground/30 mx-auto mb-4"></lucide-icon>
+                <h3 class="text-lg font-bold mb-2">No reviews yet</h3>
+                <p class="text-muted-foreground font-medium text-sm">Be the first to review this product!</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Not Found -->
+    @if (!isLoading && !product) {
+      <div class="text-center py-24">
+        <app-ui-not-found></app-ui-not-found>
+      </div>
+    }
+  </div>
+
+  <!-- Toast -->
+  <app-ui-toast #toast></app-ui-toast>
+</div>

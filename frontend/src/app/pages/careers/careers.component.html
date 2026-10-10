@@ -1,0 +1,188 @@
+<!-- Hero Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Careers at Haxel</h1>
+    <p class="text-xl text-muted-foreground">Join our 100% local team and help shape the future of Egyptian activewear.</p>
+  </div>
+</section>
+
+<!-- Why Join Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Why Work at Haxel?</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (benefit of benefits; track benefit) {
+        <div class="glass-card p-8 rounded-xl hover:border-accent transition-colors">
+          <div class="text-5xl mb-4">{{ benefit.icon }}</div>
+          <h3 class="text-xl font-bold text-accent mb-2">{{ benefit.title }}</h3>
+          <p class="text-muted-foreground">{{ benefit.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Culture Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Our Culture</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h3 class="text-2xl font-bold text-accent mb-4">Innovation Focused</h3>
+        <p class="text-muted-foreground mb-4">We embrace the latest technologies and encourage creative problem-solving. Your ideas matter here.</p>
+      </div>
+      <div>
+        <h3 class="text-2xl font-bold text-accent mb-4">Collaborative</h3>
+        <p class="text-muted-foreground mb-4">Work with talented professionals in a team that values diverse perspectives and teamwork.</p>
+      </div>
+      <div>
+        <h3 class="text-2xl font-bold text-accent mb-4">Inclusive</h3>
+        <p class="text-muted-foreground mb-4">We celebrate diversity and create an environment where everyone can thrive and grow.</p>
+      </div>
+      <div>
+        <h3 class="text-2xl font-bold text-accent mb-4">Growth Oriented</h3>
+        <p class="text-muted-foreground mb-4">Clear career paths, mentorship programs, and continuous learning opportunities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Open Positions -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Open Positions</h2>
+
+    <div class="space-y-4">
+      @for (job of jobs; track job) {
+        <div
+          tabindex="0"
+          (click)="selectedJob = selectedJob?.id === job.id ? null : job"
+          (keyup.enter)="selectedJob = selectedJob?.id === job.id ? null : job"
+          class="glass-card p-6 md:p-8 rounded-lg cursor-pointer hover:border-accent transition-all hover:translate-y-[-2px]"
+          >
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+            <div>
+              <h3 class="text-xl font-bold text-accent mb-2">{{ job.title }}</h3>
+              <div class="flex flex-wrap gap-3">
+                <span class="badge-accent">{{ job.department }}</span>
+                <span class="tag-skill">{{ job.level }}</span>
+                <span class="tag-skill">{{ job.type }}</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-foreground">{{ job.salary }}</p>
+              <p class="text-sm text-muted-foreground">{{ job.location }}</p>
+            </div>
+          </div>
+          <!-- Expanded Details -->
+          @if (selectedJob?.id === job.id) {
+            <div class="pt-4 border-t border-border">
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                  <p class="text-sm text-muted-foreground mb-1">Location</p>
+                  <p class="font-semibold text-foreground">{{ job.location }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-muted-foreground mb-1">Salary Range</p>
+                  <p class="font-semibold text-foreground">{{ job.salary }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-muted-foreground mb-1">Type</p>
+                  <p class="font-semibold text-foreground">{{ job.type }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-muted-foreground mb-1">Level</p>
+                  <p class="font-semibold text-foreground">{{ job.level }}</p>
+                </div>
+              </div>
+              <button class="btn-primary">
+                Apply Now
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- No more positions message -->
+    @if (jobs.length === 0) {
+      <div class="text-center py-12">
+        <p class="text-muted-foreground text-lg">No positions available right now, but we're always looking for talented people!</p>
+        <p class="text-muted-foreground mt-2">Check back soon or <a routerLink="/contact" class="text-accent hover:text-primary">reach out</a> to express your interest.</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Application Process -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Application Process</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-7 gap-4 md:gap-2">
+      <div class="text-center">
+        <div class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold mx-auto mb-3">1</div>
+        <h4 class="font-semibold text-foreground mb-2">Submit</h4>
+        <p class="text-sm text-muted-foreground">Apply online</p>
+      </div>
+
+      <div class="flex justify-center md:items-center">
+        <svg class="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </div>
+
+      <div class="text-center">
+        <div class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold mx-auto mb-3">2</div>
+        <h4 class="font-semibold text-foreground mb-2">Screen</h4>
+        <p class="text-sm text-muted-foreground">Initial review</p>
+      </div>
+
+      <div class="flex justify-center md:items-center">
+        <svg class="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </div>
+
+      <div class="text-center">
+        <div class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold mx-auto mb-3">3</div>
+        <h4 class="font-semibold text-foreground mb-2">Interview</h4>
+        <p class="text-sm text-muted-foreground">Meet the team</p>
+      </div>
+
+      <div class="flex justify-center md:items-center">
+        <svg class="w-6 h-6 text-muted-foreground rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </div>
+
+      <div class="text-center">
+        <div class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold mx-auto mb-3">4</div>
+        <h4 class="font-semibold text-foreground mb-2">Offer</h4>
+        <p class="text-sm text-muted-foreground">Join Haxel!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 md:p-16 rounded-2xl text-center accent-glow">
+      <h2 class="text-section-xl mb-6">Ready to Make an Impact?</h2>
+      <p class="text-lg text-muted-foreground mb-8">
+        Join our team and help shape the future of tech retail. We're excited to meet you!
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="btn-primary px-8 py-3 text-lg">
+          View All Positions
+        </button>
+        <button class="btn-outline px-8 py-3 text-lg">
+          Learn More
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

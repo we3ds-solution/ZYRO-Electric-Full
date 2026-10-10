@@ -1,0 +1,34 @@
+name: Validate Branch Naming
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+      - testing
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate Branch Naming Convention
+        if: github.event_name == 'push'
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "Branch: $BRANCH_NAME"
+          if [[ ! "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix)/[a-z0-9-]+$ ]]; then
+            echo "❌ Branch name '$BRANCH_NAME' does not follow convention (feature/*, bugfix/*, hotfix/* with lowercase alphanumeric and hyphens)."
+            exit 1
+          fi
+          echo "✅ Branch naming validation passed."

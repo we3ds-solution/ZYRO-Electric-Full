@@ -1,0 +1,80 @@
+<div class="max-w-7xl mx-auto px-4 md:px-6 pt-4">
+  <section class="relative overflow-hidden bg-black rounded-[2rem] border border-border/40" style="height: min(88vh, 720px); min-height: 480px;">
+
+    <!-- Slides -->
+    <div class="absolute inset-0">
+      @for (slide of heroSlides; track slide; let i = $index) {
+        <div
+          class="absolute inset-0 transition-opacity duration-700 ease-in-out"
+          [style.opacity]="activeSlide === i ? '1' : '0'"
+          [style.z-index]="activeSlide === i ? '1' : '0'"
+          [style.pointer-events]="activeSlide === i ? 'auto' : 'none'">
+          <!-- Full-bleed background image -->
+          <img
+            [src]="slide.image"
+            [alt]="slide.titlePrefix + ' ' + slide.titleHighlight"
+            class="absolute inset-0 w-full h-full object-cover object-top"
+            [attr.loading]="activeSlide === i ? 'eager' : 'lazy'"
+            [attr.fetchpriority]="activeSlide === i ? 'high' : 'auto'"
+            onerror="this.style.opacity='0'">
+          <!-- Readability gradient -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+          <!-- Bottom-left content (Haxel style) -->
+          <div class="absolute inset-x-0 bottom-0 z-10">
+            <div class="max-w-7xl mx-auto px-4 md:px-6 pb-16 md:pb-20 text-center">
+              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/25 text-white text-xs font-black tracking-[0.2em] uppercase mb-4">
+                {{ slide.badge }}
+              </div>
+              <h1 class="text-white font-black tracking-tight leading-none text-4xl md:text-6xl uppercase">
+                {{ slide.titlePrefix }} {{ slide.titleHighlight }} {{ slide.titleSuffix }}
+              </h1>
+              <p class="text-white/80 text-sm md:text-base font-medium mt-3 max-w-xl mx-auto">
+                {{ slide.description }}
+              </p>
+              <div class="flex flex-wrap justify-center gap-3 mt-6">
+                <button
+                  (click)="goToProducts()"
+                  class="bg-white text-black font-black text-sm uppercase tracking-wider px-8 py-3.5 rounded-full hover:bg-accent hover:text-accent-foreground transition-colors shadow-xl">
+                  {{ slide.ctaPrimary }}
+                </button>
+                <button
+                  (click)="goToProducts()"
+                  class="border-2 border-white/80 text-white font-black text-sm uppercase tracking-wider px-8 py-3.5 rounded-full hover:bg-white hover:text-black transition-colors">
+                  {{ slide.ctaSecondary }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Dots -->
+    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      @for (slide of heroSlides; track slide; let i = $index) {
+        <button
+          (click)="goToSlide(i)"
+          class="h-1.5 rounded-full transition-all duration-300"
+          [style.width]="activeSlide === i ? '28px' : '8px'"
+          [style.background]="activeSlide === i ? '#fff' : 'rgba(255,255,255,0.4)'"
+          [attr.aria-label]="'Go to slide ' + (i + 1)">
+        </button>
+      }
+    </div>
+
+    <!-- Arrows -->
+    <button
+      (click)="prevSlide()"
+      aria-label="Previous slide"
+      class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-white/10 backdrop-blur border border-white/25 text-white rounded-full hover:bg-white hover:text-black transition-colors">
+      <lucide-icon name="chevron-left" class="w-5 h-5"></lucide-icon>
+    </button>
+    <button
+      (click)="nextSlide()"
+      aria-label="Next slide"
+      class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-white/10 backdrop-blur border border-white/25 text-white rounded-full hover:bg-white hover:text-black transition-colors">
+      <lucide-icon name="chevron-right" class="w-5 h-5"></lucide-icon>
+    </button>
+  </section>
+</div>

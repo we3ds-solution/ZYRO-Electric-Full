@@ -1,0 +1,104 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+      - testing
+      - test
+      - 'test/**'
+      - feature/**
+  pull_request:
+    branches:
+      - main
+      - testing
+      - test
+  workflow_dispatch:
+
+jobs:
+  frontend-tests:
+    runs-on: ubuntu-latest
+    name: Frontend Tests
+
+    strategy:
+      matrix:
+        node-version: ['22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci --legacy-peer-deps
+        working-directory: frontend
+
+      - name: Run frontend tests
+        run: npm test -- --watch=false --code-coverage
+        working-directory: frontend
+        env:
+          CI: true
+          CHROME_BIN: /usr/bin/google-chrome-stable
+
+      - name: Archive frontend test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-results
+          path: frontend/coverage/
+
+  backend-tests:
+    runs-on: ubuntu-latest
+    name: Backend Tests
+    
+    strategy:
+      matrix:
+        dotnet-version: ['9.0.x']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Restore dependencies
+        run: dotnet restore backend/
+
+      - name: Build backend
+        run: dotnet build backend/ --configuration Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test backend/tests/Unit/Unit.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
+
+      - name: Run integration tests
+        run: dotnet test backend/tests/Integration/Integration.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
+
+      - name: Run API tests
+        run: dotnet test backend/tests/API/API.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
+
+      - name: Run architecture tests
+        run: dotnet test backend/tests/Architecture/Architecture.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
+
+      - name: Archive backend test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: |
+            **/TestResults/
+            **/coverage.cobertura.xml
+
+      - name: Publish coverage to codecov
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          files: '**/coverage.cobertura.xml'
+          flags: backend
+          name: backend-coverage

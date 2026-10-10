@@ -1,0 +1,77 @@
+<!-- Hero -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Frequently Asked Questions</h1>
+    <p class="text-lg text-muted-foreground">Quick answers to common questions. Can't find what you need? Contact us!</p>
+  </div>
+</section>
+
+<!-- FAQs -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="space-y-4">
+      @for (faq of faqs; track faq; let i = $index) {
+        <div
+          class="glass-card rounded-lg overflow-hidden border border-border hover:border-accent transition-colors"
+          >
+          <button (click)="toggleFAQ('faq-' + i)" class="w-full p-6 flex items-center justify-between hover:bg-secondary transition-colors cursor-pointer">
+            <span class="text-left font-semibold text-foreground pr-4">
+              {{ faq.question }}
+            </span>
+            <svg
+              class="w-6 h-6 text-accent flex-shrink-0 transition-transform"
+              [class.rotate-180]="expandedId === ('faq-' + i)"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+          </button>
+          @if (expandedId === ('faq-' + i)) {
+            <div class="px-6 pb-6 pt-0 border-t border-border">
+              <p class="text-muted-foreground leading-relaxed">
+                {{ faq.answer }}
+              </p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Still Need Help -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+      <h2 class="text-2xl font-bold text-accent mb-4">Still have questions?</h2>
+      <p class="text-muted-foreground mb-8">Our support team is here to help. Reach out anytime!</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a routerLink="/help" class="btn-primary px-8 py-3">Visit Help Center</a>
+        <a routerLink="/contact" class="btn-outline px-8 py-3">Contact Support</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Links -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Related Pages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a routerLink="/help" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Help Center</h3>
+        <p class="text-sm text-muted-foreground">Browse detailed guides and resources.</p>
+      </a>
+      <a routerLink="/contact" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Contact Us</h3>
+        <p class="text-sm text-muted-foreground">Get in touch with our support team.</p>
+      </a>
+      <a routerLink="/returns" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Return Policy</h3>
+        <p class="text-sm text-muted-foreground">Learn about our 30-day returns.</p>
+      </a>
+    </div>
+  </div>
+</section>

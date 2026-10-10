@@ -1,0 +1,502 @@
+<!-- Announcement marquee (Haxel: SUMMER CLEARANCE 40% OFF) -->
+<div class="bg-black text-white overflow-hidden py-1.5 select-none" aria-hidden="true">
+  <div class="hx-marquee flex whitespace-nowrap w-max">
+    @for (i of [1,2,3,4,5,6]; track i) {
+      <span class="mx-6 text-[11px] font-black tracking-[0.2em] uppercase">Summer Clearance</span>
+      <span class="text-[11px] font-black tracking-[0.2em] uppercase text-accent">Summer Clearance 40% OFF !!</span>
+    }
+  </div>
+</div>
+
+<header class="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-[1fr_auto_1fr] items-center h-16 gap-2">
+
+    <!-- Left: desktop nav / mobile hamburger -->
+    <div class="flex items-center gap-1">
+      <!-- Mobile hamburger -->
+      <button
+        (click)="toggleMobileMenu()"
+        class="lg:hidden p-2.5 hover:bg-secondary rounded-full transition-colors"
+        title="Open menu">
+        <lucide-icon name="list" class="w-5 h-5 text-foreground"></lucide-icon>
+      </button>
+
+      <!-- Desktop nav -->
+      <div class="hidden lg:flex items-center gap-1 text-sm font-bold">
+        <!-- Men dropdown -->
+        <div
+          class="relative"
+          (mouseenter)="openNavMenu('men')"
+          (mouseleave)="scheduleCloseNavMenu()">
+          <button
+            (click)="toggleNavMenu('men')"
+            class="px-4 py-2 rounded-full hover:bg-secondary transition-colors flex items-center gap-1"
+            [class.bg-secondary]="openMenu === 'men'">
+            Men
+            <lucide-icon name="chevron-down" class="w-3.5 h-3.5 text-muted-foreground transition-transform duration-200" [class.rotate-180]="openMenu === 'men'"></lucide-icon>
+          </button>
+          @if (openMenu === 'men') {
+            <div class="absolute left-0 top-full pt-2 z-50 hx-dropdown">
+              <div class="bg-card border border-border rounded-2xl shadow-xl p-2 w-[24rem] flex gap-2">
+                <!-- Links side -->
+                <div class="flex-1 min-w-0">
+                  @for (link of navMen; track link) {
+                    <button
+                      (click)="goToCategory(link.category)"
+                      class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                      {{ link.label }}
+                    </button>
+                  }
+                </div>
+                <!-- Image side -->
+                <button (click)="goToCategory('men')" class="relative block w-36 flex-shrink-0 rounded-xl overflow-hidden min-h-44">
+                  <img
+                    src="https://haxel.me/cdn/shop/files/Haxels_Black_Shorts_Front_Hero_from_Olive_Base.png?v=1789666981&width=400"
+                    alt="Shop Men"
+                    loading="lazy"
+                    class="absolute inset-0 w-full h-full object-cover">
+                  <span class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></span>
+                  <span class="absolute bottom-2.5 left-0 right-0 text-center text-white text-xs font-black uppercase tracking-widest">Shop Men</span>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        <!-- Women dropdown -->
+        <div
+          class="relative"
+          (mouseenter)="openNavMenu('women')"
+          (mouseleave)="scheduleCloseNavMenu()">
+          <button
+            (click)="toggleNavMenu('women')"
+            class="px-4 py-2 rounded-full hover:bg-secondary transition-colors flex items-center gap-1"
+            [class.bg-secondary]="openMenu === 'women'">
+            Women
+            <lucide-icon name="chevron-down" class="w-3.5 h-3.5 text-muted-foreground transition-transform duration-200" [class.rotate-180]="openMenu === 'women'"></lucide-icon>
+          </button>
+          @if (openMenu === 'women') {
+            <div class="absolute left-0 top-full pt-2 z-50 hx-dropdown">
+              <div class="bg-card border border-border rounded-2xl shadow-xl p-2 w-[24rem] flex gap-2">
+                <!-- Links side -->
+                <div class="flex-1 min-w-0">
+                  @for (link of navWomen; track link) {
+                    <button
+                      (click)="goToCategory(link.category)"
+                      class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+                      {{ link.label }}
+                    </button>
+                  }
+                </div>
+                <!-- Image side -->
+                <button (click)="goToCategory('women')" class="relative block w-36 flex-shrink-0 rounded-xl overflow-hidden min-h-56">
+                  <img
+                    src="https://haxel.me/cdn/shop/files/1_459b1906-cdf3-4b86-8807-59d1608d3032.png?v=1773849145&width=400"
+                    alt="Shop Women"
+                    loading="lazy"
+                    class="absolute inset-0 w-full h-full object-cover">
+                  <span class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></span>
+                  <span class="absolute bottom-2.5 left-0 right-0 text-center text-white text-xs font-black uppercase tracking-widest">Shop Women</span>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        <button (click)="goToCategory('footwear')" class="px-4 py-2 rounded-full hover:bg-secondary transition-colors">Footwear</button>
+        <button (click)="goToCategory('lifestyle')" class="px-4 py-2 rounded-full hover:bg-secondary transition-colors flex items-center gap-1.5">
+          SS26
+          <span class="text-[9px] font-black uppercase tracking-wider bg-red-500 text-white px-1.5 py-0.5 rounded-md">New</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Center: logo -->
+    <h1 class="text-2xl md:text-3xl font-black tracking-[0.18em] cursor-pointer select-none justify-self-center"
+      tabindex="0"
+      (click)="goToHome()"
+      (keyup.enter)="goToHome()"
+      title="Haxel — Home">
+      HAXEL
+    </h1>
+
+    <!-- Right: actions -->
+    <div class="flex items-center gap-0.5 justify-self-end">
+      <!-- Search -->
+      <button
+        (click)="toggleSearch()"
+        class="p-2.5 hover:bg-secondary rounded-full transition-colors"
+        title="Search">
+        <lucide-icon name="search" class="w-5 h-5 text-foreground"></lucide-icon>
+      </button>
+
+      <!-- Theme Toggle -->
+      <button
+        (click)="toggleTheme()"
+        class="hidden sm:block p-2.5 hover:bg-secondary rounded-full transition-all duration-200 active:scale-90 group"
+        [title]="isDarkMode ? 'Light Mode' : 'Dark Mode'">
+        @if (isDarkMode) {
+          <lucide-icon name="sun" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors theme-icon-pop"></lucide-icon>
+        }
+        @if (!isDarkMode) {
+          <lucide-icon name="moon" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors theme-icon-pop"></lucide-icon>
+        }
+      </button>
+
+      <!-- Account -->
+      @if (isLoggedIn) {
+        <app-profile-dropdown
+          [userName]="userName"
+          [userEmail]="userEmail"
+          [isOnline]="true"
+          (logout)="onProfileLogout()">
+        </app-profile-dropdown>
+      }
+      @if (!isLoggedIn) {
+        <button
+          (click)="goToAuth()"
+          class="p-2.5 hover:bg-secondary rounded-full transition-colors group"
+          title="Login">
+          <lucide-icon name="user" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+        </button>
+      }
+
+      <!-- Cart -->
+      <button
+        (click)="toggleCartDrawer()"
+        class="relative p-2.5 hover:bg-secondary rounded-full transition-colors group"
+        title="Open shopping cart">
+        <lucide-icon name="shopping-bag" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+        <span
+          class="absolute top-0.5 right-0.5 flex items-center justify-center min-w-4 h-4 px-0.5 text-[10px] font-black text-white bg-red-500 rounded-full border-2 border-background shadow-sm">
+          {{ cartItemCount }}
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Expanding search row -->
+  @if (isSearchOpen) {
+    <div class="border-t border-border/60 bg-background">
+      <div class="max-w-7xl mx-auto px-4 md:px-6 py-4">
+        <div class="flex items-center gap-2 bg-secondary/50 border border-border rounded-full px-4 py-2.5">
+          <lucide-icon name="search" class="w-4 h-4 text-muted-foreground flex-shrink-0"></lucide-icon>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="submitSearch()"
+            placeholder="Search leggings, tees, footwear..."
+            class="flex-1 bg-transparent outline-none text-sm font-medium placeholder:text-muted-foreground">
+          <button (click)="toggleSearch()" class="p-1 hover:bg-secondary rounded-full transition-colors" title="Close search">
+            <lucide-icon name="x" class="w-4 h-4 text-muted-foreground"></lucide-icon>
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 mt-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-muted-foreground mr-1">Trending Now</span>
+          @for (term of trendingSearches; track term) {
+            <button
+              (click)="submitSearch(term)"
+              class="text-xs font-semibold px-3 py-1.5 rounded-full bg-secondary hover:bg-accent hover:text-accent-foreground transition-colors">
+              {{ term }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</header>
+
+<!-- Mobile menu drawer -->
+@if (isMobileMenuOpen) {
+  <div class="fixed inset-0 z-[90] lg:hidden">
+    <div class="absolute inset-0 bg-black/60" (click)="closeMobileMenu()"></div>
+    <div class="absolute left-0 top-0 bottom-0 w-80 max-w-[85vw] bg-card border-r border-border shadow-2xl overflow-y-auto p-5 space-y-2">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-xl font-black tracking-[0.18em]">HAXEL</span>
+        <button (click)="closeMobileMenu()" class="p-2 hover:bg-secondary rounded-full transition-colors" title="Close menu">
+          <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+        </button>
+      </div>
+      <!-- Men group -->
+      <button
+        (click)="toggleMobileGroup('men')"
+        class="w-full flex items-center justify-between px-4 py-3 rounded-2xl font-bold hover:bg-secondary transition-colors">
+        Men
+        <lucide-icon name="chevron-down" class="w-4 h-4 text-muted-foreground transition-transform" [class.rotate-180]="mobileExpanded === 'men'"></lucide-icon>
+      </button>
+      @if (mobileExpanded === 'men') {
+        <div class="pl-3 space-y-1 pb-2">
+          @for (link of navMen; track link) {
+            <button
+              (click)="goToCategory(link.category)"
+              class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+              {{ link.label }}
+            </button>
+          }
+        </div>
+      }
+      <!-- Women group -->
+      <button
+        (click)="toggleMobileGroup('women')"
+        class="w-full flex items-center justify-between px-4 py-3 rounded-2xl font-bold hover:bg-secondary transition-colors">
+        Women
+        <lucide-icon name="chevron-down" class="w-4 h-4 text-muted-foreground transition-transform" [class.rotate-180]="mobileExpanded === 'women'"></lucide-icon>
+      </button>
+      @if (mobileExpanded === 'women') {
+        <div class="pl-3 space-y-1 pb-2">
+          @for (link of navWomen; track link) {
+            <button
+              (click)="goToCategory(link.category)"
+              class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
+              {{ link.label }}
+            </button>
+          }
+        </div>
+      }
+      <button
+        (click)="goToCategory('footwear')"
+        class="w-full text-left px-4 py-3 rounded-2xl font-bold hover:bg-secondary transition-colors">
+        Footwear
+      </button>
+      <button
+        (click)="goToCategory('lifestyle')"
+        class="w-full text-left px-4 py-3 rounded-2xl font-bold hover:bg-secondary transition-colors flex items-center gap-2">
+        SS26
+        <span class="text-[9px] font-black uppercase tracking-wider bg-red-500 text-white px-1.5 py-0.5 rounded-md">New</span>
+      </button>
+      <div class="pt-3 border-t border-border/60 flex gap-2">
+        <button (click)="goToProducts()" class="flex-1 btn-outline rounded-2xl py-2.5 text-sm font-bold">All Products</button>
+        <button (click)="toggleMobileMenu(); toggleSearch()" class="flex-1 btn-primary rounded-2xl py-2.5 text-sm font-bold">Search</button>
+      </div>
+    </div>
+  </div>
+}
+
+
+<!-- Cart Drawer using UI Drawer Component -->
+<app-ui-drawer
+  [isOpen]="isCartDrawerOpen"
+  (closed)="closeCartDrawer()"
+  title="Shopping Cart"
+  [badge]="cartItemCount > 0 ? cartItemCount.toString() : undefined"
+  position="right">
+
+  <!-- Drawer Icon -->
+  <lucide-icon drawer-icon name="shopping-cart" class="w-4 h-4 text-accent"></lucide-icon>
+
+  <!-- Drawer Content -->
+  <div drawer-content>
+    <!-- Empty State -->
+    @if (cartItems.length === 0) {
+      <div class="flex flex-col items-center justify-center h-full text-center py-20">
+        <div class="w-24 h-24 bg-secondary rounded-[2rem] flex items-center justify-center mb-6 border border-border/50">
+          <lucide-icon name="shopping-cart" class="w-12 h-12 text-muted-foreground/30"></lucide-icon>
+        </div>
+        <p class="font-black text-xl mb-2">Your cart is empty</p>
+        <p class="text-sm text-muted-foreground font-medium mb-8">Add items to get started</p>
+        <button
+          (click)="goToProducts(); closeCartDrawer()"
+          class="btn-primary rounded-xl px-6 py-2.5 font-bold shadow-md shadow-accent/20">
+          Browse Products
+        </button>
+      </div>
+    }
+
+    <!-- Cart Items List -->
+    @if (cartItems.length > 0) {
+      <div class="space-y-3">
+        @for (item of cartItems; track item) {
+          <div
+            class="flex items-center gap-3 bg-secondary/30 rounded-2xl p-3 border border-border/30 transition-all hover:border-border/60 group">
+            <!-- Product Image -->
+            <div class="w-16 h-16 rounded-xl bg-muted flex-shrink-0 overflow-hidden border border-border/50">
+              @if (item.product?.image && !item.hasError) {
+                <img
+                  [src]="item.product.image"
+                  [alt]="item.product?.title"
+                  (error)="item.hasError = true"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              }
+              @if (!item.product?.image || item.hasError) {
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-secondary">
+                  <lucide-icon name="image" class="w-6 h-6 text-muted-foreground/40"></lucide-icon>
+                </div>
+              }
+            </div>
+            <!-- Product Info -->
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-sm truncate mb-0.5">{{ item.product?.title || 'Product' }}</h3>
+              <p class="text-accent font-black text-sm">{{ item.product?.price | currency:'LE ':'symbol':'1.0-0' }}</p>
+              <!-- Quantity Controls -->
+              <div class="flex items-center gap-2 mt-2 bg-background/60 rounded-full w-fit px-1.5 py-1 border border-border/50">
+                <button
+                  (click)="updateQuantity(item.productId, item.quantity - 1)"
+                  class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
+                  <lucide-icon name="minus" class="w-3 h-3"></lucide-icon>
+                </button>
+                <span class="text-xs font-black w-5 text-center">{{ item.quantity }}</span>
+                <button
+                  (click)="updateQuantity(item.productId, item.quantity + 1)"
+                  class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
+                  <lucide-icon name="plus" class="w-3 h-3"></lucide-icon>
+                </button>
+              </div>
+            </div>
+            <!-- Remove Button -->
+            <button
+              (click)="removeFromCart(item.productId)"
+              class="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-all flex-shrink-0 border border-transparent hover:border-red-500/20"
+              title="Remove item">
+              <lucide-icon name="trash-2" class="w-3.5 h-3.5"></lucide-icon>
+            </button>
+          </div>
+        }
+        <!-- Cart Summary -->
+        <div class="mt-6 pt-4">
+          <div class="flex justify-between items-center bg-gradient-to-r from-accent/10 to-transparent p-4 rounded-2xl border border-accent/20">
+            <div>
+              <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-0.5">Total</p>
+              <p class="font-black text-2xl text-accent">{{ cartTotal | currency:'LE ':'symbol':'1.0-0' }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-muted-foreground font-semibold">{{ cartItemCount }} item{{ cartItemCount !== 1 ? 's' : '' }}</p>
+              <p class="text-xs text-accent font-bold">Free shipping!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Drawer Footer -->
+  <div drawer-footer class="space-y-3">
+    @if (cartItems.length > 0) {
+      <button
+        (click)="goToCart()"
+        class="w-full btn-primary rounded-full py-3.5 font-black flex items-center justify-center gap-2 shadow-lg shadow-accent/20 group">
+        <lucide-icon name="shopping-bag" class="w-4 h-4 group-hover:scale-110 transition-transform"></lucide-icon>
+        View Full Cart
+      </button>
+    }
+    @if (cartItems.length > 0) {
+      <button
+        (click)="goToProducts(); closeCartDrawer()"
+        class="w-full btn-outline rounded-full py-3 font-bold">
+        Continue Shopping
+      </button>
+    }
+    @if (cartItems.length === 0) {
+      <button
+        (click)="goToProducts(); closeCartDrawer()"
+        class="w-full btn-primary rounded-full py-3.5 font-black shadow-lg shadow-accent/20">
+        Start Shopping
+      </button>
+    }
+  </div>
+
+</app-ui-drawer>
+
+<!-- Auth Modal -->
+@if (isAuthModalOpen) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 transition-opacity">
+    <div class="w-full max-w-md bg-card rounded-[2rem] shadow-2xl border border-border overflow-hidden relative glass-card">
+      <!-- Close button -->
+      <button (click)="closeAuthModal()" class="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors z-10">
+        <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+      </button>
+      <div class="p-8 sm:p-10">
+        <!-- Header -->
+        <div class="text-center mb-8 relative">
+          <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <lucide-icon [name]="authModalMode === 'login' ? 'lock' : 'user-plus'" class="w-8 h-8 text-accent"></lucide-icon>
+          </div>
+          <h2 class="text-2xl font-bold gradient-text mb-2">{{ authModalMode === 'login' ? 'Welcome Back' : 'Create Account' }}</h2>
+          <p class="text-sm text-muted-foreground">{{ authModalMode === 'login' ? 'Sign in to your Haxel account' : 'Join Haxel today' }}</p>
+        </div>
+        <!-- Login Form -->
+        @if (authModalMode === 'login') {
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="space-y-5">
+            <div>
+              <label for="header-login-email" class="section-label ml-1">Email</label>
+              <input id="header-login-email" type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('email')">
+            </div>
+            <div>
+              <label for="header-login-password" class="section-label ml-1">Password</label>
+              <input id="header-login-password" type="password" formControlName="password" placeholder="Enter password" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('password')">
+            </div>
+            <button type="submit" [disabled]="!loginForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
+              @if (isAuthLoading) {
+                <span class="flex items-center gap-2"><lucide-icon name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon> Signing in...</span>
+              }
+              @if (!isAuthLoading) {
+                <span>Sign In</span>
+              }
+            </button>
+          </form>
+        }
+        <!-- Register Form -->
+        @if (authModalMode === 'register') {
+          <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="space-y-4">
+            <div>
+              <label for="header-reg-name" class="section-label ml-1">Name</label>
+              <input id="header-reg-name" type="text" formControlName="name" placeholder="John Doe" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('name')">
+            </div>
+            <div>
+              <label for="header-reg-email" class="section-label ml-1">Email</label>
+              <input id="header-reg-email" type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('email')">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="header-reg-phone" class="section-label ml-1">Phone</label>
+                <input id="header-reg-phone" type="tel" formControlName="phone" placeholder="+1..." class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('phone')">
+              </div>
+              <div>
+                <label for="header-reg-address" class="section-label ml-1">Address</label>
+                <input id="header-reg-address" type="text" formControlName="address" placeholder="City" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('address')">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="header-reg-password" class="section-label ml-1">Password</label>
+                <input id="header-reg-password" type="password" formControlName="password" placeholder="Min 8 chars" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('password')">
+              </div>
+              <div>
+                <label for="header-reg-confirm" class="section-label ml-1">Confirm</label>
+                <input id="header-reg-confirm" type="password" formControlName="confirmPassword" placeholder="Confirm" class="form-input w-full mt-1.5 rounded-xl" [class.error]="registerForm.errors?.['passwordMismatch']">
+              </div>
+            </div>
+            <!-- Terms checkbox -->
+            <div class="flex items-center gap-2 mt-2">
+              <input type="checkbox" id="modal-terms" formControlName="terms" class="w-4 h-4 rounded text-accent focus:ring-accent bg-input border-border">
+              <label for="modal-terms" class="text-xs text-muted-foreground cursor-pointer">I agree to Terms & Conditions</label>
+            </div>
+            <button type="submit" [disabled]="!registerForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
+              @if (isAuthLoading) {
+                <span class="flex items-center gap-2"><lucide-icon name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon> Creating...</span>
+              }
+              @if (!isAuthLoading) {
+                <span>Create Account</span>
+              }
+            </button>
+          </form>
+        }
+        <!-- Toggle Mode -->
+        <div class="mt-8 text-center text-sm text-muted-foreground">
+          @if (authModalMode === 'login') {
+            <p>
+              Don't have an account?
+              <button type="button" (click)="switchAuthMode('register')" class="text-accent font-bold hover:underline ml-1">Sign up</button>
+            </p>
+          }
+          @if (authModalMode === 'register') {
+            <p>
+              Already have an account?
+              <button type="button" (click)="switchAuthMode('login')" class="text-accent font-bold hover:underline ml-1">Sign in</button>
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Toast -->
+<app-ui-toast #toast></app-ui-toast>

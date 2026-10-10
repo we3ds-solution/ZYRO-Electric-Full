@@ -1,0 +1,287 @@
+<!-- Hero Header -->
+<section class="relative py-16 md:py-24 bg-gradient-to-b from-accent/10 via-background to-background overflow-hidden border-b border-border/40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent font-bold text-xs uppercase tracking-wider mb-6">
+      <lucide-icon name="map-pin" class="w-4 h-4"></lucide-icon>
+      Official Haxel Stores & Hubs
+    </div>
+    <h1 class="text-4xl md:text-6xl font-black gradient-text tracking-tight mb-6">
+      Find a Haxel Branch Near You
+    </h1>
+    <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      Try on leggings, tees & footwear in person — size exchanges, footwear fitting & easy returns in store.
+    </p>
+
+    <!-- Active Preferred Store Banner -->
+    @if (getPreferredBranch(); as pref) {
+      <div class="mt-8 inline-flex items-center gap-3 bg-card border border-accent/30 p-3 px-5 rounded-2xl shadow-lg">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+        </span>
+        <span class="text-xs text-muted-foreground font-semibold">Your Selected Store:</span>
+        <span class="font-bold text-sm text-foreground flex items-center gap-1">
+          {{ pref.name }} ({{ pref.city }})
+        </span>
+        <span class="text-xs bg-accent/20 text-accent font-bold px-2 py-0.5 rounded-md">Selected</span>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Filter & Search Section -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <div class="bg-card rounded-3xl p-6 border border-border shadow-xl space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <!-- Search Input -->
+      <div class="md:col-span-1 relative">
+        <label for="branch-search" class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Search Store</label>
+        <div class="relative">
+          <input
+            id="branch-search"
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+            placeholder="Search by city, store name or zipcode..."
+            class="form-input w-full pl-10 pr-4 py-3 rounded-2xl bg-secondary/50 border border-border focus:border-accent text-sm font-medium">
+            <lucide-icon name="search" class="w-4 h-4 text-muted-foreground absolute left-3.5 top-3.5"></lucide-icon>
+          </div>
+        </div>
+
+        <!-- City Select -->
+        <div>
+          <span class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Filter by City</span>
+          <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            @for (city of cities; track city) {
+              <button
+                (click)="selectCity(city)"
+                [class.bg-accent]="selectedCity === city"
+                [class.text-white]="selectedCity === city"
+                [class.bg-secondary]="selectedCity !== city"
+                [class.text-muted-foreground]="selectedCity !== city"
+                class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all hover:text-foreground">
+                {{ city }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Services Select -->
+        <div>
+          <span class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Services Provided</span>
+          <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            @for (service of servicesList; track service) {
+              <button
+                (click)="selectService(service)"
+                [class.bg-accent]="selectedService === service"
+                [class.text-white]="selectedService === service"
+                [class.bg-secondary]="selectedService !== service"
+                [class.text-muted-foreground]="selectedService !== service"
+                class="px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all hover:text-foreground">
+                {{ service }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Branches List Grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+
+    <!-- Empty Results -->
+    @if (filteredBranches.length === 0) {
+      <div class="text-center py-16 glass-card rounded-3xl border border-dashed border-border">
+        <lucide-icon name="map-pin-off" class="w-16 h-16 text-muted-foreground/40 mx-auto mb-4"></lucide-icon>
+        <h3 class="text-xl font-bold text-foreground mb-2">No branches match your search</h3>
+        <p class="text-sm text-muted-foreground">Try adjusting your search keywords or city filter.</p>
+      </div>
+    }
+
+    <!-- Branch Cards -->
+    @if (filteredBranches.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @for (branch of filteredBranches; track branch) {
+          <div
+            tabindex="0"
+            (click)="openBranchDetails(branch)"
+            (keyup.enter)="openBranchDetails(branch)"
+            class="bg-card rounded-3xl border border-border/80 hover:border-accent/60 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group flex flex-col cursor-pointer">
+            <!-- Store Image & Status Badge -->
+            <div class="relative h-48 w-full overflow-hidden bg-muted">
+              <img
+                [src]="branch.image"
+                [alt]="branch.name"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <!-- Status Badge -->
+                <div class="absolute top-4 left-4">
+                  <span [ngClass]="branch.isOpenNow ? 'bg-emerald-500/90 text-white' : 'bg-amber-500/90 text-white'" class="px-3 py-1 rounded-full text-xs font-black backdrop-blur-md shadow-md uppercase tracking-wider inline-flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                    {{ branch.isOpenNow ? 'Open Now' : 'Closed' }}
+                  </span>
+                </div>
+                <!-- Preferred Badge -->
+                @if (preferredBranchId === branch.id) {
+                  <div class="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-xs font-black shadow-md flex items-center gap-1">
+                    <lucide-icon name="check-circle" class="w-3.5 h-3.5"></lucide-icon>
+                    My Store
+                  </div>
+                }
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-accent bg-accent/20 px-2 py-0.5 rounded border border-accent/30 mb-1 inline-block">
+                    Code: {{ branch.code }}
+                  </span>
+                  <h3 class="text-xl font-bold text-white leading-snug group-hover:text-accent transition-colors">{{ branch.name }}</h3>
+                </div>
+              </div>
+              <!-- Card Body -->
+              <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+                <div class="space-y-3">
+                  <!-- Address -->
+                  <div class="flex items-start gap-3 text-sm text-muted-foreground">
+                    <lucide-icon name="map-pin" class="w-4 h-4 text-accent flex-shrink-0 mt-0.5"></lucide-icon>
+                    <span>{{ branch.address }}, {{ branch.city }}, {{ branch.state }} {{ branch.zipCode }}</span>
+                  </div>
+                  <!-- Phone -->
+                  <div class="flex items-center gap-3 text-sm text-muted-foreground">
+                    <lucide-icon name="phone" class="w-4 h-4 text-accent flex-shrink-0"></lucide-icon>
+                    <span class="font-mono">{{ branch.phone }}</span>
+                  </div>
+                  <!-- Services Tags -->
+                  <div class="pt-2">
+                    <p class="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Available Services:</p>
+                    <div class="flex flex-wrap gap-1.5">
+                      @for (service of branch.services; track service) {
+                        <span
+                          class="text-[11px] font-semibold bg-secondary/80 text-foreground px-2.5 py-1 rounded-lg border border-border/50">
+                          {{ service }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                </div>
+                <!-- Action Buttons -->
+                <div class="pt-4 border-t border-border/50 flex gap-2">
+                  <button
+                    (click)="setPreferredBranch(branch.id, $event)"
+                    [class.bg-accent]="preferredBranchId === branch.id"
+                    [class.text-white]="preferredBranchId === branch.id"
+                    [class.btn-outline]="preferredBranchId !== branch.id"
+                    class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                    <lucide-icon [name]="preferredBranchId === branch.id ? 'check-circle' : 'star'" class="w-4 h-4"></lucide-icon>
+                    {{ preferredBranchId === branch.id ? 'Selected' : 'Set as My Store' }}
+                  </button>
+                  <button
+                    (click)="openBranchDetails(branch)"
+                    class="px-4 py-2.5 bg-secondary text-foreground hover:bg-secondary/80 rounded-xl font-bold text-xs transition-all">
+                    Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Branch Details Modal -->
+    @if (selectedBranch) {
+      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+        <div class="w-full max-w-2xl bg-card rounded-3xl shadow-2xl border border-border overflow-hidden relative max-h-[90vh] flex flex-col">
+          <!-- Close Button -->
+          <button (click)="closeBranchDetails()" class="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors z-20">
+            <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+          </button>
+          <!-- Modal Header Banner -->
+          <div class="relative h-56 w-full flex-shrink-0 bg-muted">
+            <img [src]="selectedBranch.image" [alt]="selectedBranch.name" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 text-white">
+              <span class="text-xs font-black uppercase tracking-widest text-accent bg-accent/20 px-2.5 py-1 rounded border border-accent/40 mb-2 inline-block">
+                Branch Code: {{ selectedBranch.code }}
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">{{ selectedBranch.name }}</h2>
+              <p class="text-sm text-gray-300 flex items-center gap-2 mt-1">
+                <lucide-icon name="map-pin" class="w-4 h-4 text-accent"></lucide-icon>
+                {{ selectedBranch.address }}, {{ selectedBranch.city }}, {{ selectedBranch.state }} {{ selectedBranch.zipCode }}
+              </p>
+            </div>
+          </div>
+          <!-- Modal Scrollable Content -->
+          <div class="p-6 overflow-y-auto space-y-6 flex-1">
+            <!-- Contact & Manager Info Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-secondary/40 border border-border/60">
+                <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Store Contact</p>
+                <p class="text-sm font-semibold text-foreground flex items-center gap-2 mb-1">
+                  <lucide-icon name="phone" class="w-4 h-4 text-accent"></lucide-icon>
+                  {{ selectedBranch.phone }}
+                </p>
+                <p class="text-xs text-muted-foreground flex items-center gap-2">
+                  <lucide-icon name="mail" class="w-4 h-4 text-accent"></lucide-icon>
+                  {{ selectedBranch.email }}
+                </p>
+              </div>
+              <div class="p-4 rounded-2xl bg-secondary/40 border border-border/60">
+                <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Branch Lead</p>
+                <p class="text-sm font-semibold text-foreground flex items-center gap-2 mb-1">
+                  <lucide-icon name="user" class="w-4 h-4 text-accent"></lucide-icon>
+                  {{ selectedBranch.manager }}
+                </p>
+                <p class="text-xs text-emerald-500 font-bold flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Active Manager On Site
+                </p>
+              </div>
+            </div>
+            <!-- Opening Hours -->
+            <div>
+              <h4 class="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                <lucide-icon name="clock" class="w-4 h-4 text-accent"></lucide-icon>
+                Store Hours
+              </h4>
+              <div class="divide-y divide-border/50 bg-secondary/30 rounded-2xl border border-border/50 px-4">
+                @for (item of selectedBranch.openingHours; track item) {
+                  <div class="py-3 flex justify-between items-center text-sm">
+                    <span class="font-semibold text-foreground">{{ item.day }}</span>
+                    <span class="font-mono text-muted-foreground font-medium">{{ item.hours }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+            <!-- Services -->
+            <div>
+              <h4 class="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                <lucide-icon name="wrench" class="w-4 h-4 text-accent"></lucide-icon>
+                Services Offered
+              </h4>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                @for (service of selectedBranch.services; track service) {
+                  <div class="p-3 bg-secondary/40 rounded-xl border border-border/50 flex items-center gap-2">
+                    <lucide-icon name="check" class="w-4 h-4 text-accent flex-shrink-0"></lucide-icon>
+                    <span class="text-xs font-bold text-foreground">{{ service }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+          <!-- Modal Footer Actions -->
+          <div class="p-4 border-t border-border bg-card flex gap-3">
+            <button
+              (click)="setPreferredBranch(selectedBranch.id); closeBranchDetails()"
+              class="flex-1 btn-primary py-3 rounded-2xl font-bold text-sm shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
+              <lucide-icon name="check-circle" class="w-4 h-4"></lucide-icon>
+              Select as My Preferred Store
+            </button>
+            <button
+              (click)="closeBranchDetails()"
+              class="px-6 btn-outline py-3 rounded-2xl font-bold text-sm">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    }

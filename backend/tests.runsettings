@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- MSTest adapter -->
+  <MSTest>
+    <MapNotExecutedTestsToFailed>True</MapNotExecutedTestsToFailed>
+    <Parallelize>
+      <Workers>0</Workers>
+      <Scope>MethodLevel</Scope>
+    </Parallelize>
+  </MSTest>
+
+  <!-- Code Coverage -->
+  <CodeCoverage>
+    <Summary verbosity="Verbose" />
+    <ExcludeAttributes>
+      <ExcludeAttribute>System.CodeDom.Compiler.GeneratedCodeAttribute</ExcludeAttribute>
+      <ExcludeAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ExcludeAttribute>
+    </ExcludeAttributes>
+    <ModulePaths>
+      <Include>
+        <ModulePath>.*Domain\.dll$</ModulePath>
+        <ModulePath>.*Application\.dll$</ModulePath>
+        <ModulePath>.*Infrastructure\.dll$</ModulePath>
+        <ModulePath>.*Presentation\.dll$</ModulePath>
+      </Include>
+    </ModulePaths>
+  </CodeCoverage>
+
+  <!-- Logging for diagnostics -->
+  <LoggerRunSettings>
+    <Verbosity>Detailed</Verbosity>
+  </LoggerRunSettings>
+
+  <!-- Test Timeout (in milliseconds) -->
+  <RunConfiguration>
+    <TestSessionTimeout>900000</TestSessionTimeout>
+    <TargetFrameworkVersion>net9.0</TargetFrameworkVersion>
+  </RunConfiguration>
+
+  <!-- xUnit Configuration -->
+  <xUnit>
+    <MaxParallelThreads>-1</MaxParallelThreads>
+    <DiagnosticMessages>true</DiagnosticMessages>
+    <PreEnumerateTheories>true</PreEnumerateTheories>
+  </xUnit>
+</RunSettings>

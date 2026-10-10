@@ -1,0 +1,165 @@
+<!-- Hero Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Get in Touch</h1>
+    <p class="text-xl text-muted-foreground">We're here to help. Reach out to us anytime!</p>
+  </div>
+</section>
+
+<!-- Contact Methods -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Contact Haxel</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      @for (method of contactMethods; track method) {
+        <div class="glass-card p-8 rounded-lg text-center hover:border-accent transition-colors">
+          <div class="text-5xl mb-4">{{ method.icon }}</div>
+          <h3 class="text-lg font-bold text-accent mb-2">{{ method.title }}</h3>
+          <p class="font-semibold text-foreground mb-2">{{ method.primary }}</p>
+          <p class="text-sm text-muted-foreground">{{ method.secondary }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-2xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Send us a Message</h2>
+
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Name -->
+      <div>
+        <label for="contact-name" class="block text-sm font-semibold text-foreground mb-2">Name *</label>
+        <input
+          id="contact-name"
+          type="text"
+          formControlName="name"
+          placeholder="Your full name"
+          class="form-input w-full"
+          >
+          @if (submitted && contactForm.get('name')?.errors?.required) {
+            <p class="text-red-500 text-sm mt-1">
+              Name is required
+            </p>
+          }
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="contact-email" class="block text-sm font-semibold text-foreground mb-2">Email *</label>
+          <input
+            id="contact-email"
+            type="email"
+            formControlName="email"
+            placeholder="your.email@example.com"
+            class="form-input w-full"
+            >
+            @if (submitted && contactForm.get('email')?.errors?.required) {
+              <p class="text-red-500 text-sm mt-1">
+                Email is required
+              </p>
+            }
+            @if (submitted && contactForm.get('email')?.errors?.email) {
+              <p class="text-red-500 text-sm mt-1">
+                Please enter a valid email
+              </p>
+            }
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label for="contact-category" class="block text-sm font-semibold text-foreground mb-2">Category *</label>
+            <select
+              id="contact-category"
+              formControlName="category"
+              class="form-input w-full"
+              >
+              <option value="general">General Inquiry</option>
+              <option value="order">Order Issue</option>
+              <option value="return">Return/Refund</option>
+              <option value="product">Product Question</option>
+              <option value="feedback">Feedback</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Subject -->
+          <div>
+            <label for="contact-subject" class="block text-sm font-semibold text-foreground mb-2">Subject *</label>
+            <input
+              id="contact-subject"
+              type="text"
+              formControlName="subject"
+              placeholder="What's this about?"
+              class="form-input w-full"
+              >
+              @if (submitted && contactForm.get('subject')?.errors?.required) {
+                <p class="text-red-500 text-sm mt-1">
+                  Subject is required
+                </p>
+              }
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="contact-message" class="block text-sm font-semibold text-foreground mb-2">Message *</label>
+              <textarea
+                id="contact-message"
+                formControlName="message"
+                placeholder="Tell us how we can help..."
+                rows="6"
+                class="form-input w-full resize-none"
+              ></textarea>
+              @if (submitted && contactForm.get('message')?.errors?.required) {
+                <p class="text-red-500 text-sm mt-1">
+                  Message is required
+                </p>
+              }
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn-primary w-full text-lg py-3"
+              >
+              Send Message
+            </button>
+
+            <p class="text-xs text-muted-foreground text-center">
+              We'll get back to you within 24-48 hours.
+            </p>
+          </form>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="py-16 md:py-24">
+        <div class="max-w-4xl mx-auto px-4 md:px-6">
+          <h2 class="text-section-xl text-center mb-12">Still have questions?</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a routerLink="/help" class="glass-card p-8 rounded-lg hover:border-accent transition-all cursor-pointer group">
+              <h3 class="text-xl font-bold text-accent mb-3 group-hover:text-primary">Help Center</h3>
+              <p class="text-muted-foreground">Browse our FAQ and find answers to common questions.</p>
+            </a>
+
+            <a routerLink="/shipping" class="glass-card p-8 rounded-lg hover:border-accent transition-all cursor-pointer group">
+              <h3 class="text-xl font-bold text-accent mb-3 group-hover:text-primary">Shipping Info</h3>
+              <p class="text-muted-foreground">Learn about shipping options, delivery times, and tracking.</p>
+            </a>
+
+            <a routerLink="/returns" class="glass-card p-8 rounded-lg hover:border-accent transition-all cursor-pointer group">
+              <h3 class="text-xl font-bold text-accent mb-3 group-hover:text-primary">Return Policy</h3>
+              <p class="text-muted-foreground">30-day returns with our satisfaction guarantee.</p>
+            </a>
+
+            <a routerLink="/privacy" class="glass-card p-8 rounded-lg hover:border-accent transition-all cursor-pointer group">
+              <h3 class="text-xl font-bold text-accent mb-3 group-hover:text-primary">Privacy & Legal</h3>
+              <p class="text-muted-foreground">View our privacy policy and terms of service.</p>
+            </a>
+          </div>
+        </div>
+      </section>

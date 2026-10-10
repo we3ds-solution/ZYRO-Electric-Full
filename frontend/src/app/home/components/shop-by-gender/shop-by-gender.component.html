@@ -1,0 +1,40 @@
+<section class="max-w-7xl mx-auto px-4 md:px-6 py-14">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl md:text-4xl font-black mb-2">Shop By Gender</h2>
+    <p class="text-muted-foreground font-medium">Men / Women — find your fit</p>
+  </div>
+  <div class="grid md:grid-cols-2 gap-5">
+    <!-- Men -->
+    <div class="group relative overflow-hidden rounded-[2rem] min-h-[380px] cursor-pointer shadow-lg"
+      tabindex="0"
+      (click)="goToCategory('men')"
+      (keyup.enter)="goToCategory('men')">
+      <img
+        src="https://haxel.me/cdn/shop/files/Haxels_Black_Shorts_Front_Hero_from_Olive_Base.png?v=1789666981&width=900"
+        alt="Shop Men"
+        loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-8 text-center">
+        <h3 class="text-white text-3xl font-black uppercase tracking-wide mb-4">Men</h3>
+        <span class="inline-block bg-white text-black text-sm font-black uppercase tracking-wider px-8 py-3 rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors">Shop Men</span>
+      </div>
+    </div>
+    <!-- Women -->
+    <div class="group relative overflow-hidden rounded-[2rem] min-h-[380px] cursor-pointer shadow-lg"
+      tabindex="0"
+      (click)="goToCategory('women')"
+      (keyup.enter)="goToCategory('women')">
+      <img
+        src="https://haxel.me/cdn/shop/files/1_459b1906-cdf3-4b86-8807-59d1608d3032.png?v=1773849145&width=900"
+        alt="Shop Women"
+        loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-8 text-center">
+        <h3 class="text-white text-3xl font-black uppercase tracking-wide mb-4">Women</h3>
+        <span class="inline-block bg-white text-black text-sm font-black uppercase tracking-wider px-8 py-3 rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-colors">Shop Women</span>
+      </div>
+    </div>
+  </div>
+</section>

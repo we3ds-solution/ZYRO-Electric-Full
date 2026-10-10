@@ -1,0 +1,92 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+# package-lock.json and yarn.lock are committed for reproducible CI builds
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+
+# Vercel
+.vercel
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Angular cache (can be very large - never commit)
+/.angular/cache
+frontend/.angular/
+.angular/
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Deslop local runtime cache
+# Keep generated auth/session data local-only; never commit live tokens or local service state.
+.deslop/
+.deslop/**
+
+# Build
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Logs
+logs
+*.log
+
+# IDE specific
+*.iml
+.vscode/
+.DS_Store
+
+# Testing
+karma.conf.js
+karma-results.json
+
+.npmrc
+
+# Vercel
+.vercel
+
+.env*
+
+# VarAlign local store (machine-local variable-tracking data)
+.varmem/*

@@ -1,0 +1,65 @@
+# ⚡ ZYRO - Docker Compose Configuration
+# Tech Accessories E-Commerce Platform
+# 
+# Usage:
+#   Development:  docker-compose up
+#   Production:   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+#   Build only:   docker-compose build
+#   Clean up:     docker-compose down -v
+
+version: '3.9'
+
+services:
+  # ── ZYRO Development Service ──────────────────────────────────────────────
+  zyro-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: zyro-dev
+    image: we3ds-solution/zyro-electric:dev
+    ports:
+      - "4200:4200"
+    volumes:
+      # Mount source code for live hot-reload
+      - ../frontend/src:/app/src
+      - ../frontend/angular.json:/app/angular.json
+      - ../frontend/tailwind.config.js:/app/tailwind.config.js
+      - ../frontend/tsconfig.json:/app/tsconfig.json
+      - ../frontend/tsconfig.app.json:/app/tsconfig.app.json
+      # Prevent node_modules from being overwritten
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - ZYRO_ENV=dev
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ── ZYRO Production Service ────────────────────────────────────────────────
+  zyro-prod:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: zyro-prod
+    image: we3ds-solution/zyro-electric:latest
+    ports:
+      - "3030:80"
+    environment:
+      - NODE_ENV=production
+      - ZYRO_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    profiles:
+      - production

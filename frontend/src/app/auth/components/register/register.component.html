@@ -1,0 +1,144 @@
+<div class="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <app-ui-card padding="lg">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold gradient-text mb-2">Create Account</h1>
+        <p class="text-muted-foreground">Join the Haxel community</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Full Name -->
+        <div>
+          <label for="reg-name" class="section-label">Full Name</label>
+          <input
+            id="reg-name"
+            type="text"
+            formControlName="name"
+            placeholder="John Doe"
+            class="form-input w-full mt-2"
+            [class.error]="isFieldInvalid('name')">
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="reg-email" class="section-label">Email</label>
+            <input
+              id="reg-email"
+              type="email"
+              formControlName="email"
+              placeholder="you@example.com"
+              class="form-input w-full mt-2"
+              [class.error]="isFieldInvalid('email')">
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label for="reg-phone" class="section-label">Phone</label>
+              <input
+                id="reg-phone"
+                type="tel"
+                formControlName="phone"
+                placeholder="+1 (555) 123-4567"
+                class="form-input w-full mt-2"
+                [class.error]="isFieldInvalid('phone')">
+              </div>
+
+              <!-- Address -->
+              <div>
+                <label for="reg-address" class="section-label">Address</label>
+                <input
+                  id="reg-address"
+                  type="text"
+                  formControlName="address"
+                  placeholder="123 Main St, City, State"
+                  class="form-input w-full mt-2"
+                  [class.error]="isFieldInvalid('address')">
+                </div>
+
+                <!-- Password -->
+                <div>
+                  <label for="reg-password" class="section-label">Password</label>
+                  <input
+                    id="reg-password"
+                    type="password"
+                    formControlName="password"
+                    placeholder="At least 8 characters"
+                    class="form-input w-full mt-2"
+                    [class.error]="isFieldInvalid('password')">
+                    @if (isFieldInvalid('password')) {
+                      <span class="text-xs text-red-500">
+                        Password must be at least 8 characters
+                      </span>
+                    }
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div>
+                    <label for="reg-confirm" class="section-label">Confirm Password</label>
+                    <input
+                      id="reg-confirm"
+                      type="password"
+                      formControlName="confirmPassword"
+                      placeholder="Re-enter password"
+                      class="form-input w-full mt-2"
+                      [class.error]="registerForm.errors?.['passwordMismatch']">
+                      @if (registerForm.errors?.['passwordMismatch']) {
+                        <span class="text-xs text-red-500">
+                          Passwords do not match
+                        </span>
+                      }
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        id="terms"
+                        formControlName="terms"
+                        class="w-4 h-4 rounded mt-1">
+                        <label for="terms" class="text-sm text-muted-foreground cursor-pointer">
+                          I agree to the Terms and Conditions
+                        </label>
+                      </div>
+
+                      <!-- Submit Button -->
+                      <button
+                        type="submit"
+                        [disabled]="!registerForm.valid || isLoading"
+                        class="btn-primary w-full py-2 flex items-center justify-center gap-2">
+                        @if (!isLoading) {
+                          <lucide-icon name="user-plus" class="w-4 h-4"></lucide-icon>
+                        }
+                        @if (isLoading) {
+                          <span>Creating account...</span>
+                        }
+                        @if (!isLoading) {
+                          <span>Create Account</span>
+                        }
+                      </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="flex items-center gap-4 my-6">
+                      <div class="flex-1 h-px bg-border"></div>
+                      <span class="text-xs text-muted-foreground">or</span>
+                      <div class="flex-1 h-px bg-border"></div>
+                    </div>
+
+                    <!-- Login Link -->
+                    <div class="text-center">
+                      <p class="text-muted-foreground">
+                        Already have an account?
+                        <a routerLink="/auth/login" class="text-accent font-semibold hover:underline">
+                          Sign in here
+                        </a>
+                      </p>
+                    </div>
+                  </app-ui-card>
+                </div>
+
+                <!-- Toast -->
+                <app-ui-toast #toast></app-ui-toast>
+              </div>

@@ -1,0 +1,101 @@
+<!-- Hero -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Shipping Information</h1>
+    <p class="text-lg text-muted-foreground">Fast, reliable shipping to over 150 countries worldwide.</p>
+  </div>
+</section>
+
+<!-- Shipping Options -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Shipping Methods</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (option of shippingOptions; track option) {
+        <div class="glass-card p-8 rounded-lg hover:border-accent transition-colors">
+          <h3 class="text-2xl font-bold text-accent mb-6">{{ option.name }}</h3>
+          <div class="space-y-4">
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Processing</p>
+              <p class="font-semibold text-foreground">{{ option.processing }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Delivery Time</p>
+              <p class="font-semibold text-foreground">{{ option.delivery }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Cost</p>
+              <p class="font-semibold text-accent">{{ option.cost }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-muted-foreground mb-1">Coverage</p>
+              <p class="font-semibold text-foreground">{{ option.coverage }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Tracking -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-8">Track Your Order</h2>
+
+    <div class="glass-card p-8 rounded-lg border border-border">
+      <p class="text-muted-foreground mb-6">You'll receive a tracking number via email when your order ships. Track in 3 ways:</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-secondary p-6 rounded">
+          <p class="font-bold text-accent mb-2">📧 Email</p>
+          <p class="text-sm text-muted-foreground">Click tracking link in shipping email</p>
+        </div>
+        <div class="bg-secondary p-6 rounded">
+          <p class="font-bold text-accent mb-2">👤 Account</p>
+          <p class="text-sm text-muted-foreground">Log in → Order History → Track Shipment</p>
+        </div>
+        <div class="bg-secondary p-6 rounded">
+          <p class="font-bold text-accent mb-2">🚚 Carrier</p>
+          <p class="text-sm text-muted-foreground">Use tracking # on UPS/FedEx/USPS site</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Delivery Details -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl mb-8">Delivery & Returns</h2>
+
+    <div class="space-y-6">
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">🎯 Accurate Address</h3>
+        <p class="text-muted-foreground">Provide complete address with apartment/suite number if applicable.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">📦 What if not delivered?</h3>
+        <p class="text-muted-foreground">Report within 7 days. We'll investigate, file claims, or send replacements.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">✅ Damaged in transit?</h3>
+        <p class="text-muted-foreground">Report within 48 hours with photos. Free replacement or refund.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+      <h2 class="text-2xl font-bold text-accent mb-4">Shipping Questions?</h2>
+      <p class="text-muted-foreground mb-6">Contact our support team for help with your order.</p>
+      <a routerLink="/contact" class="btn-primary inline-block">Get Help</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Haxel — Performance Activewear | Men, Women & Footwear</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Haxel — Shop performance activewear. Men, women, footwear, running, lifting & lifestyle. Summer Clearance 40% OFF. Proudly 100% local.">
+  <meta name="theme-color" content="#0A0A0A">
+  <!-- Apply saved theme before first paint (no dark/light flash) -->
+  <script>
+    try {
+      var haxelTheme = localStorage.getItem('haxel-theme');
+      if (haxelTheme === 'light' || (!haxelTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        document.documentElement.classList.add('light');
+      }
+    } catch (e) {}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <!-- Preconnect for faster font loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Load Cairo font via link tag (non-blocking, no FOUC) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Prefetch hero banners for faster slide transitions (not LCP, so prefetch not preload) -->
+  <link rel="prefetch" as="image" href="https://haxel.me/cdn/shop/files/IMG_8914.jpg?v=1789668996&width=900">
+  <link rel="prefetch" as="image" href="https://haxel.me/cdn/shop/files/Haxels_Black_Shorts_Front_Hero_from_Olive_Base.png?v=1789666981&width=900">
+  <link rel="prefetch" as="image" href="https://haxel.me/cdn/shop/files/Haxel_Black_on_Black_-_Final_Aligned.png?v=1785074092&width=900">
+  <!-- Critical inline CSS + shimmer skeleton -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background-color: #0A0A0A;
+      color: #FAFAFA;
+      font-family: 'Cairo', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Shimmer keyframe — gold sweep matching accent #E8C547 */
+    @keyframes shimmer {
+      0%   { background-position: -800px 0; }
+      100% { background-position: 800px 0; }
+    }
+    @keyframes haxel-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+    @keyframes haxel-fadein {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .sk {
+      background: #1A1A1A;
+      background-image: linear-gradient(
+        90deg,
+        #1A1A1A 0px,
+        #252525 40px,
+        #2a2408 80px,
+        #1A1A1A 120px
+      );
+      background-size: 800px 100%;
+      animation: shimmer 1.6s infinite linear;
+      border-radius: 0.75rem;
+    }
+
+    /* ---- Loading screen wrapper ---- */
+    #haxel-loader {
+      min-height: 100vh;
+      background: #0A0A0A;
+      animation: haxel-fadein 0.3s ease both;
+    }
+
+    /* Header skeleton */
+    .sk-header {
+      margin: 1rem auto;
+      max-width: 72rem;
+      padding: 0 1rem;
+    }
+    .sk-header-inner {
+      background: #111111;
+      border: 1px solid #222222;
+      border-radius: 1rem;
+      padding: 0.6rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .sk-logo  { width: 140px; height: 28px; }
+    .sk-nav   { width: 280px; height: 36px; border-radius: 0.75rem; }
+    .sk-icons { width: 96px;  height: 36px; border-radius: 0.75rem; }
+
+    /* Hero skeleton */
+    .sk-hero {
+      max-width: 72rem;
+      margin: 1rem auto;
+      padding: 0 1rem;
+    }
+    .sk-hero-inner {
+      border-radius: 1.25rem;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: min(88vh, 720px);
+      min-height: 360px;
+    }
+    .sk-hero-left {
+      background: #111111;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      justify-content: center;
+    }
+    .sk-hero-badge { width: 140px; height: 30px; border-radius: 0.75rem; }
+    .sk-hero-h1-1  { width: 90%;  height: 52px; border-radius: 0.5rem; }
+    .sk-hero-h1-2  { width: 70%;  height: 52px; border-radius: 0.5rem; }
+    .sk-hero-p     { width: 85%;  height: 18px; border-radius: 0.4rem; }
+    .sk-hero-p2    { width: 75%;  height: 18px; border-radius: 0.4rem; }
+    .sk-hero-btns  { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .sk-btn-primary { width: 160px; height: 46px; border-radius: 0.75rem; background: #2a2408;
+      background-image: linear-gradient(90deg,#2a2408 0px,#3d3410 40px,#E8C54722 80px,#2a2408 120px);
+      background-size: 800px 100%; animation: shimmer 1.6s infinite linear; }
+    .sk-btn-outline { width: 110px; height: 46px; border-radius: 0.75rem; }
+    .sk-hero-right  { background: #0f0f0f; }
+
+    /* Stats skeleton */
+    .sk-stats {
+      max-width: 72rem;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .sk-stat {
+      background: #111111;
+      border: 1px solid #222222;
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .sk-stat-num  { width: 80px;  height: 34px; border-radius: 0.5rem; }
+    .sk-stat-lbl  { width: 100px; height: 14px; border-radius: 0.4rem; }
+
+    /* Product cards skeleton */
+    .sk-products {
+      max-width: 72rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .sk-section-title { width: 220px; height: 40px; border-radius: 0.5rem; margin-bottom: 1.5rem; }
+    .sk-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .sk-card {
+      background: #111111;
+      border: 1px solid #222222;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+    .sk-card-img  { width: 100%; height: 200px; border-radius: 0; }
+    .sk-card-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .sk-card-name { width: 80%; height: 18px; border-radius: 0.4rem; }
+    .sk-card-name2{ width: 60%; height: 18px; border-radius: 0.4rem; }
+    .sk-card-price{ width: 90px; height: 24px; border-radius: 0.5rem; }
+
+    /* Brand logo pulse in center */
+    .sk-brand {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #111111;
+      border: 1px solid #E8C54733;
+      border-radius: 2rem;
+      padding: 0.5rem 1.25rem;
+      animation: haxel-pulse 2s ease infinite;
+      z-index: 9999;
+    }
+    .sk-brand-dot {
+      width: 10px; height: 10px;
+      background: #E8C547;
+      border-radius: 50%;
+    }
+    .sk-brand-text {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, #E8C547, #F0D060, #C9A832);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (max-width: 768px) {
+      .sk-hero-inner { grid-template-columns: 1fr; height: auto; min-height: 320px; }
+      .sk-hero-right { display: none; }
+      .sk-cards      { grid-template-columns: 1fr; }
+      .sk-stats      { grid-template-columns: repeat(3,1fr); }
+      .sk-nav        { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <app-root>
+    <!-- Branded shimmer skeleton — shown instantly, replaced by Angular on boot -->
+    <div id="haxel-loader">
+
+      <!-- Header Skeleton -->
+      <div class="sk-header">
+        <div class="sk-header-inner">
+          <div class="sk sk-logo"></div>
+          <div class="sk sk-nav"></div>
+          <div class="sk sk-icons"></div>
+        </div>
+      </div>
+
+      <!-- Hero Skeleton -->
+      <div class="sk-hero">
+        <div class="sk-hero-inner">
+          <div class="sk-hero-left">
+            <div class="sk sk-hero-badge"></div>
+            <div class="sk sk-hero-h1-1"></div>
+            <div class="sk sk-hero-h1-2"></div>
+            <div class="sk sk-hero-p"></div>
+            <div class="sk sk-hero-p2"></div>
+            <div class="sk-hero-btns">
+              <div class="sk-btn-primary"></div>
+              <div class="sk sk-btn-outline"></div>
+            </div>
+          </div>
+          <div class="sk sk-hero-right"></div>
+        </div>
+      </div>
+
+      <!-- Stats Skeleton -->
+      <div class="sk-stats">
+        <div class="sk-stat">
+          <div class="sk sk-stat-num"></div>
+          <div class="sk sk-stat-lbl"></div>
+        </div>
+        <div class="sk-stat">
+          <div class="sk sk-stat-num"></div>
+          <div class="sk sk-stat-lbl"></div>
+        </div>
+        <div class="sk-stat">
+          <div class="sk sk-stat-num"></div>
+          <div class="sk sk-stat-lbl"></div>
+        </div>
+      </div>
+
+      <!-- Product Cards Skeleton -->
+      <div class="sk-products">
+        <div class="sk sk-section-title"></div>
+        <div class="sk-cards">
+          <div class="sk-card">
+            <div class="sk sk-card-img"></div>
+            <div class="sk-card-body">
+              <div class="sk sk-card-name"></div>
+              <div class="sk sk-card-name2"></div>
+              <div class="sk sk-card-price"></div>
+            </div>
+          </div>
+          <div class="sk-card">
+            <div class="sk sk-card-img"></div>
+            <div class="sk-card-body">
+              <div class="sk sk-card-name"></div>
+              <div class="sk sk-card-name2"></div>
+              <div class="sk sk-card-price"></div>
+            </div>
+          </div>
+          <div class="sk-card">
+            <div class="sk sk-card-img"></div>
+            <div class="sk-card-body">
+              <div class="sk sk-card-name"></div>
+              <div class="sk sk-card-name2"></div>
+              <div class="sk sk-card-price"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand pulse badge -->
+      <div class="sk-brand">
+        <div class="sk-brand-dot"></div>
+        <span class="sk-brand-text">HAXEL</span>
+      </div>
+
+    </div>
+  </app-root>
+</body>
+</html>

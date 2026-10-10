@@ -1,0 +1,106 @@
+<!-- Hero Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h1 class="text-hero-xl gradient-text mb-6">Terms of Service</h1>
+    <p class="text-lg text-muted-foreground">Last Updated: {{ lastUpdated }}</p>
+  </div>
+</section>
+
+<!-- Introduction -->
+<section class="py-12 md:py-16">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card p-8 rounded-lg border border-border">
+      <p class="text-lg text-muted-foreground leading-relaxed mb-4">
+        By accessing and using Haxel, you agree to be bound by these Terms of Service. If you do not agree, please do not use this service.
+      </p>
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-accent flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2z" clip-rule="evenodd"></path>
+        </svg>
+        <p class="text-muted-foreground">
+          These terms are binding and enforceable. Violations may result in account termination.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sections -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Key Sections</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (section of sections; track section) {
+        <div class="glass-card p-6 rounded-lg hover:border-accent transition-colors">
+          <div class="text-4xl mb-3">{{ section.icon }}</div>
+          <h3 class="text-lg font-bold text-accent">{{ section.title }}</h3>
+          <p class="text-sm text-muted-foreground mt-2">
+            Important terms regarding {{ section.title.toLowerCase() }}
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Important Notes -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-2xl font-bold text-accent mb-8">Important Points</h2>
+
+    <div class="space-y-6">
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">Use License</h3>
+        <p class="text-muted-foreground">You may not reproduce, duplicate, copy, sell, or resell any portion of our platform without written permission.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">Account Responsibility</h3>
+        <p class="text-muted-foreground">You are responsible for all activities under your account. Notify us immediately of unauthorized access.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">Prohibited Conduct</h3>
+        <p class="text-muted-foreground">Do not violate laws, infringe rights, harass others, or attempt unauthorized access to our systems.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
+        <h3 class="font-bold text-foreground mb-2">Limitation of Liability</h3>
+        <p class="text-muted-foreground">We are not liable for indirect, incidental, or consequential damages arising from your use of our platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
+      <h2 class="text-2xl font-bold text-accent mb-4">Questions About These Terms?</h2>
+      <p class="text-muted-foreground mb-6">Contact our legal team for clarification or concerns.</p>
+      <a routerLink="/contact" class="btn-primary inline-block">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- Related Pages -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Related Policies</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a routerLink="/privacy" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Privacy Policy</h3>
+        <p class="text-sm text-muted-foreground">How we handle your data.</p>
+      </a>
+      <a routerLink="/cookies" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Cookie Policy</h3>
+        <p class="text-sm text-muted-foreground">Cookie usage and preferences.</p>
+      </a>
+      <a routerLink="/returns" class="glass-card p-6 rounded-lg hover:border-accent transition-all cursor-pointer">
+        <h3 class="font-bold text-accent mb-2">Return Policy</h3>
+        <p class="text-sm text-muted-foreground">30-day returns guarantee.</p>
+      </a>
+    </div>
+  </div>
+</section>

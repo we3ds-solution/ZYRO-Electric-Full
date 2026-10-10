@@ -1,0 +1,29 @@
+<section class="max-w-7xl mx-auto px-4 md:px-6 py-14">
+  <div class="grid md:grid-cols-3 gap-5">
+    @for (promo of promoOffers; track promo) {
+      <div
+        [ngClass]="'bg-gradient-to-br ' + promo.gradient"
+        class="rounded-[2.5rem] text-white relative overflow-hidden group cursor-pointer shadow-lg min-h-[280px]">
+        <!-- Background banner image (when available) -->
+        @if (promo.bannerImage) {
+          <img
+            [src]="promo.bannerImage"
+            [alt]="promo.title"
+            loading="lazy"
+            class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 group-hover:scale-105 transition-all duration-500">
+        }
+        <!-- Overlay gradient -->
+        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent"></div>
+        <!-- Content -->
+        <div class="relative z-10 p-10 md:p-12 space-y-6 flex flex-col h-full justify-end">
+          <div class="text-6xl absolute top-6 right-6 opacity-80 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">{{ promo.icon }}</div>
+          <h3 class="text-4xl font-black leading-tight">{{ promo.title }}</h3>
+          <p class="text-white/80 text-lg font-medium max-w-xs">{{ promo.description }}</p>
+          <button [ngClass]="'font-bold px-8 py-3 rounded-xl transition-all duration-300 w-fit shadow-md hover:shadow-xl ' + promo.buttonColor">
+            {{ promo.buttonText }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</section>
